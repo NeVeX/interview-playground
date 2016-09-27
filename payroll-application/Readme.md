@@ -4,7 +4,7 @@ Welcome to the Payroll Application project - this readme has some information ab
 
 This application aims to solve the requirements/problem which can be found in the Requirements.md file.
 
-This application is built using:
+This application was built using:
   - Language: Java 8
   - IDE: IntelliJ 16.1
   - Build System: Gradle 2.3
