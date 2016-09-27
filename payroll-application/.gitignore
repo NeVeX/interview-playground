@@ -10,8 +10,8 @@ hs_err_pid*
 
 # Folders
 *.gradle
-*build
+build/
 *out
 *logs
 *.idea
-!build.gradle
+
