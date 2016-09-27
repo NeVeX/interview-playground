@@ -1,23 +1,23 @@
 # Payroll Application
 
-Welcome to the Payroll Application project - this readme has some information about the project and application.
+Welcome to the Payroll Application project - this readme has some information about the project and the application.
 
-This application aims to solve the requirements/problem which can be found in Requirements.md
+This application aims to solve the requirements/problem which can be found in the Requirements.md file.
 
 This application is built using:
   - Language: Java 8
   - IDE: IntelliJ 16.1
-  - Build System: Gradle 1.3.1
+  - Build System: Gradle 2.3
 
 ### Building the application
 Note: In the **release** directory, there is an already built application that can be used (without having to build the source).
 To build/test the application source code, run the following in the root of the project (where gradle.build is)
 ```sh
-$ gradle build
+$ gradle clean build
 ```
-The above will run the build and tests (all tests should pass) - the artifacts that are created will be posted to the **build/libs/** folder.
+The above will clean any temporary directories for this application (if exists) and then run the build and tests (all tests should pass) - the artifact that is created will be posted to the **build/libs/** folder.
 
-However, those artifacts are not directly runnable (self contained applications) - instead to create a single jar file that hosts the whole application and dependencies; use the shadowJar command, similar to the above build command:
+However, that artifact IS not directly runnable (i.e. a self contained application) - SO to create the single jar file that packages the whole application and dependencies; use the **shadowJar** command, similar to the above build command syntax:
 ```sh
 $ gradle shadowJar
 ```
@@ -37,12 +37,12 @@ first name,last name,annual salary,super rate (%),payment start date,payment end
 David,Rudd,60050,9,01/03/2013,31/03/2013
 Ryan,Chen,120000,10,01/03/2013,31/03/2013
 ```
-Note: the date format is dd/MM/yyyy (June 9th 2016 = 09/06/2016). Also, the CSV header must match the above otherwise the application will not parse the CSV file.
+Note: the date format is dd/MM/yyyy (June 9th 2016 becomes 09/06/2016). Also, the CSV header must match the above otherwise the application will not parse the CSV file.
 
 ### Output of the application
 #### On Screen
-When the application is run, various messages will be shown on screen of the application's progress and status.
-If there are any errors, it will be shown on screen too. The below shows the screen output for a successful run:
+When the application is run, various messages will be shown on screen, for the application's progress and status.
+If there are any errors, it will be shown on screen too. The below shows the screen output for an example successful run:
 ```
 $ java -jar payroll-application-1.0.0-full.jar -f C:\payroll\employee-salary-input.csv
 
