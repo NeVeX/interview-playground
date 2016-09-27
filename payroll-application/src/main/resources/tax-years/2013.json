@@ -1,0 +1,41 @@
+{
+  "tax_year_start" : "01/07/2012",
+  "tax_year_end" : "30/06/2013",
+  "tax_brackets" : [
+    {
+      "minimum_salary" : 0,
+      "maximum_salary" : 18200,
+      "tax_base_amount" : 0,
+      "surplus_tax_minimum_salary" : 0,
+      "surplus_tax_rate_per_dollar" : 0
+    },
+    {
+      "minimum_salary" : 18201,
+      "maximum_salary" : 37000,
+      "tax_base_amount" : 0,
+      "surplus_tax_minimum_salary" : 18200,
+      "surplus_tax_rate_per_dollar" : 0.19
+    },
+    {
+      "minimum_salary" : 37001,
+      "maximum_salary" : 80000,
+      "tax_base_amount" : 3572,
+      "surplus_tax_minimum_salary" : 37000,
+      "surplus_tax_rate_per_dollar" : 0.325
+    },
+    {
+      "minimum_salary" : 80001,
+      "maximum_salary" : 180000,
+      "tax_base_amount" : 17547,
+      "surplus_tax_minimum_salary" : 80000,
+      "surplus_tax_rate_per_dollar" : 0.37
+    },
+    {
+      "minimum_salary" : 180001,
+      "maximum_salary" : null,
+      "tax_base_amount" : 54547,
+      "surplus_tax_minimum_salary" : 180000,
+      "surplus_tax_rate_per_dollar" : 0.45
+    }
+  ]
+}
