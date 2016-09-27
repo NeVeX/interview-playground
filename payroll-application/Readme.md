@@ -31,7 +31,7 @@ Note, the file location above is the windows convention, but on other operating 
 
 ### Input of the application
 The CSV file given as application input needs to adhere to the following CSV format (as example):
-```sh
+```
 first name,last name,annual salary,super rate (%),payment start date,payment end date
 David,Rudd,60050,9,01/03/2013,31/03/2013
 Ryan,Chen,120000,10,01/03/2013,31/03/2013
@@ -40,8 +40,9 @@ Note: the date format is dd/MM/yyyy (June 9th 2016 = 09/06/2016). Also, the CSV 
 
 ### Output of the application
 ##### On Screen
-When the application is run, various messages will be shown on screen of the applications progress and status. If there are any errors, it will be shown on screen too. The below shows the screen output for a successful run:
-```sh
+When the application is run, various messages will be shown on screen of the application's progress and status.
+If there are any errors, it will be shown on screen too. The below shows the screen output for a successful run:
+```
 $ java -jar payroll-application-1.0.0-full.jar -f C:\payroll\employee-salary-input.csv
 
 Found [5] valid and [0] invalid employee salary records in resource [C:\payroll\employee-salary-input.csv]
@@ -58,7 +59,7 @@ All calculated employee pay stubs are written to the same directory as the input
 For example: if the input file is C:\payroll\salaries.csv; then the output file will be C:\payroll\output-paystubs-salaries.csv.
 
 The format of the output employee paystub file will be (as an example):
-```csv
+```
 name,pay period,gross income,income tax,net income,super
 David Rudd,01/03/2013 - 31/03/2013,5004,922,4082,450
 Ryan Chen,01/03/2013 - 31/03/2013,10000,2696,7304,1000
