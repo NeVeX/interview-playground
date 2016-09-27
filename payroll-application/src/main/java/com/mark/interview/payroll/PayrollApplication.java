@@ -47,16 +47,16 @@ public class PayrollApplication {
             // Inputs look good, so pass the flow onto the next stage
             exitCode = onValidApplicationInput(applicationInputResult.getPayrollFile());
         } else {
-            printErrorToScreen("The given input parameters are not valid");
+            printErrorToScreen("The given input parameters ["+applicationInputResult.getInvalidInputs()+"] are not valid");
             exitCode = EXIT_CODE_INVALID_INPUT;
         }
         // Check to see what status we'll be exiting with
         if ( exitCode != EXIT_CODE_OK) {
             applicationInputReader.printUsageInformation(System.err); // Something went wrong, so print the help information
-            printInfoToScreen("For more information on the problems encountered, please look at the log file");
+            printInfoToScreen("For more information on the problems encountered, please look at the log file (in the logs directory)");
         } else {
             printInfoToScreen(System.lineSeparator()+"Thanks for using this payroll application!");
-            printInfoToScreen("Goodbye!");
+            printInfoToScreen("Goodbye! :-)");
         }
         return exitCode;
     }
@@ -70,7 +70,7 @@ public class PayrollApplication {
         DataReaderResult<EmployeeSalary> inputPayrollData = getPayrollInputDataFromCsv(inputPayrollFile);
         // Print out the statistics on this data load
         printInfoToScreen("Found ["+inputPayrollData.getValidDataCount()+"] valid and " +
-                "["+inputPayrollData.getInvalidDataCount()+"] invalid employee salary records in resource ["+inputPayrollFile+"]");
+                "["+inputPayrollData.getInvalidDataCount()+"] invalid employee salary records in the resource ["+inputPayrollFile+"]");
         if ( inputPayrollData.hasData()) {
             // Great, we have payroll data from the input file, so let's determine the place we wish to save data
             String outputFile = getOutputFileToWriteTo(inputPayrollFile);
@@ -109,10 +109,11 @@ public class PayrollApplication {
     private int onPayStubsCalculated(String outputFile, Set<EmployeePayStub> calculatedPayStubs) {
         DataWriterResult payStubsWriterResult = writePayStubsToCsvFile(outputFile, calculatedPayStubs);
         if ( payStubsWriterResult.isSuccessfullyWritten()) { // Check if the file was written
-            printInfoToScreen(System.lineSeparator()+"Successfully wrote all calculated pay-stub information to the file: ["+payStubsWriterResult.getResourceUsed()+"]");
+            printInfoToScreen(System.lineSeparator()+"Successfully wrote ["+payStubsWriterResult.getWrittenDataCount()+"]" +
+                    " calculated pay-stubs to the resource: ["+payStubsWriterResult.getResourceUsed()+"]");
             return EXIT_CODE_OK;
         } else {
-            printErrorToScreen("Unable to write pay-stubs to resource: ["+payStubsWriterResult.getResourceUsed()+"]");
+            printErrorToScreen("Unable to write calculated pay-stubs to the resource: ["+payStubsWriterResult.getResourceUsed()+"]");
             return EXIT_CODE_UNABLE_TO_WRITE_FILE;
         }
     }

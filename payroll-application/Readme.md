@@ -10,6 +10,7 @@ This application is built using:
   - Build System: Gradle 1.3.1
 
 ### Building the application
+Note: In the **release** directory, there is an already built application that can be used (without having to build the source).
 To build/test the application source code, run the following in the root of the project (where gradle.build is)
 ```sh
 $ gradle build
@@ -39,22 +40,23 @@ Ryan,Chen,120000,10,01/03/2013,31/03/2013
 Note: the date format is dd/MM/yyyy (June 9th 2016 = 09/06/2016). Also, the CSV header must match the above otherwise the application will not parse the CSV file.
 
 ### Output of the application
-##### On Screen
+#### On Screen
 When the application is run, various messages will be shown on screen of the application's progress and status.
 If there are any errors, it will be shown on screen too. The below shows the screen output for a successful run:
 ```
 $ java -jar payroll-application-1.0.0-full.jar -f C:\payroll\employee-salary-input.csv
 
-Found [5] valid and [0] invalid employee salary records in resource [C:\payroll\employee-salary-input.csv]
+Found [2] valid and [0] invalid employee salary records in the resource [C:\payroll\employee-salary-input.csv]
 The supported tax years of this application are: [2013]
-Calculated a total of [5] pay-stubs
+Calculated a total of [2] pay-stubs
 
-Successfully wrote all calculated pay-stub information to the file: [C:\payroll\output-paystubs-employee-salary-input.csv]
+Successfully wrote [2] calculated pay-stubs to the resource: [C:\payroll\output-paystubs-employee-salary-input.csv]
 
 Thanks for using this payroll application!
-Goodbye!
+Goodbye! :-)
 ```
-##### Employee Pay Stubs
+
+#### Employee Pay Stubs
 All calculated employee pay stubs are written to the same directory as the input file given, and the name will be prefixed with **output-paystubs-**.
 For example: if the input file is C:\payroll\salaries.csv; then the output file will be C:\payroll\output-paystubs-salaries.csv.
 
@@ -64,7 +66,7 @@ name,pay period,gross income,income tax,net income,super
 David Rudd,01/03/2013 - 31/03/2013,5004,922,4082,450
 Ryan Chen,01/03/2013 - 31/03/2013,10000,2696,7304,1000
 ```
-##### Log files
+#### Log files
 The application will write all it's log files to the file in **logs\payroll-application.log**, where "logs\" directory will be created in the same directory as the application resides in.
 If there are any problems with the application, the log files will contain more information.
 
