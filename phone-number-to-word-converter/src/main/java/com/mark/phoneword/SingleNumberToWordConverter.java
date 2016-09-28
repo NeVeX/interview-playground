@@ -4,7 +4,7 @@ import com.mark.phoneword.util.NumberUtils;
 import com.mark.phoneword.util.StringUtils;
 
 import java.util.*;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 9/27/2016.
@@ -12,8 +12,8 @@ import java.util.stream.IntStream;
 class SingleNumberToWordConverter {
 
     private static final int MINIMUM_ALLOWED_DIGIT = 0;
-    private static final int MAXIMUM_ALLOWED_DIGIT = 0;
-    private final Map<Integer, Set<Character>> numberToLetters;
+    private static final int MAXIMUM_ALLOWED_DIGIT = 9;
+    private final Map<Integer, List<Character>> digitToLetters = new HashMap<>(); // can be a list, the input is a set and we need ordering
 
     /**
      * Initialize a new number to word converter that will use the provided mapping table
@@ -26,22 +26,89 @@ class SingleNumberToWordConverter {
             throw new IllegalArgumentException("Provided digitToLetters cannot be null or empty");
         }
         // Use the input and create our own internal reference to the data
-        Map<Integer, Set<Character>> newNumberToLetters = new HashMap<>();
-        newNumberToLetters.entrySet()
+        digitToLetters.entrySet()
             .stream()
             .filter(this::isMapEntryValid)
             .forEach(this::addNewNumberToLetterEntry);
-        this.numberToLetters = newNumberToLetters;
     }
 
     Set<String> convert(int number) {
 
         List<Integer> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
-
+            return calculateLetterPermutationsForDigits(splitDigits);
         }
         return new HashSet<>();
 
+    }
+
+    private Set<String> calculateLetterPermutationsForDigits(List<Integer> digits) {
+
+        List<List<Character>> listOfLetterSets = new ArrayList<>();
+        for (Integer digit : digits) {
+            if ( digit >= MINIMUM_ALLOWED_DIGIT && digit <= MAXIMUM_ALLOWED_DIGIT) {
+                if (digitToLetters.containsKey(digit)) {
+                    listOfLetterSets.add(digitToLetters.get(digit));
+                }
+            }
+        }
+
+        Set<String> returnWords = new HashSet<>();
+
+        if ( listOfLetterSets.size() == 1 ) {
+            listOfLetterSets.get(0).forEach(c -> returnWords.add(c.toString()));
+            return returnWords;
+        }
+
+        if ( !listOfLetterSets.isEmpty() ) {
+
+            int endLoopIndex = listOfLetterSets.size() - 1;
+            int indexSize = endLoopIndex;
+
+            StringBuilder runningSb = new StringBuilder();
+
+            int index = 0;
+            int startRowIndex = -1;
+            boolean movingForward = true;
+            while ( index >= 0 ) {
+
+                if (index == endLoopIndex) {
+                    String prefix = runningSb.substring(0, index);
+                    for ( int j = 0;  j < listOfLetterSets.get(index).size(); j++) {
+
+                        String word = prefix + listOfLetterSets.get(index).get(j);
+
+                        System.err.println(word);
+                        returnWords.add(word);
+                    }
+                    movingForward = false;
+                    endLoopIndex--;
+                }
+
+//                if ( movingForward) {
+                    if (index == 0) {
+                        if (++startRowIndex >= listOfLetterSets.get(index).size()) {
+                            break;
+                        }
+                        runningSb = new StringBuilder();
+                        endLoopIndex = indexSize;
+//                        startRowIndex++;
+                        movingForward = true;
+                    }
+                    if (movingForward) {
+                        Character character = listOfLetterSets.get(index).get(startRowIndex);
+                        runningSb.append(character);
+                        System.err.println("trail: "+runningSb.toString());
+                    }
+//                }
+
+                index += movingForward ? 1 : -1;
+            }
+
+        }
+
+
+        return returnWords;
     }
 
     /**
@@ -63,8 +130,8 @@ class SingleNumberToWordConverter {
      * @param entryToAdd - the (now valid) entry
      */
     private void addNewNumberToLetterEntry(Map.Entry<Integer, Set<Character>> entryToAdd) {
-        Set<Character> letters = new HashSet<>();
+        List<Character> letters = new ArrayList<>();
         letters.addAll(entryToAdd.getValue());
-        numberToLetters.put(entryToAdd.getKey(), letters);
+        digitToLetters.put(entryToAdd.getKey(), letters);
     }
 }
