@@ -1,0 +1,5 @@
+apply plugin: 'java'
+
+// Need to set the java properties after the plugin is loaded above
+sourceCompatibility = javaSourceCompatibility
+targetCompatibility = javaTargetCompatibility
