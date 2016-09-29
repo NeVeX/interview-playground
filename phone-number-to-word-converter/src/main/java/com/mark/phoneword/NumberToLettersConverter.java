@@ -85,7 +85,7 @@ class NumberToLettersConverter {
             }
         }
         // Don't include the first row of strings in the result, since they are single char's (e.g. "a", "h" - not words)
-        return rowStrings.stream().skip(1).flatMap(Collection::stream).collect(Collectors.toSet());
+        return rowStrings.stream().skip(1).flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
     }
 
     private List<String> appendPrefixToLetters(final String prefix, final List<Character> letters) {
