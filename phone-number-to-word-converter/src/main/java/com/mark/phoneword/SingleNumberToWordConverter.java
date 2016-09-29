@@ -27,9 +27,9 @@ class SingleNumberToWordConverter {
         }
         // Use the input and create our own internal reference to the data
         digitToLetters.entrySet()
-            .stream()
-            .filter(this::isMapEntryValid)
-            .forEach(this::addNewNumberToLetterEntry);
+                .stream()
+                .filter(this::isMapEntryValid)
+                .forEach(this::addNewNumberToLetterEntry);
     }
 
     Set<String> convert(int number) {
@@ -42,73 +42,54 @@ class SingleNumberToWordConverter {
 
     }
 
+    /**
+     * One digit numbers are not converted (e.g. 2 will not return anything since a one word character is not a word???)
+     * @param digits
+     * @return
+     */
     private Set<String> calculateLetterPermutationsForDigits(List<Integer> digits) {
 
-        List<List<Character>> listOfLetterSets = new ArrayList<>();
-        for (Integer digit : digits) {
-            if ( digit >= MINIMUM_ALLOWED_DIGIT && digit <= MAXIMUM_ALLOWED_DIGIT) {
-                if (digitToLetters.containsKey(digit)) {
-                    listOfLetterSets.add(digitToLetters.get(digit));
-                }
-            }
+        // If the digit cannot be found, then just add the digit as the character key
+        List<List<Character>> listOfLetterSets = digits.stream()
+        .filter(digit -> digit >= MINIMUM_ALLOWED_DIGIT && digit <= MAXIMUM_ALLOWED_DIGIT)
+        .map(digit -> {
+            if (digitToLetters.containsKey(digit)) {
+                return digitToLetters.get(digit);
+            } else {
+                // If the digit cannot be found, then just add the digit as the character key
+                return Collections.singletonList(digit.toString().charAt(0));
+            }})
+        .collect(Collectors.toList());
+
+        Set<String> words = new HashSet<>();
+
+        if ( listOfLetterSets.isEmpty()) {
+            return words;
         }
 
-        Set<String> returnWords = new HashSet<>();
+        List<List<String>> rowStrings = new ArrayList<>();
+        List<String> firstLine = new ArrayList<>();
+        listOfLetterSets.get(0).forEach(c -> firstLine.add(c.toString()));
+        rowStrings.add(firstLine);
 
-        if ( listOfLetterSets.size() == 1 ) {
-            listOfLetterSets.get(0).forEach(c -> returnWords.add(c.toString()));
-            return returnWords;
+        for ( int row = 1; row < listOfLetterSets.size(); row++ ) {
+            List<Character> currentRow = listOfLetterSets.get(row);
+
+            List<String> newRowOfStrings = new ArrayList<>();
+            rowStrings.add(newRowOfStrings);
+
+            rowStrings.get(row - 1).forEach( prefix ->
+                    currentRow.forEach(cr -> {
+                                String newWord = prefix + cr;
+                                // Check if this is a consecutive number
+                                if ( !StringUtils.areBothCharactersNumbers(StringUtils.getLastCharacter(prefix).get(), cr)) {
+                                    words.add(newWord);
+                                    newRowOfStrings.add(newWord);
+                                }
+                            }
+                    ));
         }
-
-        if ( !listOfLetterSets.isEmpty() ) {
-
-            int endLoopIndex = listOfLetterSets.size() - 1;
-            int indexSize = endLoopIndex;
-
-            StringBuilder runningSb = new StringBuilder();
-
-            int index = 0;
-            int startRowIndex = -1;
-            boolean movingForward = true;
-            while ( index >= 0 ) {
-
-                if (index == endLoopIndex) {
-                    String prefix = runningSb.substring(0, index);
-                    for ( int j = 0;  j < listOfLetterSets.get(index).size(); j++) {
-
-                        String word = prefix + listOfLetterSets.get(index).get(j);
-
-                        System.err.println(word);
-                        returnWords.add(word);
-                    }
-                    movingForward = false;
-                    endLoopIndex--;
-                }
-
-//                if ( movingForward) {
-                    if (index == 0) {
-                        if (++startRowIndex >= listOfLetterSets.get(index).size()) {
-                            break;
-                        }
-                        runningSb = new StringBuilder();
-                        endLoopIndex = indexSize;
-//                        startRowIndex++;
-                        movingForward = true;
-                    }
-                    if (movingForward) {
-                        Character character = listOfLetterSets.get(index).get(startRowIndex);
-                        runningSb.append(character);
-                        System.err.println("trail: "+runningSb.toString());
-                    }
-//                }
-
-                index += movingForward ? 1 : -1;
-            }
-
-        }
-
-
-        return returnWords;
+        return words;
     }
 
     /**
@@ -120,7 +101,7 @@ class SingleNumberToWordConverter {
         Integer key = entry.getKey();
         Set<Character> letters = entry.getValue();
         return key != null && key >= MINIMUM_ALLOWED_DIGIT && key <= MAXIMUM_ALLOWED_DIGIT
-            && letters != null && !letters.isEmpty()
+                && letters != null && !letters.isEmpty()
                 // Check also that
                 && letters.stream().filter(StringUtils::isNotBlank).findAny().isPresent();
     }
@@ -132,6 +113,6 @@ class SingleNumberToWordConverter {
     private void addNewNumberToLetterEntry(Map.Entry<Integer, Set<Character>> entryToAdd) {
         List<Character> letters = new ArrayList<>();
         letters.addAll(entryToAdd.getValue());
-        digitToLetters.put(entryToAdd.getKey(), letters);
+        digitToLetters.put(entryToAdd.getKey(), Collections.unmodifiableList(letters));
     }
 }
