@@ -41,10 +41,10 @@ class NumberToLettersConverter {
 
             return calculateAllLetterPermutations(matrixOfLetters)
                     .stream()
+                    .parallel()
                     .map(this::splitLetterCombinationsIntoChunks)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toSet());
-
         }
         return new HashSet<>();
 
@@ -85,6 +85,7 @@ class NumberToLettersConverter {
                     .map(Object::toString)
                     .collect(Collectors.toSet()));
 
+            // TODO: Rewrite this...
             for (int row = 1; row < matrixOfLetters.size(); row++) {
                 Set<Character> currentRow = matrixOfLetters.get(row);
                 Set<String> newRowStrings = levelToLetters

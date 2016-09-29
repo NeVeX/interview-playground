@@ -10,17 +10,11 @@ import java.util.*;
  */
 public class DefaultNumberToLettersConverterTest {
 
-
-//    DEFAULT_CONVERSION_MAP.put(6, new HashSet<>(Arrays.asList('m', 'n', 'o')));
-//    DEFAULT_CONVERSION_MAP.put(7, new HashSet<>(Arrays.asList('p', 'q', 'r', 's')));
-//    DEFAULT_CONVERSION_MAP.put(8, new HashSet<>(Arrays.asList('t', 'u', 'v')));
-//    DEFAULT_CONVERSION_MAP.put(9, new HashSet<>(Arrays.asList('w', 'x', 'y', 'z')));
-
     @Test
     public void assertUpTo10DigitConversionWorks() {
         int number = 2;
         NumberToLettersConverter lettersConverter = new DefaultNumberToLettersConverter();
-        assertThat(lettersConverter.convert(number).isEmpty()).isTrue();
+        assertThat(lettersConverter.convert(number)).isEmpty();
 
         number = 23; // We'll expect a certain string
         assertThat(lettersConverter.convert(number)).contains("ad");

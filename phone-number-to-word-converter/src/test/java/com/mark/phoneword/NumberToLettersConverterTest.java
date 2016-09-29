@@ -25,7 +25,7 @@ public class NumberToLettersConverterTest {
 
         Set<String> expectedLetters = new HashSet<>();
         Set<String> convertedNumber = assertDigitNumberConversion(number, conversionMap, expectedLetters);
-        assertThat(convertedNumber.isEmpty()).isTrue();
+        assertThat(convertedNumber).isEmpty();
     }
 
     private Set<String> assertDigitNumberConversion(long number, Map<Byte, Set<Character>> inputMap, Set<String> expectedOutput) {
@@ -67,7 +67,10 @@ public class NumberToLettersConverterTest {
         conversionMap.put((byte)3, number3ToLettersMap);
 
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
-        assertThat(numberToLettersConverter.convert(number).isEmpty()).isTrue(); // No conversion expected
+        Set<String> convertedNumbers = numberToLettersConverter.convert(number);
+        assertThat(convertedNumbers).isNotEmpty();
+        assertThat(convertedNumbers).contains("6789"); // the unconverted number
+
     }
 
     @Test

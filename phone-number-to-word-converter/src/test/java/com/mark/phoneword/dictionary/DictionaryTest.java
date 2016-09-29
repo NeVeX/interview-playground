@@ -41,7 +41,7 @@ public class DictionaryTest {
         Dictionary dictionaryLookup = new Dictionary(dictionary);
         assertThat(dictionaryLookup.isWord("   mark")).isTrue(); // should find it
         assertThat(dictionaryLookup.isWord("   susan    ")).isTrue(); // should find it
-        assertThat(dictionaryLookup.isWord("timmy    john")).isTrue(); // bad dictionary lookup
+        assertThat(dictionaryLookup.isWord("timmy    john")).isFalse(); // bad dictionary lookup
     }
 
 }
