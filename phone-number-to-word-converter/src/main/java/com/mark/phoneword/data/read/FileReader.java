@@ -26,7 +26,7 @@ public abstract class FileReader<T> {
      * @param resource - the non-null resource
      * @return - The result of this data read
      */
-    Optional<T> readResource(String resource) {
+    public Optional<T> readResource(String resource) {
         return readStream(resource, this.getClass().getClassLoader().getResourceAsStream(resource));
     }
 
@@ -41,10 +41,12 @@ public abstract class FileReader<T> {
         return Optional.empty();
     }
 
+
     private Optional<T> readStream(String resource, InputStream is) {
 
         if (is != null) {
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            try (InputStreamReader inputStreamReader = new InputStreamReader(is);
+                    BufferedReader br = new BufferedReader(inputStreamReader)) {
                 T result = process(br);
                 return Optional.ofNullable(result);
             } catch (IOException e) {

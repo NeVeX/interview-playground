@@ -5,6 +5,8 @@ package com.mark.phoneword.util;
  */
 public class StringUtils {
 
+    private final static String LETTERS_ONLY_REGEX = "[^a-zA-Z ]";
+
     public static boolean isBlank(Character character) {
         return character == null || character == ' ';
     }
@@ -23,6 +25,13 @@ public class StringUtils {
 
     public static boolean areDigits(Character one, Character two) {
         return one != null && two != null && Character.isDigit(one) && Character.isDigit(two);
+    }
+
+    public static String getLettersOnly(String string) {
+        if ( string != null ) {
+            return string.replaceAll(LETTERS_ONLY_REGEX, "");
+        }
+        return null;
     }
 
 }
