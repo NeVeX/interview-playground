@@ -53,9 +53,33 @@ public class DefaultNumberToLettersConverterTest {
         assertThat(lettersConverter.convert(number)).contains("adgjmptw1"); // Zero won't be converted to a char
     }
 
-//    @Test
-//    public void assertPhoneNumberLengthConversionWorks() {
-//        int phoneNumber = 4135134567; // A typical phone number
-//
-//    }
+    @Test
+    public void assertDigitZeroDoesNotGetConverted() {
+        long number = 20;
+        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        assertThat(numberToLettersConverter.convert(number)).contains("a0");
+    }
+
+    @Test
+    public void assertDigitOneDoesNotGetConverted() {
+        long number = 21;
+        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        assertThat(numberToLettersConverter.convert(number)).contains("a1");
+    }
+
+    @Test
+    public void assertPhoneNumberLengthConversionWorks() {
+        long phoneNumber = 2223334444L; // A typical phone number size
+        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        assertThat(numberToLettersConverter.convert(phoneNumber)).contains("aaadddgggg");
+
+    }
+
+    @Test
+    public void assertGiven_CALLME_exampleWorks() {
+        long callme = 225563;
+        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        assertThat(numberToLettersConverter.convert(callme)).contains("callme");
+
+    }
 }

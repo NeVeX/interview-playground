@@ -13,14 +13,14 @@ public class NumberToLettersConverterTest {
 
     @Test
     public void assertOneDigitNumberDoesNotConvertToLetterCombinations() {
-        int number = 2;
+        byte number = 2;
         Set<Character> number2ToLettersMap = new HashSet<>();
         number2ToLettersMap.add('a');
         number2ToLettersMap.add('b');
         number2ToLettersMap.add('c');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
         conversionMap.put(number, number2ToLettersMap);
 
         Set<String> expectedLetters = new HashSet<>();
@@ -28,7 +28,7 @@ public class NumberToLettersConverterTest {
         assertThat(convertedNumber.isEmpty()).isTrue();
     }
 
-    private Set<String> assertDigitNumberConversion(int number, Map<Integer, Set<Character>> inputMap, Set<String> expectedOutput) {
+    private Set<String> assertDigitNumberConversion(long number, Map<Byte, Set<Character>> inputMap, Set<String> expectedOutput) {
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(inputMap);
         Set<String> convertedLetters = numberToLettersConverter.convert(number);
         assertThat(convertedLetters).containsAll(expectedOutput);
@@ -37,15 +37,15 @@ public class NumberToLettersConverterTest {
 
     @Test
     public void assertTwoDigitNumberConvertsToLetterCombinations() {
-        int number = 22;
+        long number = 22;
         Set<Character> number2ToLettersMap = new HashSet<>();
         number2ToLettersMap.add('a');
         number2ToLettersMap.add('b');
         number2ToLettersMap.add('c');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(2, number2ToLettersMap);
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put((byte)2, number2ToLettersMap);
 
         Set<String> expectedLetters = expectedLetters =
                 new HashSet<>(Arrays.asList("aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc"));
@@ -54,7 +54,7 @@ public class NumberToLettersConverterTest {
 
     @Test
     public void assertDigitsReturnedWhenNoMatchFoundInConversionMap() {
-        int number = 6789; // all of these are not in the below conversion, hence the converted set should be empty
+        long number = 6789; // all of these are not in the below conversion, hence the converted set should be empty
         Set<Character> number2ToLettersMap = new HashSet<>();
         number2ToLettersMap.add('a');
         Set<Character> number3ToLettersMap = new HashSet<>();
@@ -62,9 +62,9 @@ public class NumberToLettersConverterTest {
         number3ToLettersMap.add('c');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(2, number2ToLettersMap);
-        conversionMap.put(3, number3ToLettersMap);
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put((byte)2, number2ToLettersMap);
+        conversionMap.put((byte)3, number3ToLettersMap);
 
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
         assertThat(numberToLettersConverter.convert(number).isEmpty()).isTrue(); // No conversion expected
@@ -81,10 +81,10 @@ public class NumberToLettersConverterTest {
         number4ToLettersMap.add('c');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(2, number2ToLettersMap);
-        conversionMap.put(3, number3ToLettersMap);
-        conversionMap.put(4, number4ToLettersMap);
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put((byte)2, number2ToLettersMap);
+        conversionMap.put((byte)3, number3ToLettersMap);
+        conversionMap.put((byte)4, number4ToLettersMap);
 
         Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList("ab", "abc"));
         assertDigitNumberConversion(number, conversionMap, expectedLetters);
@@ -104,10 +104,10 @@ public class NumberToLettersConverterTest {
         number4ToLettersMap.add('e');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(2, number2ToLettersMap);
-        conversionMap.put(3, number3ToLettersMap);
-        conversionMap.put(4, number4ToLettersMap);
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put((byte)2, number2ToLettersMap);
+        conversionMap.put((byte)3, number3ToLettersMap);
+        conversionMap.put((byte)4, number4ToLettersMap);
 
         Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList(
                 "ac", "acd", "ace", "bc", "bcd", "bce"));
@@ -124,8 +124,8 @@ public class NumberToLettersConverterTest {
         number2ToLettersMap.add('c');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(2, number2ToLettersMap);
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put((byte)2, number2ToLettersMap);
 
         Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList("a6", "b6", "c6"));
         assertDigitNumberConversion(number, conversionMap, expectedLetters);
@@ -142,9 +142,9 @@ public class NumberToLettersConverterTest {
         number3ToLettersMap.add('b');
 
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(2, number2ToLettersMap);
-        conversionMap.put(3, number3ToLettersMap);
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put((byte)2, number2ToLettersMap);
+        conversionMap.put((byte)3, number3ToLettersMap);
 
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
         Set<String> convertedLetters = numberToLettersConverter.convert(number);
@@ -159,27 +159,27 @@ public class NumberToLettersConverterTest {
     public void assertExampleCombinationWorks() {
         int exampleNumber = 225563;
         // Create a conversion map
-        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
+        Map<Byte, Set<Character>> conversionMap = new HashMap<>();
 
         Set<Character> abcSet = new HashSet<>();
         abcSet.addAll(Arrays.asList('a', 'b', 'c'));
-        conversionMap.put(2, abcSet);
+        conversionMap.put((byte)2, abcSet);
 
         Set<Character> defSet = new HashSet<>();
         defSet.addAll(Arrays.asList('d', 'e', 'f'));
-        conversionMap.put(3, defSet);
+        conversionMap.put((byte)3, defSet);
 
         Set<Character> ghiSet = new HashSet<>();
         ghiSet.addAll(Arrays.asList('g', 'h', 'i'));
-        conversionMap.put(4, ghiSet);
+        conversionMap.put((byte)4, ghiSet);
 
         Set<Character> jklSet = new HashSet<>();
         jklSet.addAll(Arrays.asList('j', 'k', 'l'));
-        conversionMap.put(5, jklSet);
+        conversionMap.put((byte)5, jklSet);
 
         Set<Character> mnoSet = new HashSet<>();
         mnoSet.addAll(Arrays.asList('m', 'n', 'o'));
-        conversionMap.put(6, mnoSet);
+        conversionMap.put((byte)6, mnoSet);
 
 
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);

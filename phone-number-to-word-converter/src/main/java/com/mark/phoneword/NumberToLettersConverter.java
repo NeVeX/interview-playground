@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
  */
 class NumberToLettersConverter {
 
-    private final Map<Integer, List<Character>> digitToLetters = new HashMap<>(); // can be a list, the input is a set and we need ordering
+    private final Map<Byte, List<Character>> digitToLetters = new HashMap<>(); // can be a list, the input is a set and we need ordering
 
     /**
      * Initialize a new number to letters converter that will use the provided mapping table
@@ -19,7 +19,7 @@ class NumberToLettersConverter {
      * <br>To control which digits can be converted, only include those in the provided map
      * @param digitToLetters - the map to use for all conversions
      */
-    NumberToLettersConverter(Map<Integer, Set<Character>> digitToLetters) {
+    NumberToLettersConverter(Map<Byte, Set<Character>> digitToLetters) {
         if (digitToLetters == null || digitToLetters.isEmpty()) {
             throw new IllegalArgumentException("Provided digitToLetters cannot be null or empty");
         }
@@ -30,9 +30,9 @@ class NumberToLettersConverter {
                 .forEach(this::addNewNumberToLetterEntry);
     }
 
-    Set<String> convert(int number) {
+    Set<String> convert(long number) {
 
-        List<Integer> splitDigits = NumberUtils.splitToList(number);
+        List<Byte> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
             List<List<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
             return calculateAllLetterPermutations(matrixOfLetters);
@@ -41,7 +41,7 @@ class NumberToLettersConverter {
 
     }
 
-    private List<List<Character>> getMatrixOfLettersForDigits(List<Integer> digits) {
+    private List<List<Character>> getMatrixOfLettersForDigits(List<Byte> digits) {
         // If the digit cannot be found, then just add the digit as the character key
         return digits.stream()
                 .map(digit -> {
@@ -117,8 +117,8 @@ class NumberToLettersConverter {
      * @param entry - the entry to check (null key, empty sets...)
      * @return - True if this entry is good, false otherwise
      */
-    private boolean isMapEntryValid(Map.Entry<Integer, Set<Character>> entry) {
-        Integer key = entry.getKey();
+    private boolean isMapEntryValid(Map.Entry<Byte, Set<Character>> entry) {
+        Byte key = entry.getKey();
         Set<Character> letters = entry.getValue();
         return key != null && letters != null && !letters.isEmpty()
                 // Check also that all characters are not blank
@@ -129,7 +129,7 @@ class NumberToLettersConverter {
      * Add the given entry to the class map
      * @param entryToAdd - the (now valid) entry
      */
-    private void addNewNumberToLetterEntry(Map.Entry<Integer, Set<Character>> entryToAdd) {
+    private void addNewNumberToLetterEntry(Map.Entry<Byte, Set<Character>> entryToAdd) {
         List<Character> letters = new ArrayList<>();
         letters.addAll(entryToAdd.getValue());
         digitToLetters.put(entryToAdd.getKey(), Collections.unmodifiableList(letters));

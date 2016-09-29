@@ -15,29 +15,29 @@ public class NumberUtilsTest {
 
     @Test
     public void assertNumberSplittingWorks() {
-        int number = 1;
-        List<Integer> expectedNumbers = new ArrayList<>();
-        expectedNumbers.add(1);
+        long number = 1;
+        List<Byte> expectedNumbers = new ArrayList<>();
+        expectedNumbers.add((byte)1);
 
-        List<Integer> splitNumbers = NumberUtils.splitToList(number);
+        List<Byte> splitNumbers = NumberUtils.splitToList(number);
         assertContainsExactly(splitNumbers, expectedNumbers);
 
         // add another digit
         number = 12;
-        expectedNumbers.add(2); // expect after the above
+        expectedNumbers.add((byte)2); // expect after the above
         splitNumbers = NumberUtils.splitToList(number);
         assertContainsExactly(splitNumbers, expectedNumbers);
 
         // add more digits
         number = 12567;
-        expectedNumbers.addAll(Arrays.asList(5, 6, 7));
+        expectedNumbers.addAll(Arrays.asList((byte)5, (byte)6, (byte)7));
         splitNumbers = NumberUtils.splitToList(number);
         assertContainsExactly(splitNumbers, expectedNumbers);
 
         // make sure zero works
         number = 0;
         expectedNumbers.clear();
-        expectedNumbers.add(0);
+        expectedNumbers.add((byte)0);
         splitNumbers = NumberUtils.splitToList(number);
         assertContainsExactly(splitNumbers, expectedNumbers);
 
@@ -53,8 +53,8 @@ public class NumberUtilsTest {
      * @param actualList
      * @param expectedList
      */
-    private void assertContainsExactly(List<Integer> actualList, List<Integer> expectedList) {
-        assertThat(actualList).containsExactly(expectedList.toArray(new Integer[expectedList.size()]));
+    private void assertContainsExactly(List<Byte> actualList, List<Byte> expectedList) {
+        assertThat(actualList).containsExactly(expectedList.toArray(new Byte[expectedList.size()]));
     }
 
 }

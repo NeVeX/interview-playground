@@ -2,6 +2,7 @@ package com.mark.phoneword.util;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 9/28/2016.
@@ -14,9 +15,9 @@ public class NumberUtils {
      * @param number = The non negative number
      * @return - The in order list of each digit
      */
-    public static List<Integer> splitToList(int number) {
+    public static List<Byte> splitToList(Long number) {
 
-        LinkedList<Integer> numberSplit = new LinkedList<>(); // Need to maintain order of the split
+        LinkedList<Long> numberSplit = new LinkedList<>(); // Need to maintain order of the split
         if ( number == 0 ) {
             numberSplit.addFirst(number);
         } else {
@@ -25,7 +26,8 @@ public class NumberUtils {
                 number = number / 10;
             }
         }
-        return numberSplit;
+        // All of the string elements are one digit longs, so convert down to an byte type
+        return numberSplit.stream().map(Long::byteValue).collect(Collectors.toList());
     }
 
 }
