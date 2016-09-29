@@ -1,10 +1,10 @@
 package com.mark.phoneword;
 
-import com.mark.phoneword.util.NumberUtils;
-import com.mark.phoneword.util.StringUtils;
+import com.mark.phoneword.dictionary.DefaultDictionary;
+import com.mark.phoneword.dictionary.Dictionary;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Set;
+
 
 /**
  * Created by Mark Cunningham on 9/27/2016.
@@ -12,16 +12,21 @@ import java.util.stream.Collectors;
 class NumberToWordConverter {
 
     private final NumberToLettersConverter numberToLettersConverter;
+    private final Dictionary dictionary;
 
     public NumberToWordConverter() {
-        this(new DefaultNumberToLettersConverter());
+        this(new DefaultNumberToLettersConverter(), new DefaultDictionary());
     }
 
-    public NumberToWordConverter(NumberToLettersConverter numberToLettersConverter) {
+    NumberToWordConverter(NumberToLettersConverter numberToLettersConverter, Dictionary dictionary) {
         if ( numberToLettersConverter == null ) {
             throw new IllegalArgumentException("Provided numberToLettersConverter cannot be null");
         }
+        if (dictionary == null) {
+            throw new IllegalArgumentException("Provided dictionary cannot be null");
+        }
         this.numberToLettersConverter = numberToLettersConverter;
+        this.dictionary = dictionary;
     }
 
     boolean convert(int number) {

@@ -1,4 +1,4 @@
-package com.mark.phoneword;
+package com.mark.phoneword.dictionary;
 
 import com.mark.phoneword.util.StringUtils;
 
@@ -17,8 +17,8 @@ public class Dictionary {
      * @param dictionary
      */
     public Dictionary(Set<String> dictionary) {
-        if ( dictionary == null ) {
-            throw new IllegalArgumentException("Provided dictionary cannot be null");
+        if ( dictionary == null || dictionary.isEmpty()) {
+            throw new IllegalArgumentException("Provided dictionary cannot be null or empty");
         }
         this.dictionary = Collections.unmodifiableSet(dictionary);
     }
@@ -30,6 +30,5 @@ public class Dictionary {
             return false;
         }
     }
-
 
 }
