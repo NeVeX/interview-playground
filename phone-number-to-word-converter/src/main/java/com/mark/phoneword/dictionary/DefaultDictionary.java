@@ -15,7 +15,7 @@ public class DefaultDictionary extends Dictionary {
     private final static String RESOURCE_LOCATION = "dictionaries";
 
     static {
-
+        // https://sourceforge.net/projects/jazzy/?source=typ_redirect -- Dictionary obtained from here
         String englishDictionaryResource = RESOURCE_LOCATION + File.separator + "english.dic";
         Optional<Set<String>> englishWordsOptional = new DictionaryFileReader().readResource(englishDictionaryResource);
         if ( englishWordsOptional.isPresent()) {

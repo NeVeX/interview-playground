@@ -31,4 +31,8 @@ public class Dictionary {
         }
     }
 
+    public int getWordCount() {
+        return dictionary.size();
+    }
+
 }
