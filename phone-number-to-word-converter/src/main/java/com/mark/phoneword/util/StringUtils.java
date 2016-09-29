@@ -1,8 +1,5 @@
 package com.mark.phoneword.util;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
-
 /**
  * Created by Mark Cunningham on 9/28/2016.
  */
@@ -24,15 +21,8 @@ public class StringUtils {
         return !isBlank(string);
     }
 
-    public static Optional<Character> getLastCharacter(String string) {
-        if ( isNotBlank(string)) {
-            return Optional.of(string.charAt(string.length()-1));
-        }
-        return Optional.empty();
-    }
-
-    public static boolean areBothCharactersNumbers(Character one, Character two) {
-        return Character.isDigit(one) && Character.isDigit(two);
+    public static boolean areDigits(Character one, Character two) {
+        return one != null && two != null && Character.isDigit(one) && Character.isDigit(two);
     }
 
 }

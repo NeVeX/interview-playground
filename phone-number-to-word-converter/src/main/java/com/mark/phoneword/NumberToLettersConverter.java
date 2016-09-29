@@ -9,19 +9,17 @@ import java.util.stream.Collectors;
 /**
  * Created by Mark Cunningham on 9/27/2016.
  */
-class SingleNumberToWordConverter {
+class NumberToLettersConverter {
 
-    private static final int MINIMUM_ALLOWED_DIGIT = 0;
-    private static final int MAXIMUM_ALLOWED_DIGIT = 9;
     private final Map<Integer, List<Character>> digitToLetters = new HashMap<>(); // can be a list, the input is a set and we need ordering
 
     /**
-     * Initialize a new number to word converter that will use the provided mapping table
+     * Initialize a new number to letters converter that will use the provided mapping table
      * <br>Note, only single digits are supported (0 - 9)
      * <br>To control which digits can be converted, only include those in the provided map
      * @param digitToLetters - the map to use for all conversions
      */
-    SingleNumberToWordConverter(Map<Integer, Set<Character>> digitToLetters) {
+    NumberToLettersConverter(Map<Integer, Set<Character>> digitToLetters) {
         if (digitToLetters == null || digitToLetters.isEmpty()) {
             throw new IllegalArgumentException("Provided digitToLetters cannot be null or empty");
         }
@@ -36,6 +34,7 @@ class SingleNumberToWordConverter {
 
         List<Integer> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
+
             return calculateLetterPermutationsForDigits(splitDigits);
         }
         return new HashSet<>();
@@ -43,7 +42,7 @@ class SingleNumberToWordConverter {
     }
 
     /**
-     * One digit numbers are not converted (e.g. 2 will not return anything since a one word character is not a word???)
+     * One digit numbers are not converted (e.g. 2 will not return anything since a one letter character is not a word)
      * @param digits
      * @return
      */
@@ -51,7 +50,6 @@ class SingleNumberToWordConverter {
 
         // If the digit cannot be found, then just add the digit as the character key
         List<List<Character>> listOfLetterSets = digits.stream()
-        .filter(digit -> digit >= MINIMUM_ALLOWED_DIGIT && digit <= MAXIMUM_ALLOWED_DIGIT)
         .map(digit -> {
             if (digitToLetters.containsKey(digit)) {
                 return digitToLetters.get(digit);
@@ -61,10 +59,10 @@ class SingleNumberToWordConverter {
             }})
         .collect(Collectors.toList());
 
-        Set<String> words = new HashSet<>();
+        Set<String> letterCombinations = new HashSet<>();
 
         if ( listOfLetterSets.isEmpty()) {
-            return words;
+            return letterCombinations;
         }
 
         List<List<String>> rowStrings = new ArrayList<>();
@@ -79,17 +77,33 @@ class SingleNumberToWordConverter {
             rowStrings.add(newRowOfStrings);
 
             rowStrings.get(row - 1).forEach( prefix ->
-                    currentRow.forEach(cr -> {
-                                String newWord = prefix + cr;
-                                // Check if this is a consecutive number
-                                if ( !StringUtils.areBothCharactersNumbers(StringUtils.getLastCharacter(prefix).get(), cr)) {
-                                    words.add(newWord);
-                                    newRowOfStrings.add(newWord);
-                                }
-                            }
-                    ));
+                currentRow.forEach(cr -> {
+                    String letterCombination = prefix + cr;
+                    // Check if this new letter combination is acceptable (e.g. cannot have 2 digits; abc45, ter3sd34)
+                    if ( !isNewLetterCombinationAcceptable(letterCombination)) {
+                        letterCombinations.add(letterCombination);
+                        newRowOfStrings.add(letterCombination);
+                    }
+                }));
         }
-        return words;
+        return letterCombinations;
+    }
+
+    /**
+     * Given a new letter combination that will be added to resulting permutation set, this method decides if it can be added.
+     * @param letters
+     * @return
+     */
+    private boolean isNewLetterCombinationAcceptable(String letters) {
+
+        if ( StringUtils.isNotBlank(letters)) {
+            int length = letters.length();
+            if ( length >= 2) {
+                return StringUtils.areDigits(letters.charAt(length-2), letters.charAt(length-1));
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -100,9 +114,8 @@ class SingleNumberToWordConverter {
     private boolean isMapEntryValid(Map.Entry<Integer, Set<Character>> entry) {
         Integer key = entry.getKey();
         Set<Character> letters = entry.getValue();
-        return key != null && key >= MINIMUM_ALLOWED_DIGIT && key <= MAXIMUM_ALLOWED_DIGIT
-                && letters != null && !letters.isEmpty()
-                // Check also that
+        return key != null && letters != null && !letters.isEmpty()
+                // Check also that all characters are not blank
                 && letters.stream().filter(StringUtils::isNotBlank).findAny().isPresent();
     }
 
