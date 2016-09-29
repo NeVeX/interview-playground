@@ -3,7 +3,9 @@ package com.mark.phoneword;
 import com.mark.phoneword.dictionary.DefaultDictionary;
 import com.mark.phoneword.dictionary.Dictionary;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -29,11 +31,26 @@ class NumberToWordConverter {
         this.dictionary = dictionary;
     }
 
-    boolean convert(int number) {
+    Set<String> convert(int number) {
         Set<String> letterCombinations = numberToLettersConverter.convert(number);
-        return true;
+        if ( !letterCombinations.isEmpty() ) {
+            Set<String> validWords = getValidWords(letterCombinations);
+            if ( !validWords.isEmpty()) {
+
+            }
+        }
+
+
+        return new HashSet<>();
     }
 
+    private Set<String> getValidWords(Set<String> letterCombinations) {
+        return letterCombinations
+                .stream()
+                .parallel()
+                .filter(dictionary::isWord)
+                .collect(Collectors.toSet());
+    }
 
 
 }

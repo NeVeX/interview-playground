@@ -11,6 +11,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class NumberToWordConverterTest {
 
+    @Test
+    public void assertExampleRequirementWorks_CALLME() {
 
+        int number = 225563;
+        NumberToWordConverter numberToWordConverter = new NumberToWordConverter();
+        Set<String> matches = numberToWordConverter.convert(number);
+        assertThat(matches.isEmpty()).isFalse();
+    }
 
 }

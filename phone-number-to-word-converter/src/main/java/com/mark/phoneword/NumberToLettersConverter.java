@@ -4,14 +4,16 @@ import com.mark.phoneword.util.NumberUtils;
 import com.mark.phoneword.util.StringUtils;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Created by Mark Cunningham on 9/27/2016.
  */
 class NumberToLettersConverter {
 
-    private final Map<Byte, List<Character>> digitToLetters = new HashMap<>(); // can be a list, the input is a set and we need ordering
+    private final Map<Byte, List<Character>> digitToLetters = new HashMap<>();
 
     /**
      * Initialize a new number to letters converter that will use the provided mapping table
@@ -28,14 +30,43 @@ class NumberToLettersConverter {
                 .stream()
                 .filter(this::isMapEntryValid)
                 .forEach(this::addNewNumberToLetterEntry);
+//                .map(m -> )
+
     }
+
+//    private Map<Byte, List<Character>> mapper(Map<Byte, Set<Character>> newEntry) {
+//
+//        return newEntry.entrySet().stream().map(p -> {
+//            List<Character> letters = new ArrayList<>();
+//            letters.addAll(p.getValue());
+//            Map<Byte, List<Character>> newMap = new HashMap<>();
+//            newMap.put(p.getKey(), Collections.unmodifiableList(letters));
+//            return newMap;
+//        }).collect(Collectors.toMap(Function.identity(), Map::values));
+//    }
 
     Set<String> convert(long number) {
 
         List<Byte> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
             List<List<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
-            return calculateAllLetterPermutations(matrixOfLetters);
+
+            Set<String> finalSet = new HashSet<>();
+            for ( int i = 0; i < matrixOfLetters.size(); i++) {
+                List<List<Character>> innerMatrix = new ArrayList<>();
+                for ( int jj = i; jj < matrixOfLetters.size(); jj++) {
+                    innerMatrix.add(matrixOfLetters.get(jj));
+                }
+                finalSet.addAll(calculateAllLetterPermutations(innerMatrix));
+            }
+
+//            Set<String> setts = IntStream.range(0, matrixOfLetters.size())
+//                    .map( rowIndex -> {
+//
+//                    })
+//                    .collect(Collectors.toList());
+
+            return finalSet; //calculateAllLetterPermutations(matrixOfLetters);
         }
         return new HashSet<>();
 
@@ -130,6 +161,7 @@ class NumberToLettersConverter {
      * @param entryToAdd - the (now valid) entry
      */
     private void addNewNumberToLetterEntry(Map.Entry<Byte, Set<Character>> entryToAdd) {
+
         List<Character> letters = new ArrayList<>();
         letters.addAll(entryToAdd.getValue());
         digitToLetters.put(entryToAdd.getKey(), Collections.unmodifiableList(letters));
