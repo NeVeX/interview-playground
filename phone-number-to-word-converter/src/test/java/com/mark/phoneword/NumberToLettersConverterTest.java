@@ -156,7 +156,7 @@ public class NumberToLettersConverterTest {
     }
 
     @Test
-    public void assertExampleCombinationWorks() {
+    public void assertCallMeRequirementExampleCombinationWorks() {
         int exampleNumber = 225563;
         // Create a conversion map
         Map<Byte, Set<Character>> conversionMap = new HashMap<>();
@@ -185,7 +185,23 @@ public class NumberToLettersConverterTest {
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
         Set<String> convertedLetters = numberToLettersConverter.convert(exampleNumber);
 
-        assertThat(convertedLetters.contains("callme")).isTrue();
+        // Check all permutations for "callme"
+        assertThat(convertedLetters.contains("ca")).isTrue();
+        assertThat(convertedLetters.contains("llme")).isTrue();
+
+        assertThat(convertedLetters.contains("cal")).isTrue();
+        assertThat(convertedLetters.contains("lme")).isTrue();
+
+        assertThat(convertedLetters.contains("call")).isTrue();
+        assertThat(convertedLetters.contains("me")).isTrue();
+
+        assertThat(convertedLetters.contains("callm")).isTrue();
+        assertThat(convertedLetters.contains("allme")).isTrue();
+        assertThat(convertedLetters.contains("callme")).isTrue(); // CALL ME!
+
+
+
+
 
     }
 

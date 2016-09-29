@@ -7,13 +7,14 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * Created by Mark Cunningham on 9/27/2016.
  */
 class NumberToLettersConverter {
 
-    private final Map<Byte, List<Character>> digitToLetters = new HashMap<>();
+    private final Map<Byte, Set<Character>> digitToLetters;
 
     /**
      * Initialize a new number to letters converter that will use the provided mapping table
@@ -26,61 +27,42 @@ class NumberToLettersConverter {
             throw new IllegalArgumentException("Provided digitToLetters cannot be null or empty");
         }
         // Use the input and create our own internal reference to the data
-        digitToLetters.entrySet()
-                .stream()
-                .filter(this::isMapEntryValid)
-                .forEach(this::addNewNumberToLetterEntry);
-//                .map(m -> )
-
+        this.digitToLetters = digitToLetters.entrySet()
+            .stream()
+            .filter(this::isMapEntryValid)
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k,v) -> Collections.unmodifiableSet(v)));
     }
-
-//    private Map<Byte, List<Character>> mapper(Map<Byte, Set<Character>> newEntry) {
-//
-//        return newEntry.entrySet().stream().map(p -> {
-//            List<Character> letters = new ArrayList<>();
-//            letters.addAll(p.getValue());
-//            Map<Byte, List<Character>> newMap = new HashMap<>();
-//            newMap.put(p.getKey(), Collections.unmodifiableList(letters));
-//            return newMap;
-//        }).collect(Collectors.toMap(Function.identity(), Map::values));
-//    }
 
     Set<String> convert(long number) {
 
         List<Byte> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
-            List<List<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
+            List<Set<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
 
-            Set<String> finalSet = new HashSet<>();
-            for ( int i = 0; i < matrixOfLetters.size(); i++) {
-                List<List<Character>> innerMatrix = new ArrayList<>();
-                for ( int jj = i; jj < matrixOfLetters.size(); jj++) {
-                    innerMatrix.add(matrixOfLetters.get(jj));
-                }
-                finalSet.addAll(calculateAllLetterPermutations(innerMatrix));
-            }
+            return calculateAllLetterPermutations(matrixOfLetters)
+                    .stream()
+                    .map(this::splitLetterCombinationsIntoChunks)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toSet());
 
-//            Set<String> setts = IntStream.range(0, matrixOfLetters.size())
-//                    .map( rowIndex -> {
-//
-//                    })
-//                    .collect(Collectors.toList());
-
-            return finalSet; //calculateAllLetterPermutations(matrixOfLetters);
         }
         return new HashSet<>();
 
     }
 
-    private List<List<Character>> getMatrixOfLettersForDigits(List<Byte> digits) {
+
+
+    private List<Set<Character>> getMatrixOfLettersForDigits(List<Byte> digits) {
         // If the digit cannot be found, then just add the digit as the character key
         return digits.stream()
                 .map(digit -> {
                     if (digitToLetters.containsKey(digit)) {
-                        return digitToLetters.get(digit);
+                       return digitToLetters.get(digit);
                     } else {
                         // If the digit cannot be found, then just add the digit as the character key
-                        return Collections.singletonList(digit.toString().charAt(0));
+                        Set<Character> numberSet = new HashSet<>();
+                        numberSet.add(digit.toString().charAt(0));
+                        return numberSet;
                     }})
                 .collect(Collectors.toList());
     }
@@ -90,57 +72,57 @@ class NumberToLettersConverter {
      * @param matrixOfLetters
      * @return
      */
-    private Set<String> calculateAllLetterPermutations(List<List<Character>> matrixOfLetters) {
+    private Set<String> calculateAllLetterPermutations(List<Set<Character>> matrixOfLetters) {
 
-        List<List<String>> rowStrings = new ArrayList<>();
+        Set<String> fullLengthLetters = new HashSet<>();
 
         if ( !matrixOfLetters.isEmpty()) {
 
-            List<String> firstLine = matrixOfLetters.get(0)
-                .stream()
-                .map(Object::toString)
-                .collect(Collectors.toList());
-
-            rowStrings.add(firstLine);
+            List<Set<String>> levelToLetters = new ArrayList<>();
+            // Add the first line
+            levelToLetters.add(matrixOfLetters.get(0)
+                    .stream()
+                    .map(Object::toString)
+                    .collect(Collectors.toSet()));
 
             for (int row = 1; row < matrixOfLetters.size(); row++) {
-                List<Character> currentRow = matrixOfLetters.get(row);
-                List<String> newRowStrings = rowStrings
+                Set<Character> currentRow = matrixOfLetters.get(row);
+                Set<String> newRowStrings = levelToLetters
                         .get(row - 1)
                         .stream()
                         .map(prefix -> appendPrefixToLetters(prefix, currentRow))
                         .flatMap(Collection::stream)
-                        .collect(Collectors.toList());
-
-                rowStrings.add(newRowStrings);
+                        .collect(Collectors.toSet());
+                if ( row == matrixOfLetters.size() -1 ) {
+                    fullLengthLetters.addAll(newRowStrings);
+                } else {
+                    levelToLetters.add(newRowStrings);
+                }
             }
         }
         // Don't include the first row of strings in the result, since they are single char's (e.g. "a", "h" - not words)
-        return rowStrings.stream().skip(1).flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
+        return fullLengthLetters; //fullLengthLetters.stream().flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
     }
 
-    private List<String> appendPrefixToLetters(final String prefix, final List<Character> letters) {
+    private Set<String> splitLetterCombinationsIntoChunks(final String letterCombination) {
+        // Split this letterCombination up
+        // E.g. mart -> m, art | ma, rt | mar, t
+        Set<String> combinations = IntStream.range(1, letterCombination.length()) // We don't want one character words
+                .mapToObj( index -> {
+                    String firstCombo = letterCombination.substring(0, index);
+                    String secondCombo = letterCombination.substring(index, letterCombination.length());
+                    return Stream.of(firstCombo, secondCombo).collect(Collectors.toSet());
+                })
+                .flatMap(Collection::stream)
+                .collect(Collectors.toSet());
+        combinations.add(letterCombination);
+        return combinations;
+    }
+
+    private List<String> appendPrefixToLetters(final String prefix, final Set<Character> letters) {
         return letters.stream()
             .map( letter -> prefix + letter )
-            .filter(this::isNewLetterCombinationAcceptable)
             .collect(Collectors.toList());
-    }
-
-    /**
-     * Given a new letter combination that will be added to resulting permutation set, this method decides if it can be added.
-     * @param letters
-     * @return
-     */
-    private boolean isNewLetterCombinationAcceptable(String letters) {
-
-        if ( StringUtils.isNotBlank(letters)) {
-            int length = letters.length();
-            if ( length >= 2) {
-                return !StringUtils.areDigits(letters.charAt(length-2), letters.charAt(length-1));
-            }
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -156,14 +138,4 @@ class NumberToLettersConverter {
                 && letters.stream().filter(StringUtils::isNotBlank).findAny().isPresent();
     }
 
-    /**
-     * Add the given entry to the class map
-     * @param entryToAdd - the (now valid) entry
-     */
-    private void addNewNumberToLetterEntry(Map.Entry<Byte, Set<Character>> entryToAdd) {
-
-        List<Character> letters = new ArrayList<>();
-        letters.addAll(entryToAdd.getValue());
-        digitToLetters.put(entryToAdd.getKey(), Collections.unmodifiableList(letters));
-    }
 }
