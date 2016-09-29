@@ -34,59 +34,65 @@ class NumberToLettersConverter {
 
         List<Integer> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
-
-            return calculateLetterPermutationsForDigits(splitDigits);
+            List<List<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
+            return calculateAllLetterPermutations(matrixOfLetters);
         }
         return new HashSet<>();
 
     }
 
+    private List<List<Character>> getMatrixOfLettersForDigits(List<Integer> digits) {
+        // If the digit cannot be found, then just add the digit as the character key
+        return digits.stream()
+                .map(digit -> {
+                    if (digitToLetters.containsKey(digit)) {
+                        return digitToLetters.get(digit);
+                    } else {
+                        // If the digit cannot be found, then just add the digit as the character key
+                        return Collections.singletonList(digit.toString().charAt(0));
+                    }})
+                .collect(Collectors.toList());
+    }
+
     /**
      * One digit numbers are not converted (e.g. 2 will not return anything since a one letter character is not a word)
-     * @param digits
+     * @param matrixOfLetters
      * @return
      */
-    private Set<String> calculateLetterPermutationsForDigits(List<Integer> digits) {
-
-        // If the digit cannot be found, then just add the digit as the character key
-        List<List<Character>> listOfLetterSets = digits.stream()
-        .map(digit -> {
-            if (digitToLetters.containsKey(digit)) {
-                return digitToLetters.get(digit);
-            } else {
-                // If the digit cannot be found, then just add the digit as the character key
-                return Collections.singletonList(digit.toString().charAt(0));
-            }})
-        .collect(Collectors.toList());
-
-        Set<String> letterCombinations = new HashSet<>();
-
-        if ( listOfLetterSets.isEmpty()) {
-            return letterCombinations;
-        }
+    private Set<String> calculateAllLetterPermutations(List<List<Character>> matrixOfLetters) {
 
         List<List<String>> rowStrings = new ArrayList<>();
-        List<String> firstLine = new ArrayList<>();
-        listOfLetterSets.get(0).forEach(c -> firstLine.add(c.toString()));
-        rowStrings.add(firstLine);
 
-        for ( int row = 1; row < listOfLetterSets.size(); row++ ) {
-            List<Character> currentRow = listOfLetterSets.get(row);
+        if ( !matrixOfLetters.isEmpty()) {
 
-            List<String> newRowOfStrings = new ArrayList<>();
-            rowStrings.add(newRowOfStrings);
+            List<String> firstLine = matrixOfLetters.get(0)
+                .stream()
+                .map(Object::toString)
+                .collect(Collectors.toList());
 
-            rowStrings.get(row - 1).forEach( prefix ->
-                currentRow.forEach(cr -> {
-                    String letterCombination = prefix + cr;
-                    // Check if this new letter combination is acceptable (e.g. cannot have 2 digits; abc45, ter3sd34)
-                    if ( !isNewLetterCombinationAcceptable(letterCombination)) {
-                        letterCombinations.add(letterCombination);
-                        newRowOfStrings.add(letterCombination);
-                    }
-                }));
+            rowStrings.add(firstLine);
+
+            for (int row = 1; row < matrixOfLetters.size(); row++) {
+                List<Character> currentRow = matrixOfLetters.get(row);
+                List<String> newRowStrings = rowStrings
+                        .get(row - 1)
+                        .stream()
+                        .map(prefix -> appendPrefixToLetters(prefix, currentRow))
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
+
+                rowStrings.add(newRowStrings);
+            }
         }
-        return letterCombinations;
+        // Don't include the first row of strings in the result, since they are single char's (e.g. "a", "h" - not words)
+        return rowStrings.stream().skip(1).flatMap(Collection::stream).collect(Collectors.toSet());
+    }
+
+    private List<String> appendPrefixToLetters(final String prefix, final List<Character> letters) {
+        return letters.stream()
+            .map( letter -> prefix + letter )
+            .filter(this::isNewLetterCombinationAcceptable)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -99,7 +105,7 @@ class NumberToLettersConverter {
         if ( StringUtils.isNotBlank(letters)) {
             int length = letters.length();
             if ( length >= 2) {
-                return StringUtils.areDigits(letters.charAt(length-2), letters.charAt(length-1));
+                return !StringUtils.areDigits(letters.charAt(length-2), letters.charAt(length-1));
             }
             return true;
         }

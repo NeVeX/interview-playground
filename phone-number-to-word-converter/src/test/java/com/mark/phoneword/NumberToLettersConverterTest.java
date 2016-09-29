@@ -24,14 +24,15 @@ public class NumberToLettersConverterTest {
         conversionMap.put(number, number2ToLettersMap);
 
         Set<String> expectedLetters = new HashSet<>();
-
-        assertDigitNumberConversion(number, conversionMap, expectedLetters);
+        Set<String> convertedNumber = assertDigitNumberConversion(number, conversionMap, expectedLetters);
+        assertThat(convertedNumber.isEmpty()).isTrue();
     }
 
-    private void assertDigitNumberConversion(int number, Map<Integer, Set<Character>> inputMap, Set<String> expectedOutput) {
+    private Set<String> assertDigitNumberConversion(int number, Map<Integer, Set<Character>> inputMap, Set<String> expectedOutput) {
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(inputMap);
         Set<String> convertedLetters = numberToLettersConverter.convert(number);
         assertThat(convertedLetters).containsAll(expectedOutput);
+        return convertedLetters;
     }
 
     @Test
@@ -44,11 +45,29 @@ public class NumberToLettersConverterTest {
 
         // Create a conversion map
         Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(number, number2ToLettersMap);
+        conversionMap.put(2, number2ToLettersMap);
 
         Set<String> expectedLetters = expectedLetters =
                 new HashSet<>(Arrays.asList("aa", "ab", "ac", "ba", "bb", "bc", "ca", "cb", "cc"));
         assertDigitNumberConversion(number, conversionMap, expectedLetters);
+    }
+
+    @Test
+    public void assertDigitsReturnedWhenNoMatchFoundInConversionMap() {
+        int number = 6789; // all of these are not in the below conversion, hence the converted set should be empty
+        Set<Character> number2ToLettersMap = new HashSet<>();
+        number2ToLettersMap.add('a');
+        Set<Character> number3ToLettersMap = new HashSet<>();
+        number3ToLettersMap.add('b');
+        number3ToLettersMap.add('c');
+
+        // Create a conversion map
+        Map<Integer, Set<Character>> conversionMap = new HashMap<>();
+        conversionMap.put(2, number2ToLettersMap);
+        conversionMap.put(3, number3ToLettersMap);
+
+        NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
+        assertThat(numberToLettersConverter.convert(number).isEmpty()).isTrue(); // No conversion expected
     }
 
     @Test
@@ -106,9 +125,9 @@ public class NumberToLettersConverterTest {
 
         // Create a conversion map
         Map<Integer, Set<Character>> conversionMap = new HashMap<>();
-        conversionMap.put(number, number2ToLettersMap);
+        conversionMap.put(2, number2ToLettersMap);
 
-        Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList("a0", "b0", "c0"));
+        Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList("a6", "b6", "c6"));
         assertDigitNumberConversion(number, conversionMap, expectedLetters);
     }
 
