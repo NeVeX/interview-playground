@@ -45,8 +45,7 @@ public class NumberToWordConverterTest {
         matches = numberToWordConverter.convert(number);
         assertThat(matches).contains("1-CALL-ME-1");
 
-
-        number = 12255631; // we hope to get 1-CALL-ME-1
+        number = 122551631; // we hope to get 1-CALL-1-ME-1
         numberToWordConverter = ConverterFactory.longNumberToWords();
         matches = numberToWordConverter.convert(number);
         assertThat(matches).contains("1-CALL-1-ME-1");
@@ -63,7 +62,7 @@ public class NumberToWordConverterTest {
     }
 
     @Test
-    public void assertInnerWordSplitsAreWorking() {
+    public void assertInnerWordSplitsCaseInsensitiveAreWorking() {
 
         long number = 22556686;
         Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();

@@ -2,6 +2,7 @@ package com.mark.phoneword.convert;
 
 import com.mark.phoneword.dictionary.DictionaryFactory;
 import com.mark.phoneword.dictionary.Dictionary;
+import com.mark.phoneword.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ class NumberToWordConverter implements Converter<Long, String> {
 
         // Split this letterCombination up
         // E.g. mart -> m, art | ma, rt | mar, t
-        Set<String> wordSplits = IntStream.range(1, letterCombination.length()) // We don't want one character words
+        Set<String> wordSplits = IntStream.range(1, letterCombination.length())
                 .parallel()
                 .mapToObj( index -> getWordSplitsUsingIndex(index, letterCombination) )
                 .flatMap(Collection::stream)
@@ -61,15 +62,39 @@ class NumberToWordConverter implements Converter<Long, String> {
         String firstCombo = letterCombination.substring(0, index);
         String secondCombo = letterCombination.substring(index, letterCombination.length());
         Set<String> wordCombinations = new HashSet<>();
-        if ( dictionary.isWord(firstCombo) && dictionary.isWord(secondCombo) )  {
-            wordCombinations.add(createNewWord(firstCombo, secondCombo));
-            wordCombinations.addAll(
-                    getWordSplits(secondCombo)
-                    .parallelStream()
-                    .map(s -> createNewWord(firstCombo, s))
-                    .collect(Collectors.toSet())
-            );
+
+//        String wordToSplit = secondCombo;
+
+        if ( letterCombination.equals("callme1")) {
+
+
+             //TODO:
+            // just get everything as is
+            // then at the end, remove all numbers and put it through the splitter - if it comes back, then golden
+            // 1callme1 => callme => call-me ==> 1-call-me-1
+            // 1call3me1 => callme => call-me ==> 1-call-3-me-1
+
+            this.toString();
         }
+
+        if ( (index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1))) /*&& dictionary.isWord(secondCombo)*/ )  {
+//            wordCombinations.add(createNewWord(firstCombo, secondCombo));
+//            wordToSplit = secondCombo;
+            wordCombinations.addAll(
+                    getWordSplits(/*secondCombo*/ secondCombo)
+                            .parallelStream()
+                            .map(s -> createNewWord(firstCombo, s))
+                            .collect(Collectors.toSet()));
+        } else if ( (secondCombo.length() > 0 && StringUtils.isDigit(secondCombo.charAt(0)))) {
+//            System.out.println("Not word: "+firstCombo+", "+secondCombo);
+//            wordToSplit = firstCombo;
+            wordCombinations.addAll(
+                    getWordSplits(/*secondCombo*/ firstCombo)
+                            .parallelStream()
+                            .map(s -> createNewWord(secondCombo, s))
+                            .collect(Collectors.toSet()));
+        }
+
         return wordCombinations;
     }
 
