@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Created by Mark Cunningham on 9/27/2016.
  */
-public class NumberToWordConverterTest {
+public class PhoneNumberToWordConverterTest {
 
     @Test
     public void assertExampleRequirementForCallMeWorks() {
@@ -54,7 +54,7 @@ public class NumberToWordConverterTest {
 
     @Test
     public void assertLongerNonWordsAreMatchedWhenTheyHaveWordsWithin() {
-        long number = 22553535; // we hope to get CALL-ME-ME -> MEME, is not in the dictionary, so we need to make sure we get the inner words
+        long number = 22556363; // we hope to get CALL-ME-ME -> MEME, is not in the dictionary, so we need to make sure we get the inner words
         Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
         Set<String> matches = numberToWordConverter.convert(number);
         assertThat(matches).contains("CALL-ME-ME");
@@ -63,7 +63,6 @@ public class NumberToWordConverterTest {
 
     @Test
     public void assertInnerWordSplitsCaseInsensitiveAreWorking() {
-
         long number = 22556686;
         Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
         Set<String> matches = numberToWordConverter.convert(number);

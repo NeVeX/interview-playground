@@ -13,13 +13,13 @@ import java.util.stream.Stream;
 /**
  * Created by Mark Cunningham on 9/27/2016.
  */
-class NumberToWordConverter implements Converter<Long, String> {
+class PhoneNumberToWordConverter implements Converter<Long, String> {
 
     private final static String WORD_SPLITTER = "-";
     private final NumberToLettersConverter longToLetterConverter;
     private final Dictionary dictionary;
 
-    NumberToWordConverter(NumberToLettersConverter longToLetterConverter, Dictionary dictionary) {
+    PhoneNumberToWordConverter(NumberToLettersConverter longToLetterConverter, Dictionary dictionary) {
         if ( longToLetterConverter == null ) {
             throw new IllegalArgumentException("Provided longToLetterConverter cannot be null");
         }
@@ -31,9 +31,9 @@ class NumberToWordConverter implements Converter<Long, String> {
     }
 
     public Set<String> convert(Long number) {
+        // Get the number into it's various permutations form
         Set<String> letterCombinations = longToLetterConverter.convert(number);
         if ( !letterCombinations.isEmpty() ) {
-
             return letterCombinations
                     .parallelStream()
                     .map(this::getWordSplits)
@@ -48,7 +48,7 @@ class NumberToWordConverter implements Converter<Long, String> {
         // Split this letterCombination up
         // E.g. mart -> m, art | ma, rt | mar, t
         Set<String> wordSplits = IntStream.range(1, letterCombination.length())
-                .parallel()
+//                .parallel()
                 .mapToObj( index -> getWordSplitsUsingIndex(index, letterCombination) )
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
@@ -63,11 +63,7 @@ class NumberToWordConverter implements Converter<Long, String> {
         String secondCombo = letterCombination.substring(index, letterCombination.length());
         Set<String> wordCombinations = new HashSet<>();
 
-//        String wordToSplit = secondCombo;
-
-        if ( letterCombination.equals("callme1")) {
-
-
+        if ( letterCombination.equals("1call1me1")) {
              //TODO:
             // just get everything as is
             // then at the end, remove all numbers and put it through the splitter - if it comes back, then golden
@@ -77,24 +73,24 @@ class NumberToWordConverter implements Converter<Long, String> {
             this.toString();
         }
 
-        if ( (index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1))) /*&& dictionary.isWord(secondCombo)*/ )  {
-//            wordCombinations.add(createNewWord(firstCombo, secondCombo));
-//            wordToSplit = secondCombo;
-            wordCombinations.addAll(
-                    getWordSplits(/*secondCombo*/ secondCombo)
-                            .parallelStream()
-                            .map(s -> createNewWord(firstCombo, s))
-                            .collect(Collectors.toSet()));
-        } else if ( (secondCombo.length() > 0 && StringUtils.isDigit(secondCombo.charAt(0)))) {
-//            System.out.println("Not word: "+firstCombo+", "+secondCombo);
-//            wordToSplit = firstCombo;
-            wordCombinations.addAll(
-                    getWordSplits(/*secondCombo*/ firstCombo)
-                            .parallelStream()
-                            .map(s -> createNewWord(secondCombo, s))
-                            .collect(Collectors.toSet()));
+        // Check if the first word combination is either a word or a number
+        if ( dictionary.isWord(firstCombo) || index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1))) {
+            if (dictionary.isWord(firstCombo) && (secondCombo.length() == 1 && StringUtils.isDigit(secondCombo.charAt(0)))) {
+                wordCombinations.add(createNewWord(firstCombo, secondCombo));
+            } else if (dictionary.isWord(firstCombo) && (secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0)))) {
+                wordCombinations.addAll(
+                    getWordSplits(secondCombo)
+                        .stream()
+                        .map(s -> createNewWord(firstCombo, s))
+                        .collect(Collectors.toSet()));
+            } else {
+                wordCombinations.addAll(
+                    getWordSplits(secondCombo)
+                        .stream()
+                        .map(s -> createNewWord(firstCombo, s))
+                        .collect(Collectors.toSet()));
+            }
         }
-
         return wordCombinations;
     }
 

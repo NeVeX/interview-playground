@@ -20,7 +20,7 @@ public final class ConverterFactory {
     }
 
     public static Converter<Long, String> longNumberToWords(Dictionary dictionary) {
-        return new NumberToWordConverter(Holder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
+        return new PhoneNumberToWordConverter(Holder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
     }
 
     private static class Holder {

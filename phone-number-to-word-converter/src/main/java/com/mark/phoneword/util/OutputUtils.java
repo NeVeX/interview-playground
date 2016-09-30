@@ -14,7 +14,6 @@ public class OutputUtils {
         System.err.println("***ERROR: "+message);
     }
 
-
     public static void printInput(String message) {
         System.out.print(message);
     }

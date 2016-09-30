@@ -34,17 +34,13 @@ class NumberToLettersConverter implements Converter<Long, String> {
     }
 
     public Set<String> convert(Long number) {
-
         List<Byte> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
             List<Set<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
             return calculateAllLetterPermutations(matrixOfLetters);
         }
         return new HashSet<>();
-
     }
-
-
 
     private List<Set<Character>> getMatrixOfLettersForDigits(List<Byte> digits) {
         // If the digit cannot be found, then just add the digit as the character key
