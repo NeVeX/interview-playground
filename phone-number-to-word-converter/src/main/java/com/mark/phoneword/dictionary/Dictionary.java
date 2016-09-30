@@ -31,7 +31,7 @@ public final class Dictionary {
         }
     }
 
-    public int getWordCount() {
+    int getWordCount() {
         return dictionary.size();
     }
 
