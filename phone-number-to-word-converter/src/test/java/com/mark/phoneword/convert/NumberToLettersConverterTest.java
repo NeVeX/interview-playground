@@ -1,5 +1,6 @@
-package com.mark.phoneword;
+package com.mark.phoneword.convert;
 
+import com.mark.phoneword.convert.NumberToLettersConverter;
 import org.junit.Test;
 
 import java.util.*;
@@ -53,8 +54,9 @@ public class NumberToLettersConverterTest {
     }
 
     @Test
-    public void assertDigitsReturnedWhenNoMatchFoundInConversionMap() {
-        long number = 6789; // all of these are not in the below conversion, hence the converted set should be empty
+    public void assertDigitsAreNotReturnedWhenNoMatchFoundInConversionMap() {
+        // There is no mapping for the below number, so it should convert to "6789", but fail the consecutive test
+        long number = 6789;
         Set<Character> number2ToLettersMap = new HashSet<>();
         number2ToLettersMap.add('a');
         Set<Character> number3ToLettersMap = new HashSet<>();
@@ -68,14 +70,12 @@ public class NumberToLettersConverterTest {
 
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
         Set<String> convertedNumbers = numberToLettersConverter.convert(number);
-        assertThat(convertedNumbers).isNotEmpty();
-        assertThat(convertedNumbers).contains("6789"); // the unconverted number
-
+        assertThat(convertedNumbers).as("Unmapped numbers should not convert").isEmpty();
     }
 
     @Test
-    public void assertThreeDigitNumberConvertsToLetterCombinations() {
-        int number = 234;
+    public void assertThreeDigitConversionMapConvertsToLetterCombinations() {
+        long number = 234;
         Set<Character> number2ToLettersMap = new HashSet<>();
         number2ToLettersMap.add('a');
         Set<Character> number3ToLettersMap = new HashSet<>();
@@ -89,7 +89,7 @@ public class NumberToLettersConverterTest {
         conversionMap.put((byte)3, number3ToLettersMap);
         conversionMap.put((byte)4, number4ToLettersMap);
 
-        Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList("ab", "abc"));
+        Set<String> expectedLetters = new HashSet<>(Collections.singletonList("abc"));
         assertDigitNumberConversion(number, conversionMap, expectedLetters);
     }
 
@@ -112,8 +112,8 @@ public class NumberToLettersConverterTest {
         conversionMap.put((byte)3, number3ToLettersMap);
         conversionMap.put((byte)4, number4ToLettersMap);
 
-        Set<String> expectedLetters = expectedLetters = new HashSet<>(Arrays.asList(
-                "ac", "acd", "ace", "bc", "bcd", "bce"));
+        Set<String> expectedLetters = new HashSet<>(Arrays.asList(
+                "acd", "ace", "bcd", "bce"));
         assertDigitNumberConversion(number, conversionMap, expectedLetters);
     }
 
@@ -137,8 +137,8 @@ public class NumberToLettersConverterTest {
 
     @Test
     public void assertConsecutiveDigitsNotReturned() {
-        // 7 and 4 will not be mapped, hence the letter converter should not return anything after the 4
-        int number = 237432;
+        // 7 and 4 will not be mapped, hence the letter convert should not return anything after the 4
+        long number = 237432;
         Set<Character> number2ToLettersMap = new HashSet<>();
         number2ToLettersMap.add('a');
         Set<Character> number3ToLettersMap = new HashSet<>();
@@ -152,16 +152,13 @@ public class NumberToLettersConverterTest {
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
         Set<String> convertedLetters = numberToLettersConverter.convert(number);
 
-
-        Set<String> expectedLetters = new HashSet<>(Arrays.asList("ab", "ab7"));
-
-        assertThat(convertedLetters).containsAll(expectedLetters);
+        assertThat(convertedLetters).as("Checking consecutive numbers don't convert").isEmpty();
     }
 
     @Test
     public void assertCallMeRequirementExampleCombinationWorks() {
-        int exampleNumber = 225563;
-        // Create a conversion map
+        long exampleNumber = 225563;
+        // Create a conversion map, enough for the above number with permutations for "callme"
         Map<Byte, Set<Character>> conversionMap = new HashMap<>();
 
         Set<Character> abcSet = new HashSet<>();
@@ -188,24 +185,7 @@ public class NumberToLettersConverterTest {
         NumberToLettersConverter numberToLettersConverter = new NumberToLettersConverter(conversionMap);
         Set<String> convertedLetters = numberToLettersConverter.convert(exampleNumber);
 
-        // Check all permutations for "callme"
-        assertThat(convertedLetters.contains("ca")).isTrue();
-        assertThat(convertedLetters.contains("llme")).isTrue();
-
-        assertThat(convertedLetters.contains("cal")).isTrue();
-        assertThat(convertedLetters.contains("lme")).isTrue();
-
-        assertThat(convertedLetters.contains("call")).isTrue();
-        assertThat(convertedLetters.contains("me")).isTrue();
-
-        assertThat(convertedLetters.contains("callm")).isTrue();
-        assertThat(convertedLetters.contains("allme")).isTrue();
-        assertThat(convertedLetters.contains("callme")).isTrue(); // CALL ME!
-
-
-
-
-
+        assertThat(convertedLetters.contains("callme")).isTrue();
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by Mark Cunningham on 9/28/2016.
  */
-public class Dictionary {
+public final class Dictionary {
 
     private final Set<String> dictionary;
 
@@ -16,7 +16,7 @@ public class Dictionary {
      * NOTE: Words must be all lower case and trimmed
      * @param dictionary
      */
-    public Dictionary(Set<String> dictionary) {
+    Dictionary(Set<String> dictionary) {
         if ( dictionary == null || dictionary.isEmpty()) {
             throw new IllegalArgumentException("Provided dictionary cannot be null or empty");
         }

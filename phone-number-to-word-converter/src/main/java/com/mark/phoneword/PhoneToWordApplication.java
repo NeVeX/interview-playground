@@ -1,6 +1,6 @@
 package com.mark.phoneword;
 
-import com.mark.phoneword.dictionary.DefaultDictionary;
+import com.mark.phoneword.dictionary.DictionaryFactory;
 import com.mark.phoneword.dictionary.Dictionary;
 
 /**
@@ -11,7 +11,7 @@ public class PhoneToWordApplication {
     public static void main(String[] args) {
         // Testing ....
 
-        Dictionary dictionary = new DefaultDictionary();
+        Dictionary dictionary = DictionaryFactory.getDefault();
         dictionary.isWord("mark");
         dictionary.isWord("train");
 

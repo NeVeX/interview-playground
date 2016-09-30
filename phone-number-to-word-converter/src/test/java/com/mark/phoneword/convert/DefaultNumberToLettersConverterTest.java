@@ -1,9 +1,8 @@
-package com.mark.phoneword;
+package com.mark.phoneword.convert;
 
 import static org.assertj.core.api.Assertions.*;
-import org.junit.Test;
 
-import java.util.*;
+import org.junit.Test;
 
 /**
  * Created by Mark Cunningham on 9/27/2016.
@@ -12,8 +11,8 @@ public class DefaultNumberToLettersConverterTest {
 
     @Test
     public void assertUpTo10DigitConversionWorks() {
-        int number = 2;
-        NumberToLettersConverter lettersConverter = new DefaultNumberToLettersConverter();
+        long number = 2;
+        Converter<Long, String> lettersConverter = ConverterFactory.longNumberToLetters();
         assertThat(lettersConverter.convert(number)).isEmpty();
 
         number = 23; // We'll expect a certain string
@@ -50,29 +49,29 @@ public class DefaultNumberToLettersConverterTest {
     @Test
     public void assertDigitZeroDoesNotGetConverted() {
         long number = 20;
-        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        Converter<Long, String> numberToLettersConverter = ConverterFactory.longNumberToLetters();
         assertThat(numberToLettersConverter.convert(number)).contains("a0");
     }
 
     @Test
     public void assertDigitOneDoesNotGetConverted() {
         long number = 21;
-        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        Converter<Long, String> numberToLettersConverter = ConverterFactory.longNumberToLetters();
         assertThat(numberToLettersConverter.convert(number)).contains("a1");
     }
 
     @Test
     public void assertPhoneNumberLengthConversionWorks() {
         long phoneNumber = 2223334444L; // A typical phone number size
-        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        Converter<Long, String> numberToLettersConverter = ConverterFactory.longNumberToLetters();
         assertThat(numberToLettersConverter.convert(phoneNumber)).contains("aaadddgggg");
 
     }
 
     @Test
-    public void assertGiven_CALLME_exampleWorks() {
+    public void assertGivenRequirementCallMeExampleWorks() {
         long callme = 225563;
-        NumberToLettersConverter numberToLettersConverter = new DefaultNumberToLettersConverter();
+        Converter<Long, String> numberToLettersConverter = ConverterFactory.longNumberToLetters();
         assertThat(numberToLettersConverter.convert(callme)).contains("callme");
 
     }

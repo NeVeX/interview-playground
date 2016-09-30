@@ -1,4 +1,4 @@
-package com.mark.phoneword;
+package com.mark.phoneword.convert;
 
 import com.mark.phoneword.util.NumberUtils;
 import com.mark.phoneword.util.StringUtils;
@@ -12,12 +12,12 @@ import java.util.stream.Stream;
 /**
  * Created by Mark Cunningham on 9/27/2016.
  */
-class NumberToLettersConverter {
+class NumberToLettersConverter implements Converter<Long, String> {
 
     private final Map<Byte, Set<Character>> digitToLetters;
 
     /**
-     * Initialize a new number to letters converter that will use the provided mapping table
+     * Initialize a new number to letters convert that will use the provided mapping table
      * <br>Note, only single digits are supported (0 - 9)
      * <br>To control which digits can be converted, only include those in the provided map
      * @param digitToLetters - the map to use for all conversions
@@ -33,7 +33,7 @@ class NumberToLettersConverter {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k,v) -> Collections.unmodifiableSet(v)));
     }
 
-    Set<String> convert(long number) {
+    public Set<String> convert(Long number) {
 
         List<Byte> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
@@ -99,10 +99,17 @@ class NumberToLettersConverter {
         return fullLengthLetters;
     }
 
-    private List<String> appendPrefixToLetters(final String prefix, final Set<Character> letters) {
+    private Set<String> appendPrefixToLetters(final String prefix, final Set<Character> letters) {
         return letters.stream()
+            .filter( letter -> isLetterCombinationValid(prefix, letter))
             .map( letter -> prefix + letter )
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
+    }
+
+    private boolean isLetterCombinationValid(String prefix, Character letter) {
+        // Apply the rules for the letter combinations
+        // There cannot be consecutive digits, i.e. abc5 + e is ok, but abc5 + 7 is not since it will mean 57 are together
+        return !StringUtils.areDigits(prefix.charAt(prefix.length()-1), letter);
     }
 
     /**
