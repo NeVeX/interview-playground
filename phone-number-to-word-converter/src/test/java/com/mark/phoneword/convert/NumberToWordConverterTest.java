@@ -1,6 +1,5 @@
 package com.mark.phoneword.convert;
 
-import com.mark.phoneword.convert.NumberToWordConverter;
 import org.junit.Test;
 
 import java.util.*;
@@ -27,13 +26,13 @@ public class NumberToWordConverterTest {
     @Test
     public void assertInnerWordSplitsAreWorking() {
 
-        long number = 22556363L;
+        long number = 22556686;
         Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
         Set<String> matches = numberToWordConverter.convert(number);
         assertThat(matches).isNotEmpty();
 
-        String twoSplitWord = "CALL-MEND";
-        String threeSplitWord = "CALL-ME-ND";
+        String twoSplitWord = "CALL-ONTO";
+        String threeSplitWord = "CALL-ON-TO";
         assertThat(matches).contains(twoSplitWord, threeSplitWord);
         assertThat(matches).doesNotContain(twoSplitWord.toLowerCase(), threeSplitWord.toLowerCase());
     }
