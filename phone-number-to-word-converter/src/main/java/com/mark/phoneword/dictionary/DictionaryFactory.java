@@ -1,6 +1,7 @@
 package com.mark.phoneword.dictionary;
 
-import com.mark.phoneword.data.read.DictionaryFileReader;
+
+import com.mark.phoneword.data.read.FileReaderFactory;
 
 import java.io.File;
 import java.util.Optional;
@@ -13,7 +14,6 @@ public final class DictionaryFactory {
 
     private final static String RESOURCE_LOCATION = "dictionaries";
     private final static String ENGLISH_DICTIONARY_LOCATION = RESOURCE_LOCATION + File.separator + "english.dic";
-    private final static DictionaryFileReader DICTIONARY_FILE_READER = new DictionaryFileReader();
 
     public static Dictionary getDefault() {
         return DefaultDictionaryHolder.INSTANCE;
@@ -26,7 +26,7 @@ public final class DictionaryFactory {
      * @return - the new dictionary if successful, otherwise, an empty optional
      */
     public static Optional<Dictionary> fromFile(String pathToFile) {
-        Optional<Set<String>> readInDictionaryOptional = DICTIONARY_FILE_READER.readFile(pathToFile);
+        Optional<Set<String>> readInDictionaryOptional = FileReaderFactory.lettersOnlyLineReader().readFile(pathToFile);
         if ( readInDictionaryOptional.isPresent()) {
             return Optional.of(new Dictionary(readInDictionaryOptional.get()));
         }
@@ -42,7 +42,7 @@ public final class DictionaryFactory {
 
         static {
             // https://sourceforge.net/projects/jazzy/?source=typ_redirect -- Dictionary obtained from here
-            Optional<Set<String>> englishWordsOptional = DICTIONARY_FILE_READER.readResource(ENGLISH_DICTIONARY_LOCATION);
+            Optional<Set<String>> englishWordsOptional = FileReaderFactory.lettersOnlyLineReader().readResource(ENGLISH_DICTIONARY_LOCATION);
             if ( englishWordsOptional.isPresent()) {
                 INSTANCE = new Dictionary(englishWordsOptional.get());
             } else {

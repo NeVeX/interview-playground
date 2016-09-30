@@ -1,12 +1,15 @@
 package com.mark.phoneword;
 
 
+import com.mark.phoneword.convert.ConverterFactory;
+import com.mark.phoneword.data.read.FileReaderFactory;
 import com.mark.phoneword.dictionary.Dictionary;
 import com.mark.phoneword.dictionary.DictionaryFactory;
 import com.mark.phoneword.input.InputReader;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
@@ -14,7 +17,8 @@ import java.util.Optional;
 public class PhoneToWordApplication {
 
     private final static int EXIT_CODE_OK = 0;
-    private final static int EXIT_CODE_NO_DICTIONARY_LOADED = 0;
+    private final static int EXIT_CODE_NO_DICTIONARY_LOADED = 1;
+    private final static int EXIT_CODE_INPUT_PHONE_FILE_NOT_LOADED = 2;
 
     private int run(String[] args) {
 
@@ -50,6 +54,19 @@ public class PhoneToWordApplication {
     }
 
     private int onDictionaryLoaded(InputReader inputReader, Dictionary dictionaryToUse) {
+
+        Optional<String> phoneNumbersFileOptional = inputReader.getPhoneNumbersFile();
+        if ( phoneNumbersFileOptional.isPresent()) {
+            String phoneNumbersFile = phoneNumbersFileOptional.get();
+            Optional<Set<Long>> readPhoneNumbersOptional = FileReaderFactory.longsOnlyLineReader().readFile(phoneNumbersFile);
+            if ( readPhoneNumbersOptional.isPresent()) {
+                ConverterFactory.longNumberToWords();
+            } else {
+                return EXIT_CODE_INPUT_PHONE_FILE_NOT_LOADED;
+            }
+        } else {
+//            onReadPhoneNumbersFromTerminal(dictionaryToUse);
+        }
         return EXIT_CODE_OK;
     }
 

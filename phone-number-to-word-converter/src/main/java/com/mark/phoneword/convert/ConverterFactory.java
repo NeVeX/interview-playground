@@ -12,7 +12,7 @@ public final class ConverterFactory {
 
 
     public static Converter<Long, String> longNumberToLetters() {
-        return DefaultConverterHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER;
+        return Holder.DEFAULT_NUMBER_TO_LETTER_CONVERTER;
     }
 
     public static Converter<Long, String> longNumberToWords() {
@@ -20,10 +20,10 @@ public final class ConverterFactory {
     }
 
     public static Converter<Long, String> longNumberToWords(Dictionary dictionary) {
-        return new NumberToWordConverter(DefaultConverterHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
+        return new NumberToWordConverter(Holder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
     }
 
-    private static class DefaultConverterHolder {
+    private static class Holder {
 
 
         private final static NumberToLettersConverter DEFAULT_NUMBER_TO_LETTER_CONVERTER;

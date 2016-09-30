@@ -97,7 +97,6 @@ public class InputReaderTest {
         assertThat(inputReader.getDictionaryFile()).as("Expected a parsed input dictionary").isPresent();
         assertThat(inputReader.getPhoneNumbersFile()).as("Expected a parsed phone number file").isPresent();
 
-
         allArgs = new String[] { "-d="+dictionary, "-p="}; // no phone
         inputReader = new InputReader(allArgs);
         assertThat(inputReader.getDictionaryFile()).as("Expected a parsed input dictionary").isPresent();
