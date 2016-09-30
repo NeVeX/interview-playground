@@ -19,6 +19,13 @@ public abstract class FileReader<T> {
 
     private static final Logger LOGGER = Logger.getLogger(FileReader.class.getName());
 
+    /**
+     * Given the bufferedReader for the resource/file, return the parsed data from it.
+     * <br>Note, return null to indicate that no data was read from the file.
+     * @param br - the buffered reader to use to parse the data
+     * @return - return null to indicate no data read; otherwise, return the data
+     * @throws IOException
+     */
     protected abstract T process(BufferedReader br) throws IOException;
 
     /**

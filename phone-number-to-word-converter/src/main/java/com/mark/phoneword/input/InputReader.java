@@ -2,23 +2,46 @@ package com.mark.phoneword.input;
 
 import com.mark.phoneword.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
  */
 public class InputReader {
     private final static String ARGUMENT_OPERATOR = "=";
-    private final static String DICTIONARY_FILE_ARG = "-f";
+    private final static String DICTIONARY_FILE_ARG = "-d";
+    private final static List<String> ALL_ARGUMENTS_USAGE_INFO;
+    private final List<String> givenArgumentValues;
+    private final String dictionaryFileLocation;
+
+    static {
+        List<String> mutableList = new ArrayList<>();
+        mutableList.add(DICTIONARY_FILE_ARG+ARGUMENT_OPERATOR+"/path/to/my.dictionary  ==> Optionally provide your own dictionary");
+        ALL_ARGUMENTS_USAGE_INFO = Collections.unmodifiableList(mutableList);
+    }
+
     /**
-     * Given the application input arguments, this method will return the input file location given, if found.
-     * <br>The input file should be given under the "-f" argument - e.g. -f=/usr/mark/english.dictionary
-     * @param args - the input arguments from the application
-     * @return - An optional that will/will not, contain the value for the dictionary file
+     * Create a new instance of the input reader, passing in the non null arguments received from the user
+     * @param args - the non null arguments
      */
-    public Optional<String> getDictionaryFile(String[] args) {
-        return Optional.ofNullable(getValueForArgument(DICTIONARY_FILE_ARG, args));
+    public InputReader(String[] args) {
+        if ( args == null) {
+            throw new IllegalArgumentException("Provided input arguments cannot be null");
+        }
+        dictionaryFileLocation = getValueForArgument(DICTIONARY_FILE_ARG, args);
+
+        List<String> givenArgumentValues = new ArrayList<>();
+        givenArgumentValues.add("Dictionary File ==> "+
+                ( StringUtils.isBlank(dictionaryFileLocation) ? "**None Provided**" : dictionaryFileLocation));
+        this.givenArgumentValues = Collections.unmodifiableList(givenArgumentValues);
+    }
+
+    /**
+     * Get the parsed input dictionary file location, it it was given
+     * @return - The optional containing the input dictionary file, or not
+     */
+    public Optional<String> getDictionaryFile() {
+        return Optional.ofNullable(dictionaryFileLocation);
     }
 
     private String getValueForArgument(String argument, String[] args) {
@@ -43,5 +66,11 @@ public class InputReader {
         return null;
     }
 
+    public List<String> getArgumentUsageInfo() {
+        return ALL_ARGUMENTS_USAGE_INFO;
+    }
 
+    public List<String> getArgumentValues() {
+        return givenArgumentValues;
+    }
 }

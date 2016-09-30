@@ -15,12 +15,16 @@ public class DictionaryFileReader extends FileReader<Set<String>> {
 
     @Override
     protected Set<String> process(BufferedReader br) throws IOException {
-        return br
-            .lines()
+        Set<String> readInDictionarySet = br.lines()
             .parallel()
             .filter(StringUtils::isNotBlank)
             .map( word -> StringUtils.getLettersOnly(word.trim().toLowerCase()))
             .filter(StringUtils::isNotBlank) // parse above can make the string empty
             .collect(Collectors.toCollection(HashSet::new));
+        if ( readInDictionarySet.isEmpty()) {
+            return null; // Return null to indicate no data read
+        } else {
+            return readInDictionarySet;
+        }
     }
 }

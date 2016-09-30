@@ -19,6 +19,20 @@ public final class DictionaryFactory {
         return DefaultDictionaryHolder.INSTANCE;
     }
 
+    /**
+     * For the given path and file name (must be the absolute path and file name), this method will
+     * attempt to read the file and create a new instance of a dictionary from it.
+     * @param pathToFile - the full absolute path to the dictionary file
+     * @return - the new dictionary if successful, otherwise, an empty optional
+     */
+    public static Optional<Dictionary> fromFile(String pathToFile) {
+        Optional<Set<String>> readInDictionaryOptional = DICTIONARY_FILE_READER.readFile(pathToFile);
+        if ( readInDictionaryOptional.isPresent()) {
+            return Optional.of(new Dictionary(readInDictionaryOptional.get()));
+        }
+        return Optional.empty();
+    }
+
     private DictionaryFactory(){}
 
     // Bill Pugh singleton - http://www.journaldev.com/1377/java-singleton-design-pattern-best-practices-examples
