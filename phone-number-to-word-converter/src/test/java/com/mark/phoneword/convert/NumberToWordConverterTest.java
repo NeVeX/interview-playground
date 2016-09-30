@@ -17,9 +17,48 @@ public class NumberToWordConverterTest {
         long number = 225563;
         Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
         Set<String> matches = numberToWordConverter.convert(number);
-        assertThat(matches).isNotEmpty();
-
         assertThat(matches).contains("CALL-ME");
+    }
+
+    @Test
+    public void assertFullWordsAndInnerWordsAreConverted() {
+        long number = 359929;
+        Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
+        Set<String> matches = numberToWordConverter.convert(number);
+        assertThat(matches).contains("FLYWAY", "FLY-WAY");
+    }
+
+    @Test
+    public void assertSingleNumbersAreMapped() {
+        long number = 1225563; // we hope to get 1-CALL-ME
+        Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
+        Set<String> matches = numberToWordConverter.convert(number);
+        assertThat(matches).contains("1-CALL-ME");
+
+        number = 2255631; // we hope to get CALL-ME-1
+        numberToWordConverter = ConverterFactory.longNumberToWords();
+        matches = numberToWordConverter.convert(number);
+        assertThat(matches).contains("CALL-ME-1");
+
+        number = 12255631; // we hope to get 1-CALL-ME-1
+        numberToWordConverter = ConverterFactory.longNumberToWords();
+        matches = numberToWordConverter.convert(number);
+        assertThat(matches).contains("1-CALL-ME-1");
+
+
+        number = 12255631; // we hope to get 1-CALL-ME-1
+        numberToWordConverter = ConverterFactory.longNumberToWords();
+        matches = numberToWordConverter.convert(number);
+        assertThat(matches).contains("1-CALL-1-ME-1");
+
+    }
+
+    @Test
+    public void assertLongerNonWordsAreMatchedWhenTheyHaveWordsWithin() {
+        long number = 22553535; // we hope to get CALL-ME-ME -> MEME, is not in the dictionary, so we need to make sure we get the inner words
+        Converter<Long, String> numberToWordConverter = ConverterFactory.longNumberToWords();
+        Set<String> matches = numberToWordConverter.convert(number);
+        assertThat(matches).contains("CALL-ME-ME");
 
     }
 

@@ -6,6 +6,7 @@ import com.mark.phoneword.dictionary.Dictionary;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
@@ -42,13 +43,18 @@ class NumberToWordConverter implements Converter<Long, String> {
     }
 
     private Set<String> getWordSplits(final String letterCombination) {
+
         // Split this letterCombination up
         // E.g. mart -> m, art | ma, rt | mar, t
-        return IntStream.range(1, letterCombination.length()) // We don't want one character words
+        Set<String> wordSplits = IntStream.range(1, letterCombination.length()) // We don't want one character words
                 .parallel()
                 .mapToObj( index -> getWordSplitsUsingIndex(index, letterCombination) )
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
+        if ( dictionary.isWord(letterCombination)) {
+            wordSplits.add(createNewWord(letterCombination)); // add the full word
+        }
+        return wordSplits;
     }
 
     private Set<String> getWordSplitsUsingIndex(int index, String letterCombination) {
@@ -59,7 +65,7 @@ class NumberToWordConverter implements Converter<Long, String> {
             wordCombinations.add(createNewWord(firstCombo, secondCombo));
             wordCombinations.addAll(
                     getWordSplits(secondCombo)
-                    .stream()
+                    .parallelStream()
                     .map(s -> createNewWord(firstCombo, s))
                     .collect(Collectors.toSet())
             );
@@ -67,7 +73,11 @@ class NumberToWordConverter implements Converter<Long, String> {
         return wordCombinations;
     }
 
+    private String createNewWord(String word) {
+        return word.toUpperCase();
+    }
+
     private String createNewWord(String partOne, String partTwo) {
-        return (partOne + WORD_SPLITTER + partTwo).toUpperCase();
+        return createNewWord(partOne + WORD_SPLITTER + partTwo);
     }
 }

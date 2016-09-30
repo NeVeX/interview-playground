@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Created by Mark Cunningham on 9/29/2016.
  */
-public class InputReader {
+public class InputArgumentReader {
     private final static String ARGUMENT_OPERATOR = "=";
     private final static String DICTIONARY_FILE_ARG = "-d";
     private final static String PHONE_NUMBERS_FILE_ARG = "-p";
@@ -28,7 +28,7 @@ public class InputReader {
      * Create a new instance of the input reader, passing in the non null arguments received from the user
      * @param args - the non null arguments
      */
-    public InputReader(String[] args) {
+    public InputArgumentReader(String[] args) {
         if ( args == null) {
             throw new IllegalArgumentException("Provided input arguments cannot be null");
         }

@@ -2,6 +2,7 @@ package com.mark.phoneword.util;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -28,6 +29,17 @@ public class NumberUtils {
         }
         // All of the string elements are one digit longs, so convert down to an byte type
         return numberSplit.stream().map(Long::byteValue).collect(Collectors.toList());
+    }
+
+    public static Optional<Long> tryConvert(String string) {
+        if ( StringUtils.isNotBlank(string)) {
+            try {
+                return Optional.of(Long.valueOf(string));
+            } catch (NumberFormatException numberFormatException) {
+                // need to log...
+            }
+        }
+        return Optional.empty();
     }
 
 }

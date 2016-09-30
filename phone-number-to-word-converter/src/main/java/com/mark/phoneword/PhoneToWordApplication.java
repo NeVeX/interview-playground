@@ -5,8 +5,10 @@ import com.mark.phoneword.convert.ConverterFactory;
 import com.mark.phoneword.data.read.FileReaderFactory;
 import com.mark.phoneword.dictionary.Dictionary;
 import com.mark.phoneword.dictionary.DictionaryFactory;
-import com.mark.phoneword.input.InputReader;
+import com.mark.phoneword.input.InputArgumentReader;
+import com.mark.phoneword.input.InputProcessor;
 
+import static com.mark.phoneword.util.OutputUtils.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,14 +26,14 @@ public class PhoneToWordApplication {
 
         int exitCode;
 
-        InputReader inputReader = new InputReader(args);
+        InputArgumentReader inputArgumentReader = new InputArgumentReader(args);
 
-        printWelcomeMessage(inputReader.getArgumentUsageInfo(), inputReader.getArgumentValues());
+        printWelcomeMessage(inputArgumentReader.getArgumentUsageInfo(), inputArgumentReader.getArgumentValues());
 
         Dictionary dictionaryToUse = null;
 
         // Check if we were given a dictionary file
-        Optional<String> inputDictionaryFileOptional = inputReader.getDictionaryFile();
+        Optional<String> inputDictionaryFileOptional = inputArgumentReader.getDictionaryFile();
         if ( inputDictionaryFileOptional.isPresent()) {
             Optional<Dictionary> inputDictionaryOptional = DictionaryFactory.fromFile(inputDictionaryFileOptional.get());
             if ( inputDictionaryOptional.isPresent()) {
@@ -44,7 +46,7 @@ public class PhoneToWordApplication {
         }
 
         if ( dictionaryToUse != null) {
-            exitCode = onDictionaryLoaded(inputReader, dictionaryToUse);
+            exitCode = onDictionaryLoaded(inputArgumentReader, dictionaryToUse);
         } else {
             exitCode = EXIT_CODE_NO_DICTIONARY_LOADED;
         }
@@ -53,9 +55,9 @@ public class PhoneToWordApplication {
         return exitCode;
     }
 
-    private int onDictionaryLoaded(InputReader inputReader, Dictionary dictionaryToUse) {
+    private int onDictionaryLoaded(InputArgumentReader inputArgumentReader, Dictionary dictionaryToUse) {
 
-        Optional<String> phoneNumbersFileOptional = inputReader.getPhoneNumbersFile();
+        Optional<String> phoneNumbersFileOptional = inputArgumentReader.getPhoneNumbersFile();
         if ( phoneNumbersFileOptional.isPresent()) {
             String phoneNumbersFile = phoneNumbersFileOptional.get();
             Optional<Set<Long>> readPhoneNumbersOptional = FileReaderFactory.longsOnlyLineReader().readFile(phoneNumbersFile);
@@ -65,6 +67,7 @@ public class PhoneToWordApplication {
                 return EXIT_CODE_INPUT_PHONE_FILE_NOT_LOADED;
             }
         } else {
+            new InputProcessor(ConverterFactory.longNumberToWords()).processFromStdIn();
 //            onReadPhoneNumbersFromTerminal(dictionaryToUse);
         }
         return EXIT_CODE_OK;
@@ -85,14 +88,6 @@ public class PhoneToWordApplication {
     public static void main(String[] args) {
         int exitCode = new PhoneToWordApplication().run(args);
         System.exit(exitCode);
-    }
-
-    private void printInfo(String message) {
-        System.out.println(message);
-    }
-
-    private void printError(String message) {
-        System.err.println("***ERROR: "+message);
     }
 
 }
