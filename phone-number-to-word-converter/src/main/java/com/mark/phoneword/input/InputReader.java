@@ -10,13 +10,17 @@ import java.util.*;
 public class InputReader {
     private final static String ARGUMENT_OPERATOR = "=";
     private final static String DICTIONARY_FILE_ARG = "-d";
+    private final static String PHONE_NUMBERS_FILE_ARG = "-p";
+    private final static String NO_ARGUMENT_VALUE = "**None Provided**";
     private final static List<String> ALL_ARGUMENTS_USAGE_INFO;
     private final List<String> givenArgumentValues;
     private final String dictionaryFileLocation;
+    private final String phoneNumbersFileLocation;
 
     static {
         List<String> mutableList = new ArrayList<>();
-        mutableList.add(DICTIONARY_FILE_ARG+ARGUMENT_OPERATOR+"/path/to/my.dictionary  ==> Optionally provide your own dictionary");
+        mutableList.add(DICTIONARY_FILE_ARG+ARGUMENT_OPERATOR+"/path/to/my.dictionary  ==> Optionally provide your own dictionary file");
+        mutableList.add(PHONE_NUMBERS_FILE_ARG +ARGUMENT_OPERATOR+"/path/to/phone.numbers  ==> Optionally provide a file of phone numbers");
         ALL_ARGUMENTS_USAGE_INFO = Collections.unmodifiableList(mutableList);
     }
 
@@ -29,19 +33,29 @@ public class InputReader {
             throw new IllegalArgumentException("Provided input arguments cannot be null");
         }
         dictionaryFileLocation = getValueForArgument(DICTIONARY_FILE_ARG, args);
-
+        phoneNumbersFileLocation = getValueForArgument(PHONE_NUMBERS_FILE_ARG, args);
         List<String> givenArgumentValues = new ArrayList<>();
-        givenArgumentValues.add("Dictionary File ==> "+
-                ( StringUtils.isBlank(dictionaryFileLocation) ? "**None Provided**" : dictionaryFileLocation));
+        givenArgumentValues.add("Dictionary File   ==> "+
+                ( StringUtils.isBlank(dictionaryFileLocation) ? NO_ARGUMENT_VALUE : dictionaryFileLocation));
+        givenArgumentValues.add("Phone Number File ==> "+
+                ( StringUtils.isBlank(phoneNumbersFileLocation) ? NO_ARGUMENT_VALUE : phoneNumbersFileLocation));
         this.givenArgumentValues = Collections.unmodifiableList(givenArgumentValues);
     }
 
     /**
-     * Get the parsed input dictionary file location, it it was given
+     * Returns the parsed input dictionary file location, if it was given
      * @return - The optional containing the input dictionary file, or not
      */
     public Optional<String> getDictionaryFile() {
         return Optional.ofNullable(dictionaryFileLocation);
+    }
+
+    /**
+     * Returns the parsed phone numbers file location, if it was given
+     * @return - The optional containing the phone numbers file, or not
+     */
+    public Optional<String> getPhoneNumbersFile() {
+        return Optional.ofNullable(phoneNumbersFileLocation);
     }
 
     private String getValueForArgument(String argument, String[] args) {
