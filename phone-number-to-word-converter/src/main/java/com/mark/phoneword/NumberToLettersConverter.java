@@ -38,13 +38,7 @@ class NumberToLettersConverter {
         List<Byte> splitDigits = NumberUtils.splitToList(number);
         if ( !splitDigits.isEmpty()) {
             List<Set<Character>> matrixOfLetters = getMatrixOfLettersForDigits(splitDigits);
-
-            return calculateAllLetterPermutations(matrixOfLetters)
-                    .stream()
-                    .parallel()
-                    .map(this::splitLetterCombinationsIntoChunks)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toSet());
+            return calculateAllLetterPermutations(matrixOfLetters);
         }
         return new HashSet<>();
 
@@ -102,22 +96,7 @@ class NumberToLettersConverter {
             }
         }
         // Don't include the first row of strings in the result, since they are single char's (e.g. "a", "h" - not words)
-        return fullLengthLetters; //fullLengthLetters.stream().flatMap(Collection::stream).collect(Collectors.toCollection(TreeSet::new));
-    }
-
-    private Set<String> splitLetterCombinationsIntoChunks(final String letterCombination) {
-        // Split this letterCombination up
-        // E.g. mart -> m, art | ma, rt | mar, t
-        Set<String> combinations = IntStream.range(1, letterCombination.length()) // We don't want one character words
-                .mapToObj( index -> {
-                    String firstCombo = letterCombination.substring(0, index);
-                    String secondCombo = letterCombination.substring(index, letterCombination.length());
-                    return Stream.of(firstCombo, secondCombo).collect(Collectors.toSet());
-                })
-                .flatMap(Collection::stream)
-                .collect(Collectors.toSet());
-        combinations.add(letterCombination);
-        return combinations;
+        return fullLengthLetters;
     }
 
     private List<String> appendPrefixToLetters(final String prefix, final Set<Character> letters) {

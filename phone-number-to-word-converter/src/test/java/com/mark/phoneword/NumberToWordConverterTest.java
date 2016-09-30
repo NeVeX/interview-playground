@@ -17,7 +17,22 @@ public class NumberToWordConverterTest {
         int number = 225563;
         NumberToWordConverter numberToWordConverter = new NumberToWordConverter();
         Set<String> matches = numberToWordConverter.convert(number);
-        assertThat(matches).isEmpty();
+        assertThat(matches).isNotEmpty();
+
+        assertThat(matches).contains("CALL-ME", "ME-CALL");
+
+    }
+
+    @Test
+    public void assertLargePhoneNumber() {
+
+        long number = 22556363L;
+        NumberToWordConverter numberToWordConverter = new NumberToWordConverter();
+        Set<String> matches = numberToWordConverter.convert(number);
+        assertThat(matches).isNotEmpty();
+
+        assertThat(matches).contains("call-me-sa", "call-me-me");
+
     }
 
 }
