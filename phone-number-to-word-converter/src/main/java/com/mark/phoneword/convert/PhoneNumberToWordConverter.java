@@ -35,7 +35,8 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         Set<String> letterCombinations = longToLetterConverter.convert(number);
         if ( !letterCombinations.isEmpty() ) {
             return letterCombinations
-                    .parallelStream()
+//                    .parallelStream()
+                    .stream()
                     .map(this::getWordSplits)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toSet());
@@ -63,7 +64,7 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         String secondCombo = letterCombination.substring(index, letterCombination.length());
         Set<String> wordCombinations = new HashSet<>();
 
-        if ( letterCombination.equals("1call1me1")) {
+        if ( letterCombination.equals("1bckl1me1")) {
              //TODO:
             // just get everything as is
             // then at the end, remove all numbers and put it through the splitter - if it comes back, then golden
@@ -73,24 +74,53 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
             this.toString();
         }
 
-        // Check if the first word combination is either a word or a number
-        if ( dictionary.isWord(firstCombo) || index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1))) {
-            if (dictionary.isWord(firstCombo) && (secondCombo.length() == 1 && StringUtils.isDigit(secondCombo.charAt(0)))) {
+        boolean firstComboHasLastDigit = index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1));
+        boolean secondComboIsADigit = secondCombo.length() == 1 && StringUtils.isDigit(secondCombo.charAt(0));
+        boolean secondComboHasFirstDigit = secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0));
+        boolean isFirstComboAWord = dictionary.isWord(firstCombo);
+
+        boolean continueProcessing = false;
+        if ( isFirstComboAWord || firstComboHasLastDigit || secondComboHasFirstDigit || secondComboIsADigit) {
+            if ( isFirstComboAWord && secondComboIsADigit ) {
                 wordCombinations.add(createNewWord(firstCombo, secondCombo));
-            } else if (dictionary.isWord(firstCombo) && (secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0)))) {
-                wordCombinations.addAll(
-                    getWordSplits(secondCombo)
-                        .stream()
-                        .map(s -> createNewWord(firstCombo, s))
-                        .collect(Collectors.toSet()));
+            } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
+                continueProcessing = true;
             } else {
-                wordCombinations.addAll(
-                    getWordSplits(secondCombo)
-                        .stream()
-                        .map(s -> createNewWord(firstCombo, s))
-                        .collect(Collectors.toSet()));
+                continueProcessing = true;
             }
         }
+
+//        if ( dictionary.isWord(firstCombo)) {
+//            if ( firstComboHasLastDigit) {
+//                wordCombinations.add(createNewWord(firstCombo, secondCombo));
+//            } else if ( secondComboHasFirstDigit) {
+//                wordCombinations.addAll(
+//                    getWordSplits(secondCombo)
+//                        .stream()
+//                        .map(s -> createNewWord(firstCombo, s))
+//                        .collect(Collectors.toSet()));
+//            }
+//        }
+
+        if ( continueProcessing ) {
+            wordCombinations.addAll(
+                    getWordSplits(secondCombo)
+                            .stream()
+                            .map(s -> createNewWord(firstCombo, s))
+                            .collect(Collectors.toSet()));
+        }
+
+
+//        // Check if the first word combination is either a word or a number
+//        if ( dictionary.isWord(firstCombo) || ) {
+//            if (dictionary.isWord(firstCombo) && ())) {
+//                wordCombinations.add(createNewWord(firstCombo, secondCombo));
+//            } else if (dictionary.isWord(firstCombo) && (secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0)))) {
+//
+//            } else if (dictionary.isWord(firstCombo)) {
+//
+//            }
+//        }
         return wordCombinations;
     }
 
