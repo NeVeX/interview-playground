@@ -2,6 +2,8 @@ package com.mark.phoneword.convert;
 
 import org.junit.Test;
 
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -43,7 +45,15 @@ public class DefaultNumberToLettersConverterTest {
         assertThat(lettersConverter.convert(number)).contains("adgjmptw0"); // Zero won't be converted to a char
 
         number = 234567891;
-        assertThat(lettersConverter.convert(number)).contains("adgjmptw1"); // Zero won't be converted to a char
+        assertThat(lettersConverter.convert(number)).contains("adgjmptw1"); 
+    }
+
+    @Test
+    public void assertLargeDigitNumbersAreAbleToBeProcessed() {
+        long number = 12345678951234L;
+        Converter<Long, String> lettersConverter = ConverterFactory.longNumberToLetters();
+        Set<String> letterCombinations = lettersConverter.convert(number);
+        assertThat(letterCombinations).isNotEmpty();
     }
 
     @Test

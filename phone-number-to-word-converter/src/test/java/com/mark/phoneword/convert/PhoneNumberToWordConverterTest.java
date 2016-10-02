@@ -101,6 +101,15 @@ public class PhoneNumberToWordConverterTest {
     }
 
     @Test
+    public void assertLargeDigitNumbersAreConvertedToValidWords() {
+        long number = 122553569377L; // One word in this is CALL-FLOWERS-NOW
+        Converter<Long, String> numbersConverter = ConverterFactory.phoneNumberToWords();
+        Set<String> numberConversions = numbersConverter.convert(number);
+        assertThat(numberConversions).contains("1-CALL-FLOWERS");
+    }
+
+
+    @Test
     public void assertWordSplitSplitterIsADash() {
 
         long number = 22552255;
@@ -118,8 +127,6 @@ public class PhoneNumberToWordConverterTest {
         splitter = ""; // nothing
         twoSplitWord = "BALL" + splitter + "CALL";
         assertThat(matches).doesNotContain(twoSplitWord);
-
-
     }
 
 }
