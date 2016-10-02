@@ -25,12 +25,20 @@ can take a digits' place in a phone number conversion.
 
 For example; Given the input 1225563, one of the outputs would be "1-CALL-ME".
 
+### Application assumptions and limitations
+
+- Phone numbers (when converted to Long) will fit within it's range. Phone numbers should not generally exceed 16 digits
+(http://stackoverflow.com/questions/3350500/international-phone-number-max-and-min), hence the Long data type can hold such numbers. As such,
+  very large numbers are not supported by this application, but can be supported in a later release.
+- The encoding of the file is not known ahead of time - the encoding use is the default of the JVM
+
 ### Building the application
 
 This application was built using:
   - Language: Java 8
   - IDE: IntelliJ 16.1
   - Build System: Gradle 2.3
+  - Testing: Junit and AssertJ (no other third party dependencies were used)
 
 You will need the Java and Gradle minimum versions above to build the application.
 Note: In the **release** directory, there is an already built application that can be used (without having to build the source).
@@ -126,10 +134,3 @@ Thank you for using this Phone Number to Word Application - Goodbye! :-)
 #### Log files
 The application will write all it's log files to the file in **phone-number-to-word-converter.log**.
 If there are any problems with the application, the log files will contain more information.
-
-### Application assumptions and limitations
-
-- Phone numbers (when converted to Long) will fit within it's range. Phone numbers should not generally exceed 16 digits
-(http://stackoverflow.com/questions/3350500/international-phone-number-max-and-min), hence the Long data type can hold such numbers. As such,
-  very large numbers are not supported by this application, but can be supported in a later release.
-- The encoding of the file is not known ahead of time - the encoding use is the default of the JVM
