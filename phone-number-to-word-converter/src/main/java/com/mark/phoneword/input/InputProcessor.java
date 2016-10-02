@@ -110,7 +110,7 @@ public class InputProcessor {
     public void processBatch(Set<Long> numbersToProcess) {
         if ( numbersToProcess != null && !numbersToProcess.isEmpty()) {
 
-            String message = "Starting batch processBatch to convert all ["+numbersToProcess.size()+"] phone numbers to words...";
+            String message = "Starting batch process to convert all ["+numbersToProcess.size()+"] phone numbers to words";
             printInfo(message);
             LOGGER.info(message);
 
@@ -118,6 +118,10 @@ public class InputProcessor {
                 .parallelStream()
                 .map(this::convertToResult)
                 .forEach( result -> printConversionResult(result.inputNumber, result.convertedWords));
+
+            message = "Finished batch process on converting ["+numbersToProcess.size()+"] phone numbers to words";
+            printInfo(message);
+            LOGGER.info(message);
         } else {
             printError("No input phone numbers were provided to batch process");
         }

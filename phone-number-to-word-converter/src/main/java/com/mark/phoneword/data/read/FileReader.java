@@ -31,8 +31,21 @@ public abstract class FileReader<T> {
      * @return - The result of this data read
      */
     public Optional<T> readResource(String resource) {
-        return readStream(resource, this.getClass().getClassLoader().getResourceAsStream(resource));
+        if (StringUtils.isNotBlank(resource)) {
+            LOGGER.info("Attempting to read resource ["+resource+"]");
+            try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
+                 InputStreamReader inputStreamReader = new InputStreamReader(is);
+                 BufferedReader br = new BufferedReader(inputStreamReader)) {
+                T result = process(br);
+                return Optional.ofNullable(result);
+            } catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "An exception occurred while reading the resource ["+resource+"]", e);
+            }
+
+        }
+        return Optional.empty();
     }
+
 
     /**
      * For the given input file location, this will return the parsed/extracted data in the expected type
@@ -40,9 +53,11 @@ public abstract class FileReader<T> {
      * @return - The parsed data in the appropriate type. Returns an optional to indicate if data was extracted or not
      */
     public Optional<T> readFile(String inputFile) {
-        if (!StringUtils.isBlank(inputFile)) {
-            try (InputStream is = new FileInputStream(inputFile) ) {
-                return readStream(inputFile, is);
+        if (StringUtils.isNotBlank(inputFile)) {
+            try (InputStreamReader inputStreamReader = new java.io.FileReader(inputFile);
+                 BufferedReader br = new BufferedReader(inputStreamReader)) {
+                T result = process(br);
+                return Optional.ofNullable(result);
             } catch (IOException e ) {
                 LOGGER.log(Level.SEVERE, "An exception occurred while reading file ["+inputFile+"]", e);
             }
@@ -50,27 +65,5 @@ public abstract class FileReader<T> {
         return Optional.empty();
     }
 
-    /**
-     * Given an inputstream this method invokes the abstract {{@link #process(BufferedReader)}} method.
-     * Note the resource string is used as information logging
-     * @param resource - use to log it's attempt at reading
-     * @param is - the valid inputstream to read from
-     * @return - The data extracted as an Optional to represent data read or not
-     */
-    private Optional<T> readStream(String resource, InputStream is) {
-
-        if (is != null) {
-            LOGGER.info("Attempting to read resource ["+resource+"]");
-            try (InputStreamReader inputStreamReader = new InputStreamReader(is);
-                    BufferedReader br = new BufferedReader(inputStreamReader)) {
-                T result = process(br);
-                return Optional.ofNullable(result);
-            } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception occurred while reading the stream for resource ["+resource+"]", e);
-            }
-
-        }
-        return Optional.empty();
-    }
 
 }
