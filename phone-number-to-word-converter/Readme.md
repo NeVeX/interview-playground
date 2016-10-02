@@ -61,8 +61,8 @@ Note: You must have Java 8 at a minimum installed to run this application.
 This application has various modes that it can be run within.
 
 The application can run without any argument input - in this mode the default dictionary is used and all phone numbers are prompted for.
-1: Optionally, using the *-d* argument, you can override the application dictionary - all conversions will use the provided dictionary.
-2: Optionally, using the *-p* argument, you can provide a file with phone numbers - all phone numbers in the file will be converted (if possible) and the result printed on screen.
+- 1: Optionally, using the *-d* argument, you can override the application dictionary - all conversions will use the provided dictionary.
+- 2: Optionally, using the *-p* argument, you can provide a file with phone numbers - all phone numbers in the file will be converted (if possible) and the result printed on screen.
 
 ##### Running the application in default mode
 ```sh
@@ -124,7 +124,6 @@ Found [8] word combinations for [225563]:
   - BALK-OF
   - BALL-ME
   - BALK-ME
-
 
 Enter a number (or quit with 'q'): q
 
