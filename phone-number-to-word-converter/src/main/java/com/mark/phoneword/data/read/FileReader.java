@@ -2,10 +2,9 @@ package com.mark.phoneword.data.read;
 
 import com.mark.phoneword.util.StringUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,20 +34,14 @@ public abstract class FileReader<T> {
      */
     public Optional<T> readResource(String resource) {
         if (StringUtils.isNotBlank(resource)) {
-            LOGGER.info("Attempting to read resource ["+resource+"]");
-            try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource);
-                 InputStreamReader inputStreamReader = new InputStreamReader(is);
-                 BufferedReader br = new BufferedReader(inputStreamReader)) {
-                T result = process(br);
-                return Optional.ofNullable(result);
+            try (InputStream is = this.getClass().getClassLoader().getResourceAsStream(resource)) {
+                return readStream(is);
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE, "An exception occurred while reading the resource ["+resource+"]", e);
             }
-
         }
         return Optional.empty();
     }
-
 
     /**
      * For the given input file location, this will return the parsed/extracted data in the expected type
@@ -56,11 +49,9 @@ public abstract class FileReader<T> {
      * @return - The parsed data in the appropriate type. Returns an optional to indicate if data was extracted or not
      */
     public Optional<T> readFile(String inputFile) {
-        if (StringUtils.isNotBlank(inputFile)) {
-            try (InputStreamReader inputStreamReader = new java.io.FileReader(inputFile);
-                 BufferedReader br = new BufferedReader(inputStreamReader)) {
-                T result = process(br);
-                return Optional.ofNullable(result);
+        if (!StringUtils.isBlank(inputFile)) {
+            try (InputStream is = new FileInputStream(inputFile) ) {
+                return readStream(is);
             } catch (IOException e ) {
                 LOGGER.log(Level.SEVERE, "An exception occurred while reading file ["+inputFile+"]", e);
             }
@@ -68,5 +59,25 @@ public abstract class FileReader<T> {
         return Optional.empty();
     }
 
+    /**
+     * Helper method for class - given an inputstream this method invokes the abstract {{@link #process(BufferedReader)}} method.
+     * <br>Character encoding is set to UTF-8
+     * <br>Note the resource string is used as information logging
+     * @param is - the valid inputstream to read from
+     * @return - The data extracted as an Optional to represent data read or not
+     * @throws IOException if anything goes wrong reading the file
+     */
+    private Optional<T> readStream(InputStream is) throws IOException {
+        if (is != null) {
+            Charset utf8Charset = StandardCharsets.UTF_8;
+            LOGGER.info("Attempting to read resource using charset ["+utf8Charset+"]");
+            try (InputStreamReader inputStreamReader = new InputStreamReader(is, utf8Charset);
+                 BufferedReader br = new BufferedReader(inputStreamReader)) {
+                T result = process(br);
+                return Optional.ofNullable(result);
+            }
+        }
+        return Optional.empty();
+    }
 
 }

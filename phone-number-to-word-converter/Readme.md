@@ -30,7 +30,7 @@ For example; Given the input 1225563, one of the outputs would be "1-CALL-ME".
 - Phone numbers (when converted to Long) will fit within it's range. Phone numbers should not generally exceed 16 digits
 (http://stackoverflow.com/questions/3350500/international-phone-number-max-and-min), hence the Long data type can hold such numbers. As such,
   very large numbers are not supported by this application, but can be supported in a later release.
-- The encoding of the file is not known ahead of time - the encoding use is the default of the JVM
+- The encoding of the files must be UTF-8
 - Very large numbers (16 digits and more) may suffer performance and take a few moments to complete conversions
 
 ### Building the application
