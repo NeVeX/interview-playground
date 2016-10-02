@@ -48,7 +48,7 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         // Split this letterCombination up
         // E.g. mart -> m, art | ma, rt | mar, t
         Set<String> wordSplits = IntStream.range(1, letterCombination.length())
-//                .parallel()
+                .parallel()
                 .mapToObj( index -> getWordSplitsUsingIndex(index, letterCombination) )
                 .flatMap(Collection::parallelStream)
                 .collect(Collectors.toSet());
@@ -59,19 +59,19 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
     }
 
     private Set<String> getWordSplitsUsingIndex(int index, String letterCombination) {
-        String firstCombo = letterCombination.substring(0, index);
-        String secondCombo = letterCombination.substring(index, letterCombination.length());
-        Set<String> wordCombinations = new HashSet<>();
+        String firstSplitLetters = letterCombination.substring(0, index);
+        String secondSplitLetters = letterCombination.substring(index, letterCombination.length());
+        Set<String> validWords = new HashSet<>();
 
-        boolean firstComboIsADigit = firstCombo.length() == 1 && StringUtils.isDigit(firstCombo.charAt(0));
-        boolean secondComboIsADigit = secondCombo.length() == 1 && StringUtils.isDigit(secondCombo.charAt(0));
-        boolean secondComboHasFirstDigit = secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0));
-        boolean isFirstComboAWord = dictionary.isWord(firstCombo);
+        boolean firstComboIsADigit = firstSplitLetters.length() == 1 && StringUtils.isDigit(firstSplitLetters.charAt(0));
+        boolean secondComboIsADigit = secondSplitLetters.length() == 1 && StringUtils.isDigit(secondSplitLetters.charAt(0));
+        boolean secondComboHasFirstDigit = secondSplitLetters.length() > 1 && StringUtils.isDigit(secondSplitLetters.charAt(0));
+        boolean isFirstComboAWord = dictionary.isWord(firstSplitLetters);
 
         boolean continueProcessing = false;
 
         if ( isFirstComboAWord && secondComboIsADigit) {
-            wordCombinations.add(createNewWord(firstCombo, secondCombo)); // this is the end of the combination, so add it
+            validWords.add(createNewWord(firstSplitLetters, secondSplitLetters)); // this is the end of the combination, so add it
         } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
             continueProcessing = true;
         } else if ( isFirstComboAWord || firstComboIsADigit) {
@@ -79,13 +79,13 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         }
 
         if ( continueProcessing ) {
-            wordCombinations.addAll(
-                    getWordSplits(secondCombo)
+            validWords.addAll(
+                    getWordSplits(secondSplitLetters)
                             .parallelStream()
-                            .map(s -> createNewWord(firstCombo, s))
+                            .map(s -> createNewWord(firstSplitLetters, s))
                             .collect(Collectors.toSet()));
         }
-        return wordCombinations;
+        return validWords;
     }
 
     private String createNewWord(String word) {

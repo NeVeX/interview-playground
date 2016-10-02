@@ -7,23 +7,40 @@ import java.util.*;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
+ * <br>Use this converter factory to create various instances of converters for use.
+ * <br>All instances implement {@link Converter}
  */
 public final class ConverterFactory {
 
     private ConverterFactory() { }
 
+    /**
+     * @returns - Returns the converter that supports converting Long numbers to letters as combinations
+     */
     static Converter<Long, String> longNumberToLetters() {
         return DefaultHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER;
     }
 
+    /**
+     * @return - Returns an instance that supports conversion of Long numbers to Words using the default dictionary
+     */
     static Converter<Long, String> longNumberToWords() {
         return longNumberToWords(DictionaryFactory.getDefault());
     }
 
+    /**
+     * Create an instance of the {@link Converter} using the given input dictionary {@link Dictionary}
+     * @param dictionary - The non null dictionary to use for conversions
+     * @return - The new instance to use for conversions
+     */
     public static Converter<Long, String> longNumberToWords(Dictionary dictionary) {
         return new PhoneNumberToWordConverter(DefaultHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
     }
 
+    /**
+     * Static class to hold the default implementations we have.
+     * This setup allows for easy lazy init and thread safety
+     */
     private static class DefaultHolder {
 
         private final static NumberToLettersConverter DEFAULT_NUMBER_TO_LETTER_CONVERTER;
