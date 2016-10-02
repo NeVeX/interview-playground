@@ -6,14 +6,33 @@ This application aims to solve the requirements/problem which can be found in th
 At a high lever, the application, when run, can parse input phone numbers (from files or command line input) and convert
 those numbers to dictionary words, where possible.
 
-For example; Given the input 225563, one of the outputs would be "CALL-ME".
+### Digit to Letter Conversion Mapping
+The Digit to Letter conversion is shown below - this mapping is used in the application when determing what letters
+can take a digits' place in a phone number conversion.
+
+| Digit         | Letter Combination Options |
+| ------------- |:--------------------------:|
+| 0             | 0                          |
+| 1             | 1                          |
+| 2             | a, b, c                    |
+| 3             | d, e, f                    |
+| 4             | g, h, i                    |
+| 5             | j, k, l                    |
+| 6             | m, n, o                    |
+| 7             | p, q, r, s                 |
+| 8             | t, u, v                    |
+| 9             | w, x, y, z                 |
+
+For example; Given the input 1225563, one of the outputs would be "1-CALL-ME".
+
+### Building the application
 
 This application was built using:
   - Language: Java 8
   - IDE: IntelliJ 16.1
   - Build System: Gradle 2.3
 
-### Building the application
+You will need the Java and Gradle minimum versions above to build the application.
 Note: In the **release** directory, there is an already built application that can be used (without having to build the source).
 
 To build (and run the tests of) the application source code, run the following in the root of the project (where gradle.build is)
@@ -29,6 +48,7 @@ $ gradle jar
 This will create the self-contained runnable application called **phone-number-to-word-converter-1.0.0.jar** in the **build/libs/** folder. See the next section for running this application.
 
 ### Running the application
+Note: You must have Java 8 at a minimum installed to run this application.
 This application has various modes that it can be run within.
 
 The application can run without any argument input - in this mode the default dictionary is used and all phone numbers are prompted for.
@@ -105,7 +125,7 @@ If there are any problems with the application, the log files will contain more 
 
 ### Application assumptions and limitations
 
-- Phone numbers (when converted to Long) will fit within it's range. Using (http://stackoverflow.com/questions/3350500/international-phone-number-max-and-min)
-  phone numbers should not exceed 16 digits, hence the Long data type can hold such numbers
-  -- As such very large numbers are not supported by this application (but can be supported in a later release)
+- Phone numbers (when converted to Long) will fit within it's range. Phone numbers should not generally exceed 16 digits
+(http://stackoverflow.com/questions/3350500/international-phone-number-max-and-min), hence the Long data type can hold such numbers. As such,
+  very large numbers are not supported by this application, but can be supported in a later release.
 - The encoding of the file is not known ahead of time - the encoding use is the default of the JVM
