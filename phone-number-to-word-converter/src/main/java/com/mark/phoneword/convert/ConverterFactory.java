@@ -10,21 +10,21 @@ import java.util.*;
  */
 public final class ConverterFactory {
 
+    private ConverterFactory() { }
 
-    public static Converter<Long, String> longNumberToLetters() {
-        return Holder.DEFAULT_NUMBER_TO_LETTER_CONVERTER;
+    static Converter<Long, String> longNumberToLetters() {
+        return DefaultHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER;
     }
 
-    public static Converter<Long, String> longNumberToWords() {
+    static Converter<Long, String> longNumberToWords() {
         return longNumberToWords(DictionaryFactory.getDefault());
     }
 
     public static Converter<Long, String> longNumberToWords(Dictionary dictionary) {
-        return new PhoneNumberToWordConverter(Holder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
+        return new PhoneNumberToWordConverter(DefaultHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
     }
 
-    private static class Holder {
-
+    private static class DefaultHolder {
 
         private final static NumberToLettersConverter DEFAULT_NUMBER_TO_LETTER_CONVERTER;
 

@@ -28,7 +28,7 @@ public class PhoneNumberToWordApplication {
     private final static int EXIT_CODE_NO_DICTIONARY_LOADED = 1;
     private final static int EXIT_CODE_INPUT_PHONE_FILE_NOT_LOADED = 2;
 
-    private int run(String[] args) {
+    int run(String[] args) {
         LOGGER.info("The phone number to word application has started");
         int exitCode;
 

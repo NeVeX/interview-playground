@@ -15,11 +15,12 @@ public final class FileReaderFactory {
         return Holder.LONGS_ONLY_LINE_FILE_READER;
     }
 
+    private FileReaderFactory() { }
+
     private static class Holder {
 
         private final static FileReader<Set<String>> LETTERS_ONLY_LINE_FILE_READER = new LettersOnlyLineFileReader();
         private final static FileReader<Set<Long>> LONGS_ONLY_LINE_FILE_READER = new LongsOnlyLineFileReader();
-
 
     }
 

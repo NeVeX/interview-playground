@@ -31,7 +31,7 @@ public class NumberUtils {
         return numberSplit.stream().map(Long::byteValue).collect(Collectors.toList());
     }
 
-    public static Optional<Long> tryConvert(String string) {
+    static Optional<Long> tryConvert(String string) {
         if ( StringUtils.isNotBlank(string)) {
             try {
                 return Optional.of(Long.valueOf(string.trim()));

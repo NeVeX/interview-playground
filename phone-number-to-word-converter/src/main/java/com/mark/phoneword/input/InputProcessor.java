@@ -63,7 +63,7 @@ public class InputProcessor {
                     .append(inputNumber)
                     .append("]:")
                     .append(System.lineSeparator());
-            convertedWords.forEach( word -> stringBuilder.append(word).append(System.lineSeparator()));
+            convertedWords.forEach( word -> stringBuilder.append("  - ").append(word).append(System.lineSeparator()));
             printInfo(stringBuilder.toString());
         } else {
             printInfo("No suitable word combinations found for input number ["+inputNumber+"]");
