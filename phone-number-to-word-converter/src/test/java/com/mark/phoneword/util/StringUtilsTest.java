@@ -2,9 +2,7 @@ package com.mark.phoneword.util;
 
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by Mark Cunningham on 9/28/2016.
@@ -57,7 +55,61 @@ public class StringUtilsTest {
         assertTrue("Characters should of been digits", StringUtils.areDigits(one, two));
         one = ' ';
         assertFalse("One of the characters is not a digit", StringUtils.areDigits(one, two));
+    }
 
+    @Test
+    public void assertGetLettersOnlyWorks() {
+        String input = "abcd";
+        String output = StringUtils.getLettersOnly(input);
+        assertEquals(input, output);
+
+        input = "abcd!!!!";
+        output = StringUtils.getLettersOnly(input);
+        assertEquals("abcd", output);
+
+        input = "";
+        output = StringUtils.getLettersOnly(input);
+        assertEquals("", output);
+
+        input = "12345";
+        output = StringUtils.getLettersOnly(input);
+        assertEquals("", output);
+
+        input = "a2b$c44";
+        output = StringUtils.getLettersOnly(input);
+        assertEquals("abc", output);
+
+        input = "~!@#$%^*()_+}{\":?><|\\][=-;'/.,`1234567890']      a";
+        output = StringUtils.getLettersOnly(input);
+        assertEquals("a", output);
+
+    }
+
+    @Test
+    public void assertGetNumbersOnlyWorks() {
+        String input = "123456";
+        String output = StringUtils.getNumbersOnly(input);
+        assertEquals(input, output);
+
+        input = "123!!!!";
+        output = StringUtils.getNumbersOnly(input);
+        assertEquals("123", output);
+
+        input = "";
+        output = StringUtils.getNumbersOnly(input);
+        assertEquals("", output);
+
+        input = "abcdefg";
+        output = StringUtils.getNumbersOnly(input);
+        assertEquals("", output);
+
+        input = "a2b$c44";
+        output = StringUtils.getNumbersOnly(input);
+        assertEquals("244", output);
+
+        input = "~!@#$%^*()_+}{\":?><|\\][=-;'/.,`abcdefghijklmnopqrstuvwxyz']      4";
+        output = StringUtils.getNumbersOnly(input);
+        assertEquals("4", output);
 
     }
 }

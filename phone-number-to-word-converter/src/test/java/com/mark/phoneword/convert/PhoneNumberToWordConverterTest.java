@@ -2,7 +2,7 @@ package com.mark.phoneword.convert;
 
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

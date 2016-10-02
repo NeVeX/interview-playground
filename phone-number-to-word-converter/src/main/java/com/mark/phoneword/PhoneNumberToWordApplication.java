@@ -8,9 +8,6 @@ import com.mark.phoneword.dictionary.DictionaryFactory;
 import com.mark.phoneword.input.InputArgumentReader;
 import com.mark.phoneword.input.InputProcessor;
 
-import static com.mark.phoneword.util.OutputUtils.*;
-
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -19,11 +16,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import static com.mark.phoneword.util.OutputUtils.*;
+
 /**
  * Created by Mark Cunningham on 9/29/2016.
  */
 public class PhoneNumberToWordApplication {
     private final static Logger LOGGER = Logger.getLogger(PhoneNumberToWordApplication.class.getName());
+
     private final static int EXIT_CODE_OK = 0;
     private final static int EXIT_CODE_NO_DICTIONARY_LOADED = 1;
     private final static int EXIT_CODE_INPUT_PHONE_FILE_NOT_LOADED = 2;
@@ -43,9 +43,14 @@ public class PhoneNumberToWordApplication {
         } else {
             exitCode = EXIT_CODE_NO_DICTIONARY_LOADED;
         }
-
+        printExitMessage();
         LOGGER.log(Level.INFO, "The phone number to word application is exiting with exit code {0}", exitCode);
         return exitCode;
+    }
+
+    private void printExitMessage() {
+        printInfo("Thank you for using this Phone Number to Word Application - Goodbye! :-)");
+        printInfo("");
     }
 
     private Dictionary loadDictionary(InputArgumentReader inputArgumentReader) {
@@ -95,20 +100,20 @@ public class PhoneNumberToWordApplication {
     }
 
     public static void main(String[] args) {
-        setupLogging();
+        setupSimpleLogging();
         int exitCode = new PhoneNumberToWordApplication().run(args);
         System.exit(exitCode);
     }
 
-    private static void setupLogging() {
-//        Logger globalLogger = Logger.getGlobal();
+    private static void setupSimpleLogging() {
         try {
-            FileHandler fileHandler = new FileHandler("phone-number-to-word-converter.log");
+            Logger applicationRootLogger = Logger.getLogger("com.mark");
+            // Create a file handler - set to 10mb files at 5 max to keep
+            FileHandler fileHandler = new FileHandler("phone-number-to-word-converter.log", 10000000, 5, true);
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
-
-            LOGGER.addHandler(fileHandler);
-            LOGGER.setUseParentHandlers(false); // don't send logs up the chain (we don't want logs appearing onscreen for example)
+            applicationRootLogger.addHandler(fileHandler);
+            applicationRootLogger.setUseParentHandlers(false); // don't send logs up the chain (we don't want logs appearing onscreen for example)
         } catch (Exception e ) {
             // This isn't great, but we'll decide to let the program continue
             printWarning("There was a problem loading the log file, the application will continue but without logging. " +

@@ -1,6 +1,5 @@
 package com.mark.phoneword.dictionary;
 
-import com.mark.phoneword.dictionary.Dictionary;
 import org.junit.Test;
 
 import java.util.HashSet;

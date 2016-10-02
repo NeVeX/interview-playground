@@ -3,7 +3,6 @@ package com.mark.phoneword.dictionary;
 
 import com.mark.phoneword.data.read.FileReaderFactory;
 
-import java.io.File;
 import java.util.Optional;
 import java.util.Set;
 

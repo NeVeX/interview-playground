@@ -3,10 +3,11 @@ package com.mark.phoneword.input;
 import com.mark.phoneword.convert.Converter;
 import com.mark.phoneword.util.StringUtils;
 
-import static com.mark.phoneword.util.OutputUtils.*;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+
+import static com.mark.phoneword.util.OutputUtils.*;
 
 /**
  * Created by Mark Cunningham on 9/30/2016.

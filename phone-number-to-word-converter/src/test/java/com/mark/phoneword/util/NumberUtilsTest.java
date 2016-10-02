@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,6 +47,18 @@ public class NumberUtilsTest {
         expectedNumbers.clear();
         splitNumbers = NumberUtils.splitToList(number);
         assertContainsExactly(splitNumbers, expectedNumbers);
+    }
+
+    @Test
+    public void assertLongConversionWorks() {
+        String longString = "1234";
+        assertThat(NumberUtils.tryConvert(longString)).isEqualTo(Optional.of(1234L));
+        longString = "12345       ";
+        assertThat(NumberUtils.tryConvert(longString)).isEqualTo(Optional.of(12345L));
+        longString = "abc";
+        assertThat(NumberUtils.tryConvert(longString)).isEqualTo(Optional.empty());
+        longString = "-45";
+        assertThat(NumberUtils.tryConvert(longString)).isEqualTo(Optional.of(-45L));
     }
 
     /**

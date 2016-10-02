@@ -3,10 +3,7 @@ package com.mark.phoneword.data.read;
 import com.mark.phoneword.util.StringUtils;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +35,7 @@ public abstract class FileReader<T> {
 
     public Optional<T> readFile(String inputFile) {
         if (!StringUtils.isBlank(inputFile)) {
+            LOGGER.info("Attempting to read file ["+inputFile+"]");
             try (InputStream is = new FileInputStream(inputFile) ) {
                 return readStream(inputFile, is);
             } catch (IOException e ) {

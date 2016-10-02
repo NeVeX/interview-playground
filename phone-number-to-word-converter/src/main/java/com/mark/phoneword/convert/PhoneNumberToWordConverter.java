@@ -1,13 +1,13 @@
 package com.mark.phoneword.convert;
 
-import com.mark.phoneword.dictionary.DictionaryFactory;
 import com.mark.phoneword.dictionary.Dictionary;
 import com.mark.phoneword.util.StringUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 
 /**
@@ -35,7 +35,6 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         Set<String> letterCombinations = longToLetterConverter.convert(number);
         if ( !letterCombinations.isEmpty() ) {
             return letterCombinations
-//                    .parallelStream()
                     .parallelStream()
                     .map(this::getWordSplits)
                     .flatMap(Collection::parallelStream)
@@ -64,18 +63,7 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         String secondCombo = letterCombination.substring(index, letterCombination.length());
         Set<String> wordCombinations = new HashSet<>();
 
-        if ( letterCombination.equals("1ccjk1of1")) {
-             //TODO:
-            // just get everything as is
-            // then at the end, remove all numbers and put it through the splitter - if it comes back, then golden
-            // 1callme1 => callme => call-me ==> 1-call-me-1
-            // 1call3me1 => callme => call-me ==> 1-call-3-me-1
-
-            this.toString();
-        }
-
         boolean firstComboIsADigit = firstCombo.length() == 1 && StringUtils.isDigit(firstCombo.charAt(0));
-//        boolean firstComboHasLastDigit = index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1));
         boolean secondComboIsADigit = secondCombo.length() == 1 && StringUtils.isDigit(secondCombo.charAt(0));
         boolean secondComboHasFirstDigit = secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0));
         boolean isFirstComboAWord = dictionary.isWord(firstCombo);
@@ -90,30 +78,6 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
             continueProcessing = true;
         }
 
-
-
-//        if ( isFirstComboAWord || firstComboHasLastDigit || secondComboHasFirstDigit || secondComboIsADigit) {
-//            if ( isFirstComboAWord && secondComboIsADigit ) {
-//                wordCombinations.add(createNewWord(firstCombo, secondCombo));
-//            } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
-//                continueProcessing = true;
-//            } else if (isFirstComboAWord) {
-//                continueProcessing = true;
-//            }
-//        }
-
-//        if ( dictionary.isWord(firstCombo)) {
-//            if ( firstComboHasLastDigit) {
-//                wordCombinations.add(createNewWord(firstCombo, secondCombo));
-//            } else if ( secondComboHasFirstDigit) {
-//                wordCombinations.addAll(
-//                    getWordSplits(secondCombo)
-//                        .stream()
-//                        .map(s -> createNewWord(firstCombo, s))
-//                        .collect(Collectors.toSet()));
-//            }
-//        }
-
         if ( continueProcessing ) {
             wordCombinations.addAll(
                     getWordSplits(secondCombo)
@@ -121,18 +85,6 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
                             .map(s -> createNewWord(firstCombo, s))
                             .collect(Collectors.toSet()));
         }
-
-
-//        // Check if the first word combination is either a word or a number
-//        if ( dictionary.isWord(firstCombo) || ) {
-//            if (dictionary.isWord(firstCombo) && ())) {
-//                wordCombinations.add(createNewWord(firstCombo, secondCombo));
-//            } else if (dictionary.isWord(firstCombo) && (secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0)))) {
-//
-//            } else if (dictionary.isWord(firstCombo)) {
-//
-//            }
-//        }
         return wordCombinations;
     }
 

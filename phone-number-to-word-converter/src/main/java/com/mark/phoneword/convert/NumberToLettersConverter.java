@@ -4,10 +4,7 @@ import com.mark.phoneword.util.NumberUtils;
 import com.mark.phoneword.util.StringUtils;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Created by Mark Cunningham on 9/27/2016.

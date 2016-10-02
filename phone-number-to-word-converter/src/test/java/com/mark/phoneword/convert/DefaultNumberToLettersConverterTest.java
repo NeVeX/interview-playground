@@ -1,8 +1,8 @@
 package com.mark.phoneword.convert;
 
-import static org.assertj.core.api.Assertions.*;
-
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Mark Cunningham on 9/27/2016.
