@@ -20,7 +20,7 @@ public class DictionaryFactoryTest {
         assertThat(dictionary.isWord("mark")).isTrue();
         assertThat(dictionary.isWord("MARK")).isTrue();
         assertThat(dictionary.isWord("    mARk   ")).isTrue();
-        assertThat(dictionary.getWordCount()).as("Check default dictionary size").isEqualTo(150629);
+        assertThat(dictionary.getWordCount()).as("Check default dictionary size").isEqualTo(150552);
     }
 
     @Test
@@ -39,5 +39,6 @@ public class DictionaryFactoryTest {
         assertThat(customDictionary.getWordCount()).isEqualTo(3); // only 3 words expected
 
     }
+
 
 }

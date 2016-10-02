@@ -49,6 +49,7 @@ This will create the self-contained runnable application called **phone-number-t
 
 ### Running the application
 Note: You must have Java 8 at a minimum installed to run this application.
+
 This application has various modes that it can be run within.
 
 The application can run without any argument input - in this mode the default dictionary is used and all phone numbers are prompted for.
@@ -74,14 +75,17 @@ Note: you can provided both optional arguments at the same time if required.
 
 #### Phone Number Prompt
 When running the application without providing a file of phone numbers, the application will prompt you for input of phone numbers.
+
 Note: All non digit characters are ignored from input.
 
 #### Phone Number File
 If you provide a file of phone numbers, note that this file must contain each individual phone number on a separate line.
+
 Note: All non digit characters are ignored in the file
 
 #### Dictionary Override File
 If you provide a dictionary file, note that each individual word must be on a separate line.
+
 Note: All non-characters are ignored in the file
 
 

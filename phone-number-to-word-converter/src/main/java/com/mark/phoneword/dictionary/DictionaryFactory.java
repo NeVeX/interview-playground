@@ -30,7 +30,7 @@ public final class DictionaryFactory {
      * @return - the new dictionary if successful, otherwise, an empty optional
      */
     public static Optional<Dictionary> fromFile(String pathToFile) {
-        Optional<Set<String>> readInDictionaryOptional = FileReaderFactory.lettersOnlyLineReader().readFile(pathToFile);
+        Optional<Set<String>> readInDictionaryOptional = FileReaderFactory.dictionaryLineReader().readFile(pathToFile);
         if ( readInDictionaryOptional.isPresent()) {
             return Optional.of(new Dictionary(readInDictionaryOptional.get()));
         }
@@ -52,7 +52,7 @@ public final class DictionaryFactory {
              * Loading the default dictionary in the application - which is the english dictionary
              * Note: This dictionary was obtained from: https://sourceforge.net/projects/jazzy/?source=typ_redirect
              */
-            Optional<Set<String>> englishWordsOptional = FileReaderFactory.lettersOnlyLineReader().readResource(ENGLISH_DICTIONARY_LOCATION);
+            Optional<Set<String>> englishWordsOptional = FileReaderFactory.dictionaryLineReader().readResource(ENGLISH_DICTIONARY_LOCATION);
             if ( englishWordsOptional.isPresent()) {
                 INSTANCE = new Dictionary(englishWordsOptional.get());
             } else {

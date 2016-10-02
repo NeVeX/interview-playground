@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
- * <br>Extension of the {@link FileReader} that supports reading Longs only from files
+ * <br>Extension of the {@link FileReader} that supports reading {@link Long} only from files
  * Note - all non longs (numbers) are ignored in the file read, letters and punctuation for example
  */
 class LongsOnlyLineFileReader extends FileReader<Set<Long>> {

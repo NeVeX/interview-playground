@@ -40,18 +40,18 @@ public class NumbersOnlyLineFileReaderTest {
 
     @Test
     public void assertNoExceptionsForNullInputFile() {
-        FileReaderFactory.lettersOnlyLineReader().readFile(null);
+        FileReaderFactory.dictionaryLineReader().readFile(null);
     }
 
     @Test
     public void assertNoExceptionsForBlankInputFile() {
-        FileReaderFactory.lettersOnlyLineReader().readFile("");
+        FileReaderFactory.dictionaryLineReader().readFile("");
     }
 
 
     @Test
     public void assertNoExceptionsForNonExistenceInputFile() {
-        FileReaderFactory.lettersOnlyLineReader().readFile(UUID.randomUUID().toString());
+        FileReaderFactory.dictionaryLineReader().readFile(UUID.randomUUID().toString());
     }
     
 }
