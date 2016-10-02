@@ -7,14 +7,15 @@ import java.util.Set;
 
 /**
  * Created by Mark Cunningham on 9/28/2016.
+ * <br>Dictionary class that holds all words that can be checked against.
  */
 public final class Dictionary {
 
     private final Set<String> dictionary;
 
     /**
-     * NOTE: Words must be all lower case and trimmed
-     * @param dictionary
+     * Creates a new instance of the dictionary.
+     * <br>Note, each string must be valid, trimmed and in lower case
      */
     Dictionary(Set<String> dictionary) {
         if ( dictionary == null || dictionary.isEmpty()) {
@@ -23,6 +24,11 @@ public final class Dictionary {
         this.dictionary = Collections.unmodifiableSet(dictionary);
     }
 
+    /**
+     * Given a string, this method checks if it's a word against the current dictionary.
+     * @param word - the non null/empty word to check - can be any case
+     * @return - True if it's a word, false otherwise
+     */
     public boolean isWord(String word) {
         if (StringUtils.isNotBlank(word)) {
             return dictionary.contains(word.trim().toLowerCase());
@@ -31,6 +37,9 @@ public final class Dictionary {
         }
     }
 
+    /**
+     * @return - how many words are in this dictioanry
+     */
     int getWordCount() {
         return dictionary.size();
     }

@@ -26,11 +26,9 @@ class NumberToLettersConverter implements Converter<Long, String> {
         // Use the input and create our own internal reference to the data
         this.digitToLetters = digitToLetters.entrySet()
             .stream()
-            .filter(this::isMapEntryValid)
+            .filter(this::isInputMapEntryValid)
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (k,v) -> Collections.unmodifiableSet(v)));
     }
-
-
 
     /**
      * Converts the given number into a Set of letter combinations using this instance's number to letter conversion map.
@@ -170,12 +168,13 @@ class NumberToLettersConverter implements Converter<Long, String> {
         return !StringUtils.areDigits(prefix.charAt(prefix.length()-1), postFix);
     }
 
+
     /**
-     * Determine if the input number to letters is a valid entry
-     * @param entry - the entry to check (null key, empty sets...)
-     * @return - True if this entry is good, false otherwise
+     * Checks the given map entry to make sure it's valid (null entries ..etc)
+     * @param entry - The entry to check
+     * @return - True if it's valid, false otherwise
      */
-    private boolean isMapEntryValid(Map.Entry<Byte, Set<Character>> entry) {
+    private boolean isInputMapEntryValid(Map.Entry<Byte, Set<Character>> entry) {
         Byte key = entry.getKey();
         Set<Character> letters = entry.getValue();
         return key != null && letters != null && !letters.isEmpty()

@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
+ * <br>Extension of the {@link FileReader} that supports reading Longs only from files
+ * Note - all non longs (numbers) are ignored in the file read, letters and punctuation for example
  */
 class LongsOnlyLineFileReader extends FileReader<Set<Long>> {
 
@@ -18,9 +20,10 @@ class LongsOnlyLineFileReader extends FileReader<Set<Long>> {
         Set<Long> readInLongs = br.lines()
             .parallel()
             .filter(StringUtils::isNotBlank)
+            // Extract only numbers from the input (ignoring invalid characters)
             .map( word -> StringUtils.getNumbersOnly(word.trim().toLowerCase()))
             .filter(StringUtils::isNotBlank) // parse above can make the string empty
-            .map(Long::valueOf)
+            .map(Long::valueOf) // convert to Long
             .collect(Collectors.toCollection(HashSet::new));
         if ( readInLongs.isEmpty()) {
             return null; // Return null to indicate no data read

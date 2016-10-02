@@ -4,10 +4,7 @@ import com.mark.phoneword.TestingUtils;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +36,22 @@ public class NumbersOnlyLineFileReaderTest {
         assertThat(readLines).contains(445L);
 
         assertThat(readLines).size().isEqualTo(3); // No other lines should be read
+    }
+
+    @Test
+    public void assertNoExceptionsForNullInputFile() {
+        FileReaderFactory.lettersOnlyLineReader().readFile(null);
+    }
+
+    @Test
+    public void assertNoExceptionsForBlankInputFile() {
+        FileReaderFactory.lettersOnlyLineReader().readFile("");
+    }
+
+
+    @Test
+    public void assertNoExceptionsForNonExistenceInputFile() {
+        FileReaderFactory.lettersOnlyLineReader().readFile(UUID.randomUUID().toString());
     }
     
 }

@@ -26,7 +26,7 @@ public class TestingUtils {
         return randomFile;
     }
 
-    public static File createRandomFile() {
+    static File createRandomFile() {
         try {
             File randomFile = File.createTempFile(UUID.randomUUID().toString(), ".random");
             randomFile.deleteOnExit(); // delete the file on exit for cleaniness
@@ -37,7 +37,7 @@ public class TestingUtils {
         }
     }
 
-    public static void writeDataToFile(String data, File file) {
+    static void writeDataToFile(String data, File file) {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(file.toURI()))) {
             writer.write(data);
         } catch (Exception e ) {

@@ -11,6 +11,7 @@ import static com.mark.phoneword.util.OutputUtils.*;
 
 /**
  * Created by Mark Cunningham on 9/30/2016.
+ * <br>This class provides methods that help with the processing of user input and data input
  */
 public class InputProcessor {
 
@@ -19,6 +20,10 @@ public class InputProcessor {
 
     private final Converter<Long, String> converter;
 
+    /**
+     * Creates a new instance of the the processor, using the converter as provided.
+     * @param converter - The converter to use for all data processing
+     */
     public InputProcessor(Converter<Long, String> converter) {
         if ( converter == null) {
             throw new IllegalArgumentException("Provided converter cannot be null");
@@ -26,23 +31,32 @@ public class InputProcessor {
         this.converter = converter;
     }
 
+    /**
+     * Invoking this method will listen for input from the standard input, hence this method blocks.
+     * This method exists only when the user asks to exit/stop processing from standard in
+     */
     public void processStdIn() {
-
+        // Create a scanner using standard in
         Scanner inputScanner = new Scanner(System.in);
         while ( true ) {
-            printInput(System.lineSeparator()+INPUT_NUMBER);
+            printInput(System.lineSeparator()+INPUT_NUMBER); // print how to enter numbers and quit
 
-            String inputReceived = inputScanner.next();
+            String inputReceived = inputScanner.next(); // This blocks until the user enters input
 
             if ( inputReceived.trim().toLowerCase().equals(QUIT_INPUT)) {
+                // We are quitting...
                 break;
             }
-            printWorkingStatus();
-            Optional<Long> parsedLongOptional = StringUtils.tryConvert(inputReceived);
 
+            printInfo("Working...");
+
+            // Check what we got as input
+            Optional<Long> parsedLongOptional = StringUtils.tryConvertAfterRemovingInvalidChars(inputReceived);
             if ( parsedLongOptional.isPresent()) {
+                // We have a number, so let's convert it using the converter in this instance
                 long parsedNumber = parsedLongOptional.get();
                 Set<String> convertedWords = convertToSet(parsedNumber);
+                // Print the result to the terminal
                 printConversionResult(parsedNumber, convertedWords);
             } else {
                 printError("Could not parse input ["+inputReceived+"] into a number");
@@ -50,10 +64,9 @@ public class InputProcessor {
         }
     }
 
-    private void printWorkingStatus() {
-        printInfo("Working...");
-    }
-
+    /**
+     * For the given result, print it out to the screen
+     */
     private void printConversionResult(long inputNumber, Set<String> convertedWords) {
         if ( !convertedWords.isEmpty()) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -70,15 +83,26 @@ public class InputProcessor {
         }
     }
 
+    /**
+     * Converts the number into a set of Strings
+     */
     private Set<String> convertToSet(long number) {
         return this.converter.convert(number);
     }
 
+    /**
+     * A wrapper to the {{@link #convertToSet(long)}} that creates a result object also
+     */
     private ConversionResult convertToResult(long number) {
         Set<String> convertedWords = this.converter.convert(number);
         return new ConversionResult(number, convertedWords);
     }
 
+    /**
+     * This method will batch process all the input numbers and print it's result to the screen
+     * <br>Note this method may take some time to complete
+     * @param numbersToProcess - the numbers to process
+     */
     public void processBatch(Set<Long> numbersToProcess) {
         if ( numbersToProcess != null && !numbersToProcess.isEmpty()) {
             printInfo("Starting batch processBatch to convert all ["+numbersToProcess.size()+"] phone numbers to words...");
@@ -91,6 +115,9 @@ public class InputProcessor {
         }
     }
 
+    /**
+     * Simple wrapper class that represents conversion results and is used within streams
+     */
     private static class ConversionResult {
         private long inputNumber;
         private Set<String> convertedWords;

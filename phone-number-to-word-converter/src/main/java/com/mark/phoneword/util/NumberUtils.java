@@ -1,12 +1,16 @@
 package com.mark.phoneword.util;
 
+import com.mark.phoneword.data.read.FileReader;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 9/28/2016.
+ * <br>A collection of utils that provided helpful methods for number related actions
  */
 public class NumberUtils {
 
@@ -31,12 +35,17 @@ public class NumberUtils {
         return numberSplit.stream().map(Long::byteValue).collect(Collectors.toList());
     }
 
+    /**
+     * Given a string, this method attempts to convert it to a Long
+     * @param string - the string to convert
+     * @return - Optional that will either contain the converted long or be empty
+     */
     static Optional<Long> tryConvert(String string) {
         if ( StringUtils.isNotBlank(string)) {
             try {
                 return Optional.of(Long.valueOf(string.trim()));
             } catch (NumberFormatException numberFormatException) {
-                // need to log...
+                // intentionally ignoring this
             }
         }
         return Optional.empty();

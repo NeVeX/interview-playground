@@ -20,22 +20,32 @@ import static com.mark.phoneword.util.OutputUtils.*;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
+ * <br>This is the entry into the Application. The application is started with a call to either the
+ * static {{@link #main(String[])}} or {{@link #run(String[])}} methods.
  */
 public class PhoneNumberToWordApplication {
     private final static Logger LOGGER = Logger.getLogger(PhoneNumberToWordApplication.class.getName());
 
+    /**
+     * The set of exit codes that will be returned to the JVM on exit
+     */
     private final static int EXIT_CODE_OK = 0;
     private final static int EXIT_CODE_NO_DICTIONARY_LOADED = 1;
     private final static int EXIT_CODE_INPUT_PHONE_FILE_NOT_LOADED = 2;
 
+    /**
+     * Starts a new processing run with the given input arguments
+     * @param args - the application input arguments. See {@link InputArgumentReader} for more info
+     * @return - the exit code to return to the JVM
+     */
     int run(String[] args) {
         LOGGER.info("The phone number to word application has started");
         int exitCode;
 
         InputArgumentReader inputArgumentReader = new InputArgumentReader(args);
-
+        // Print welcome info using the parsed input
         printWelcomeMessage(inputArgumentReader.getArgumentUsageInfo(), inputArgumentReader.getArgumentValues());
-
+        // Determine what dictionary we are to use
         Dictionary dictionaryToUse = loadDictionary(inputArgumentReader);
 
         if ( dictionaryToUse != null) {
@@ -48,16 +58,18 @@ public class PhoneNumberToWordApplication {
         return exitCode;
     }
 
-    private void printExitMessage() {
-        printInfo("Thank you for using this Phone Number to Word Application - Goodbye! :-)");
-        printInfo("");
-    }
-
+    /**
+     * This method will return the dictionary to use within the application. If a file is provided as input,
+     * that dictionary is used, otherwise the default is used.
+     * @param inputArgumentReader - the current arguments
+     * @return - the dictionary to use (or null if none can be found)
+     */
     private Dictionary loadDictionary(InputArgumentReader inputArgumentReader) {
         // Check if we were given a dictionary file
         Optional<String> inputDictionaryFileOptional = inputArgumentReader.getDictionaryFile();
         if ( inputDictionaryFileOptional.isPresent()) {
             String inputDictionaryFile = inputDictionaryFileOptional.get();
+            // Use the factory to load the dictionary
             Optional<Dictionary> inputDictionaryOptional = DictionaryFactory.fromFile(inputDictionaryFile);
             if ( inputDictionaryOptional.isPresent()) {
                 return inputDictionaryOptional.get();
@@ -66,7 +78,7 @@ public class PhoneNumberToWordApplication {
                 return null;
             }
         } else {
-            return DictionaryFactory.getDefault();
+            return DictionaryFactory.getDefault(); // get the default application dictionary
         }
     }
 
@@ -89,6 +101,9 @@ public class PhoneNumberToWordApplication {
         return EXIT_CODE_OK;
     }
 
+    /**
+     * Prints the welcome information to the user on screen, plus the argument usage and values received.
+     */
     private void printWelcomeMessage(List<String> argumentInfo, List<String> argumentValues) {
         printInfo(System.lineSeparator()+"Welcome to the Phone Number to Word Application!");
         printInfo(System.lineSeparator()+"The following are the input options:");
@@ -99,12 +114,23 @@ public class PhoneNumberToWordApplication {
         printInfo(System.lineSeparator());
     }
 
+    private void printExitMessage() {
+        printInfo("Thank you for using this Phone Number to Word Application - Goodbye! :-)");
+        printInfo("");
+    }
+
+    /**
+     * The JVM entry point into the application. This method sets up the logging and then calls {{@link #run(String[])}}
+     */
     public static void main(String[] args) {
         setupSimpleLogging();
         int exitCode = new PhoneNumberToWordApplication().run(args);
         System.exit(exitCode);
     }
 
+    /**
+     * This method sets up simple logging for this application
+     */
     private static void setupSimpleLogging() {
         try {
             Logger applicationRootLogger = Logger.getLogger("com.mark");
@@ -113,7 +139,8 @@ public class PhoneNumberToWordApplication {
             SimpleFormatter formatter = new SimpleFormatter();
             fileHandler.setFormatter(formatter);
             applicationRootLogger.addHandler(fileHandler);
-            applicationRootLogger.setUseParentHandlers(false); // don't send logs up the chain (we don't want logs appearing onscreen for example)
+            // don't send logs up the chain (we don't want logs appearing onscreen for example)
+            applicationRootLogger.setUseParentHandlers(false);
         } catch (Exception e ) {
             // This isn't great, but we'll decide to let the program continue
             printWarning("There was a problem loading the log file, the application will continue but without logging. " +

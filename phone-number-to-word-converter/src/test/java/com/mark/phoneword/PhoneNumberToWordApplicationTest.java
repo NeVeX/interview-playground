@@ -22,7 +22,6 @@ public class PhoneNumberToWordApplicationTest {
         PhoneNumberToWordApplication application = new PhoneNumberToWordApplication();
         int exitCode = application.run(inputArgs);
         assertThat(exitCode).isEqualTo(0); // OK status expected (meaning everything was fine)
-
     }
 
     @Test
@@ -44,7 +43,6 @@ public class PhoneNumberToWordApplicationTest {
         PhoneNumberToWordApplication application = new PhoneNumberToWordApplication();
         int exitCode = application.run(inputArgs);
         assertThat(exitCode).isEqualTo(0); // OK status expected (meaning everything was fine)
-
     }
 
     @Test

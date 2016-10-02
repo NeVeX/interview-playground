@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
+ * <br>Extension of the {@link FileReader} that supports reading Letters only from files
+ * Note - all non letters are ignored in the file read, numbers and punctuation for example
  */
 class LettersOnlyLineFileReader extends FileReader<Set<String>> {
 
@@ -18,8 +20,9 @@ class LettersOnlyLineFileReader extends FileReader<Set<String>> {
         Set<String> readInLetters = br.lines()
             .parallel()
             .filter(StringUtils::isNotBlank)
+            // Parse the string and remove invalid characters
             .map( word -> StringUtils.getLettersOnly(word.trim().toLowerCase()))
-            .filter(StringUtils::isNotBlank) // parse above can make the string empty
+            .filter(StringUtils::isNotBlank) // parse above can make the string empty, so check again
             .collect(Collectors.toCollection(HashSet::new));
         if ( readInLetters.isEmpty()) {
             return null; // Return null to indicate no data read

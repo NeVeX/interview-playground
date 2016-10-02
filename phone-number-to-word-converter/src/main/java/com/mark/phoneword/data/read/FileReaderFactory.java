@@ -4,19 +4,29 @@ import java.util.Set;
 
 /**
  * Created by Mark Cunningham on 9/30/2016.
+ * <br> FileReader Factory that offers simple methods to get instances of various types of file readers
  */
 public final class FileReaderFactory {
 
+    /**
+     * @return - A letters only per line file reader (all numbers/punctuations are ignored)
+     */
     public static FileReader<Set<String>> lettersOnlyLineReader() {
         return Holder.LETTERS_ONLY_LINE_FILE_READER;
     }
 
+    /**
+     * @return - A numbers (Long) only per line file reader (all numbers/punctuations are ignored)
+     */
     public static FileReader<Set<Long>> longsOnlyLineReader() {
         return Holder.LONGS_ONLY_LINE_FILE_READER;
     }
 
     private FileReaderFactory() { }
 
+    /**
+     * Inner class to hold the default instances (this is lazy loaded and thread safe also)
+     */
     private static class Holder {
 
         private final static FileReader<Set<String>> LETTERS_ONLY_LINE_FILE_READER = new LettersOnlyLineFileReader();

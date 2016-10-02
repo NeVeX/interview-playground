@@ -6,8 +6,11 @@ import java.util.*;
 
 /**
  * Created by Mark Cunningham on 9/29/2016.
+ * <br>This class accepts a array of string arguments, which is parsed and provides methods to get various
+ * options from the inputs (such as dictionary files and phone number files)
  */
 public class InputArgumentReader {
+
     private final static String ARGUMENT_OPERATOR = "=";
     private final static String DICTIONARY_FILE_ARG = "-d";
     private final static String PHONE_NUMBERS_FILE_ARG = "-p";
@@ -18,6 +21,7 @@ public class InputArgumentReader {
     private final String phoneNumbersFileLocation;
 
     static {
+        // Create the definite list of input arguments that will be used to check against
         List<String> mutableList = new ArrayList<>();
         mutableList.add(DICTIONARY_FILE_ARG+ARGUMENT_OPERATOR+"/path/to/my.dictionary  ==> Optionally provide your own dictionary file to use for conversion");
         mutableList.add(PHONE_NUMBERS_FILE_ARG +ARGUMENT_OPERATOR+"/path/to/phone.numbers  ==> Optionally provide a file of phone numbers to convert to words");
@@ -58,6 +62,12 @@ public class InputArgumentReader {
         return Optional.ofNullable(phoneNumbersFileLocation);
     }
 
+    /**
+     * Given the input arguments, and the argument wanted, this method will try to get it's value.
+     * @param inputArgument - the argument wanted
+     * @param args - the input arguments
+     * @return - the value of the input argument, or null if not found
+     */
     private String getValueForArgument(String inputArgument, String[] args) {
         if ( args != null && args.length > 0) {
             Optional<String> foundValueOpt = Arrays.stream(args)
@@ -79,10 +89,16 @@ public class InputArgumentReader {
         return null;
     }
 
+    /**
+     * Get the list of strings that inform the usage of the arguments (what's expected ...etc)
+     */
     public List<String> getArgumentUsageInfo() {
         return ALL_ARGUMENTS_USAGE_INFO;
     }
 
+    /**
+     * For this instance, get the information for each value
+     */
     public List<String> getArgumentValues() {
         return givenArgumentValues;
     }
