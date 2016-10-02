@@ -82,7 +82,7 @@ class NumberToLettersConverter implements Converter<Long, String> {
                         .get(row - 1)
                         .stream()
                         .map(prefix -> appendPrefixToLetters(prefix, currentRow))
-                        .flatMap(Collection::stream)
+                        .flatMap(Collection::parallelStream)
                         .collect(Collectors.toSet());
                 if ( row == matrixOfLetters.size() -1 ) {
                     fullLengthLetters.addAll(newRowStrings);
@@ -96,7 +96,7 @@ class NumberToLettersConverter implements Converter<Long, String> {
     }
 
     private Set<String> appendPrefixToLetters(final String prefix, final Set<Character> letters) {
-        return letters.stream()
+        return letters.parallelStream()
             .filter( letter -> isLetterCombinationValid(prefix, letter))
             .map( letter -> prefix + letter )
             .collect(Collectors.toSet());

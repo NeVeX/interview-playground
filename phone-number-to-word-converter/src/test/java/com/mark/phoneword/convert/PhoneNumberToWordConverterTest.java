@@ -74,6 +74,7 @@ public class PhoneNumberToWordConverterTest {
         numberToWordConverter = ConverterFactory.longNumberToWords();
         matches = numberToWordConverter.convert(number);
         assertThat(matches).contains("1-ME-ME-1-ME-ME-1");
+        assertThat(matches).doesNotContain("1-MEME-1-MEME-1"); // MEME isn't a word in the included dictionary!
 
     }
 

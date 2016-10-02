@@ -13,7 +13,7 @@ import java.util.Set;
 public final class DictionaryFactory {
 
     private final static String RESOURCE_LOCATION = "dictionaries";
-    private final static String ENGLISH_DICTIONARY_LOCATION = RESOURCE_LOCATION + File.separator + "english.dic";
+    private final static String ENGLISH_DICTIONARY_LOCATION = RESOURCE_LOCATION+"/english.dic";
 
     public static Dictionary getDefault() {
         return DefaultDictionaryHolder.INSTANCE;

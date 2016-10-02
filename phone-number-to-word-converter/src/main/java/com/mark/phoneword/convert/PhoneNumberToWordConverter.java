@@ -36,9 +36,9 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         if ( !letterCombinations.isEmpty() ) {
             return letterCombinations
 //                    .parallelStream()
-                    .stream()
+                    .parallelStream()
                     .map(this::getWordSplits)
-                    .flatMap(Collection::stream)
+                    .flatMap(Collection::parallelStream)
                     .collect(Collectors.toSet());
         }
         return new HashSet<>();
@@ -51,7 +51,7 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         Set<String> wordSplits = IntStream.range(1, letterCombination.length())
 //                .parallel()
                 .mapToObj( index -> getWordSplitsUsingIndex(index, letterCombination) )
-                .flatMap(Collection::stream)
+                .flatMap(Collection::parallelStream)
                 .collect(Collectors.toSet());
         if ( dictionary.isWord(letterCombination)) {
             wordSplits.add(createNewWord(letterCombination)); // add the full word
@@ -117,7 +117,7 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         if ( continueProcessing ) {
             wordCombinations.addAll(
                     getWordSplits(secondCombo)
-                            .stream()
+                            .parallelStream()
                             .map(s -> createNewWord(firstCombo, s))
                             .collect(Collectors.toSet()));
         }

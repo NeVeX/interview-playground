@@ -1,7 +1,6 @@
 package com.mark.phoneword.data.read;
 
 import com.mark.phoneword.util.StringUtils;
-import com.sun.org.apache.regexp.internal.RE;
 
 import java.io.*;
 import java.util.HashSet;
@@ -42,7 +41,7 @@ public abstract class FileReader<T> {
             try (InputStream is = new FileInputStream(inputFile) ) {
                 return readStream(inputFile, is);
             } catch (IOException e ) {
-                LOGGER.log(Level.SEVERE, "An exception occurred while reading input file ["+inputFile+"]{0}", e);;
+                LOGGER.log(Level.SEVERE, "An exception occurred while reading file ["+inputFile+"]", e);
             }
         }
         return Optional.empty();
@@ -57,7 +56,7 @@ public abstract class FileReader<T> {
                 T result = process(br);
                 return Optional.ofNullable(result);
             } catch (IOException e) {
-                LOGGER.log(Level.SEVERE, "An exception occurred while reading the stream for resource ["+resource+"]{0}", e);
+                LOGGER.log(Level.SEVERE, "An exception occurred while reading the stream for resource ["+resource+"]", e);
             }
 
         }

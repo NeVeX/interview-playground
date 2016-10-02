@@ -19,8 +19,8 @@ public class InputArgumentReader {
 
     static {
         List<String> mutableList = new ArrayList<>();
-        mutableList.add(DICTIONARY_FILE_ARG+ARGUMENT_OPERATOR+"/path/to/my.dictionary  ==> Optionally provide your own dictionary file");
-        mutableList.add(PHONE_NUMBERS_FILE_ARG +ARGUMENT_OPERATOR+"/path/to/phone.numbers  ==> Optionally provide a file of phone numbers");
+        mutableList.add(DICTIONARY_FILE_ARG+ARGUMENT_OPERATOR+"/path/to/my.dictionary  ==> Optionally provide your own dictionary file to use for conversion");
+        mutableList.add(PHONE_NUMBERS_FILE_ARG +ARGUMENT_OPERATOR+"/path/to/phone.numbers  ==> Optionally provide a file of phone numbers to convert to words");
         ALL_ARGUMENTS_USAGE_INFO = Collections.unmodifiableList(mutableList);
     }
 
@@ -58,16 +58,15 @@ public class InputArgumentReader {
         return Optional.ofNullable(phoneNumbersFileLocation);
     }
 
-    private String getValueForArgument(String argument, String[] args) {
-        String argumentLowerCase = argument.trim().toLowerCase();
+    private String getValueForArgument(String inputArgument, String[] args) {
         if ( args != null && args.length > 0) {
             Optional<String> foundValueOpt = Arrays.stream(args)
                     .filter(StringUtils::isNotBlank)
-                    .map(s -> s.trim().toLowerCase())
-                    .filter(s -> {
-                            String argumentWithOperator = argumentLowerCase + ARGUMENT_OPERATOR;
-                            return s.length() > argumentWithOperator.length()
-                                && s.substring(0, argumentWithOperator.length()).equals(argumentWithOperator);
+                    .filter(validArg -> {
+                        String argumentLowerCase = validArg.trim().toLowerCase();
+                        String argumentToFind = inputArgument.toLowerCase() + ARGUMENT_OPERATOR;
+                        return argumentLowerCase.length() > argumentToFind.length()
+                            && argumentLowerCase.substring(0, argumentToFind.length()).equals(argumentToFind);
                     })
                     .findFirst();
             if ( foundValueOpt.isPresent()) {

@@ -14,6 +14,10 @@ public class OutputUtils {
         System.err.println("***ERROR: "+message);
     }
 
+    public static void printWarning(String message) {
+        System.err.println("*Warning: "+message);
+    }
+
     public static void printInput(String message) {
         System.out.print(message);
     }
