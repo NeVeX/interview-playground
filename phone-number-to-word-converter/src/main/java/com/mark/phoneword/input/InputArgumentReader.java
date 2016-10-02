@@ -14,7 +14,6 @@ public class InputArgumentReader {
     private final static String ARGUMENT_OPERATOR = "=";
     private final static String DICTIONARY_FILE_ARG = "-d";
     private final static String PHONE_NUMBERS_FILE_ARG = "-p";
-    private final static String NO_ARGUMENT_VALUE = "**None Provided**";
     private final static List<String> ALL_ARGUMENTS_USAGE_INFO;
     private final List<String> givenArgumentValues;
     private final String dictionaryFileLocation;
@@ -40,9 +39,11 @@ public class InputArgumentReader {
         phoneNumbersFileLocation = getValueForArgument(PHONE_NUMBERS_FILE_ARG, args);
         List<String> givenArgumentValues = new ArrayList<>();
         givenArgumentValues.add("Dictionary File   ==> "+
-                ( StringUtils.isBlank(dictionaryFileLocation) ? NO_ARGUMENT_VALUE : dictionaryFileLocation));
+                ( StringUtils.isBlank(dictionaryFileLocation) ?
+                        "**None provided - will use application default**" : dictionaryFileLocation));
         givenArgumentValues.add("Phone Number File ==> "+
-                ( StringUtils.isBlank(phoneNumbersFileLocation) ? NO_ARGUMENT_VALUE : phoneNumbersFileLocation));
+                ( StringUtils.isBlank(phoneNumbersFileLocation) ?
+                        "**None provided - will prompt for phone numbers**" : phoneNumbersFileLocation));
         this.givenArgumentValues = Collections.unmodifiableList(givenArgumentValues);
     }
 

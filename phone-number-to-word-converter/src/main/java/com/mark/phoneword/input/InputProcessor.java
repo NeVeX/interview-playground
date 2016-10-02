@@ -1,11 +1,13 @@
 package com.mark.phoneword.input;
 
 import com.mark.phoneword.convert.Converter;
+import com.mark.phoneword.util.OutputUtils;
 import com.mark.phoneword.util.StringUtils;
 
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import static com.mark.phoneword.util.OutputUtils.*;
 
@@ -14,6 +16,8 @@ import static com.mark.phoneword.util.OutputUtils.*;
  * <br>This class provides methods that help with the processing of user input and data input
  */
 public class InputProcessor {
+
+    private final static Logger LOGGER = Logger.getLogger(OutputUtils.class.getName());
 
     private final static String QUIT_INPUT = "q";
     private final static String INPUT_NUMBER = "Enter a number (or quit with '"+QUIT_INPUT+"'): ";
@@ -47,7 +51,7 @@ public class InputProcessor {
                 // We are quitting...
                 break;
             }
-
+            LOGGER.fine("Received user input ["+inputReceived+"]");
             printInfo("Working...");
 
             // Check what we got as input
@@ -105,7 +109,11 @@ public class InputProcessor {
      */
     public void processBatch(Set<Long> numbersToProcess) {
         if ( numbersToProcess != null && !numbersToProcess.isEmpty()) {
-            printInfo("Starting batch processBatch to convert all ["+numbersToProcess.size()+"] phone numbers to words...");
+
+            String message = "Starting batch processBatch to convert all ["+numbersToProcess.size()+"] phone numbers to words...";
+            printInfo(message);
+            LOGGER.info(message);
+
             numbersToProcess
                 .parallelStream()
                 .map(this::convertToResult)

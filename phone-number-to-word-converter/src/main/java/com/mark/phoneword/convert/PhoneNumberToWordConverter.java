@@ -100,23 +100,23 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         String firstSplitLetters = letterCombination.substring(0, index);
         String secondSplitLetters = letterCombination.substring(index, letterCombination.length());
 
-        boolean firstComboIsADigit = firstSplitLetters.length() == 1 && StringUtils.isDigit(firstSplitLetters.charAt(0));
-        boolean secondComboIsADigit = secondSplitLetters.length() == 1 && StringUtils.isDigit(secondSplitLetters.charAt(0));
-        boolean secondComboHasFirstDigit = secondSplitLetters.length() > 1 && StringUtils.isDigit(secondSplitLetters.charAt(0));
-        boolean isFirstComboAWord = dictionary.isWord(firstSplitLetters);
+        boolean firstSplitIsADigit = firstSplitLetters.length() == 1 && StringUtils.isDigit(firstSplitLetters.charAt(0));
+        boolean secondSplitIsADigit = secondSplitLetters.length() == 1 && StringUtils.isDigit(secondSplitLetters.charAt(0));
+        boolean secondSplitHasFirstDigit = secondSplitLetters.length() > 1 && StringUtils.isDigit(secondSplitLetters.charAt(0));
+        boolean isFirstSplitAWord = dictionary.isWord(firstSplitLetters);
 
         boolean continueProcessing = false; // this determines if we should continue processing the letter combination
         Set<String> validWords = new HashSet<>();
 
-        if ( isFirstComboAWord && secondComboIsADigit) {
+        if ( isFirstSplitAWord && secondSplitIsADigit) {
             // this is the end of the combination, so add it
             validWords.add(createNewWord(firstSplitLetters, secondSplitLetters));
-        } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
+        } else if ( isFirstSplitAWord && secondSplitHasFirstDigit) {
             // We have a valid first word and the second combo has a digit as it's first char, so we should still
             // split the second word up
             // E.g. first = "mark", second = "1call", - we should still parse out "mark-1-call"
             continueProcessing = true;
-        } else if ( isFirstComboAWord || firstComboIsADigit) {
+        } else if ( isFirstSplitAWord || firstSplitIsADigit) {
             // Allow processing to continue when the first combo is also a digit, e.g. '1', but not 'a1'
             continueProcessing = true;
         }
