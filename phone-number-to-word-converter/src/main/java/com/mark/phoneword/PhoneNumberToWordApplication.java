@@ -115,7 +115,7 @@ public class PhoneNumberToWordApplication {
     }
 
     private void printExitMessage() {
-        printInfo("Thank you for using this Phone Number to Word Application - Goodbye! :-)");
+        printInfo(System.lineSeparator()+"Thank you for using this Phone Number to Word Application - Goodbye! :-)");
         printInfo("");
     }
 
