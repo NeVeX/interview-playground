@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Created by Mark Cunningham on 9/29/2016.
  */
-public class PhoneToWordApplication {
+public class PhoneNumberToWordApplication {
 
     private final static int EXIT_CODE_OK = 0;
     private final static int EXIT_CODE_NO_DICTIONARY_LOADED = 1;
@@ -35,11 +35,12 @@ public class PhoneToWordApplication {
         // Check if we were given a dictionary file
         Optional<String> inputDictionaryFileOptional = inputArgumentReader.getDictionaryFile();
         if ( inputDictionaryFileOptional.isPresent()) {
-            Optional<Dictionary> inputDictionaryOptional = DictionaryFactory.fromFile(inputDictionaryFileOptional.get());
+            String inputDictionaryFile = inputDictionaryFileOptional.get();
+            Optional<Dictionary> inputDictionaryOptional = DictionaryFactory.fromFile(inputDictionaryFile);
             if ( inputDictionaryOptional.isPresent()) {
                 dictionaryToUse = inputDictionaryOptional.get();
             } else {
-                printError("Could not load input dictionary from file ["+inputDictionaryFileOptional.get()+"]");
+                printError("Could not load input dictionary from file ["+inputDictionaryFile+"]");
             }
         } else {
             dictionaryToUse = DictionaryFactory.getDefault();
@@ -74,19 +75,19 @@ public class PhoneToWordApplication {
     }
 
     private void printWelcomeMessage(List<String> argumentInfo, List<String> argumentValues) {
-        printInfo(System.lineSeparator()+"Welcome to the Number to Word Application!");
+        printInfo(System.lineSeparator()+"Welcome to the Phone Number to Word Application!");
         printInfo(System.lineSeparator()+"The following are the input options:");
         argumentInfo.forEach( info -> printInfo("  "+info));
 
         // Print out any argument values gotten
-        printInfo(System.lineSeparator()+"The following are the parsed input values:");
+        printInfo(System.lineSeparator()+"The following were the parsed input values:");
         argumentValues.forEach(info -> printInfo("  "+info));
         printInfo(System.lineSeparator());
 
     }
 
     public static void main(String[] args) {
-        int exitCode = new PhoneToWordApplication().run(args);
+        int exitCode = new PhoneNumberToWordApplication().run(args);
         System.exit(exitCode);
     }
 

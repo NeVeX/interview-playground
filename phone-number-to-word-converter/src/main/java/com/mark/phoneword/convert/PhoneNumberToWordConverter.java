@@ -64,7 +64,7 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
         String secondCombo = letterCombination.substring(index, letterCombination.length());
         Set<String> wordCombinations = new HashSet<>();
 
-        if ( letterCombination.equals("1bckl1me1")) {
+        if ( letterCombination.equals("1ccjk1of1")) {
              //TODO:
             // just get everything as is
             // then at the end, remove all numbers and put it through the splitter - if it comes back, then golden
@@ -74,21 +74,33 @@ class PhoneNumberToWordConverter implements Converter<Long, String> {
             this.toString();
         }
 
-        boolean firstComboHasLastDigit = index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1));
+        boolean firstComboIsADigit = firstCombo.length() == 1 && StringUtils.isDigit(firstCombo.charAt(0));
+//        boolean firstComboHasLastDigit = index > 0 && StringUtils.isDigit(firstCombo.charAt(index-1));
         boolean secondComboIsADigit = secondCombo.length() == 1 && StringUtils.isDigit(secondCombo.charAt(0));
         boolean secondComboHasFirstDigit = secondCombo.length() > 1 && StringUtils.isDigit(secondCombo.charAt(0));
         boolean isFirstComboAWord = dictionary.isWord(firstCombo);
 
         boolean continueProcessing = false;
-        if ( isFirstComboAWord || firstComboHasLastDigit || secondComboHasFirstDigit || secondComboIsADigit) {
-            if ( isFirstComboAWord && secondComboIsADigit ) {
-                wordCombinations.add(createNewWord(firstCombo, secondCombo));
-            } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
-                continueProcessing = true;
-            } else {
-                continueProcessing = true;
-            }
+
+        if ( isFirstComboAWord && secondComboIsADigit) {
+            wordCombinations.add(createNewWord(firstCombo, secondCombo)); // this is the end of the combination, so add it
+        } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
+            continueProcessing = true;
+        } else if ( isFirstComboAWord || firstComboIsADigit) {
+            continueProcessing = true;
         }
+
+
+
+//        if ( isFirstComboAWord || firstComboHasLastDigit || secondComboHasFirstDigit || secondComboIsADigit) {
+//            if ( isFirstComboAWord && secondComboIsADigit ) {
+//                wordCombinations.add(createNewWord(firstCombo, secondCombo));
+//            } else if ( isFirstComboAWord && secondComboHasFirstDigit) {
+//                continueProcessing = true;
+//            } else if (isFirstComboAWord) {
+//                continueProcessing = true;
+//            }
+//        }
 
 //        if ( dictionary.isWord(firstCombo)) {
 //            if ( firstComboHasLastDigit) {

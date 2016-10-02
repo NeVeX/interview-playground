@@ -39,18 +39,19 @@ public class InputProcessor {
                 break;
             }
 
-            Optional<Long> parsedLong = StringUtils.tryConvert(inputReceived);
+            Optional<Long> parsedLongOptional = StringUtils.tryConvert(inputReceived);
 
-            if ( parsedLong.isPresent()) {
-                Set<String> convertedWords = convert(parsedLong.get());
+            if ( parsedLongOptional.isPresent()) {
+                long parsedNumber = parsedLongOptional.get();
+                Set<String> convertedWords = convert(parsedNumber);
                 if ( !convertedWords.isEmpty()) {
-                    printInfo("Found ["+convertedWords.size()+"] word combinations for [" + parsedLong.get() + "]:");
+                    printInfo("Found ["+convertedWords.size()+"] word combinations for [" + parsedNumber + "]:");
                     printInfo("  "+convertedWords.toString());
                 } else {
-                    printInfo("No suitable word combinations found for input ["+parsedLong.get()+"]");
+                    printInfo("No suitable word combinations found for input number ["+parsedNumber+"]");
                 }
             } else {
-                printError("Could not parse input ["+inputReceived+"]");
+                printError("Could not parse input ["+inputReceived+"] into a number");
             }
 
         }
