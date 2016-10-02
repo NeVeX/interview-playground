@@ -1,11 +1,8 @@
 package com.mark.phoneword.util;
 
-import com.mark.phoneword.data.read.FileReader;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**

@@ -18,7 +18,6 @@ import static com.mark.phoneword.util.OutputUtils.*;
 public class InputProcessor {
 
     private final static Logger LOGGER = Logger.getLogger(OutputUtils.class.getName());
-
     private final static String QUIT_INPUT = "q";
     private final static String INPUT_NUMBER = "Enter a number (or quit with '"+QUIT_INPUT+"'): ";
 

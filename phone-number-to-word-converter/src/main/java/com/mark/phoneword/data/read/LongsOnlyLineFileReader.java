@@ -23,8 +23,9 @@ class LongsOnlyLineFileReader extends FileReader<Set<Long>> {
             // Extract only numbers from the input (ignoring invalid characters)
             .map( word -> StringUtils.getNumbersOnly(word.trim().toLowerCase()))
             .filter(StringUtils::isNotBlank) // parse above can make the string empty
-            .map(Long::valueOf) // convert to Long
+            .map(Long::valueOf) // convert the string to a Long
             .collect(Collectors.toCollection(HashSet::new));
+
         if ( readInLongs.isEmpty()) {
             return null; // Return null to indicate no data read
         } else {

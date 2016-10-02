@@ -24,8 +24,8 @@ public final class ConverterFactory {
     /**
      * @return - Returns an instance that supports conversion of Long numbers to Words using the default dictionary
      */
-    static Converter<Long, String> longNumberToWords() {
-        return longNumberToWords(DictionaryFactory.getDefault());
+    static Converter<Long, String> phoneNumberToWords() {
+        return phoneNumberToWords(DictionaryFactory.getDefault());
     }
 
     /**
@@ -33,7 +33,7 @@ public final class ConverterFactory {
      * @param dictionary - The non null dictionary to use for conversions
      * @return - The new instance to use for conversions
      */
-    public static Converter<Long, String> longNumberToWords(Dictionary dictionary) {
+    public static Converter<Long, String> phoneNumberToWords(Dictionary dictionary) {
         return new PhoneNumberToWordConverter(DefaultHolder.DEFAULT_NUMBER_TO_LETTER_CONVERTER, dictionary);
     }
 

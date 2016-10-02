@@ -1,6 +1,7 @@
 package com.mark.phoneword;
 
 
+import com.mark.phoneword.convert.Converter;
 import com.mark.phoneword.convert.ConverterFactory;
 import com.mark.phoneword.data.read.FileReaderFactory;
 import com.mark.phoneword.dictionary.Dictionary;
@@ -84,7 +85,8 @@ public class PhoneNumberToWordApplication {
 
     private int onDictionaryLoaded(InputArgumentReader inputArgumentReader, Dictionary dictionaryToUse) {
 
-        InputProcessor inputProcessor = new InputProcessor(ConverterFactory.longNumberToWords(dictionaryToUse));
+        Converter<Long, String> phoneNumberToWordConverter = ConverterFactory.phoneNumberToWords(dictionaryToUse);
+        InputProcessor inputProcessor = new InputProcessor(phoneNumberToWordConverter);
 
         Optional<String> phoneNumbersFileOptional = inputArgumentReader.getPhoneNumbersFile();
         if ( phoneNumbersFileOptional.isPresent()) {

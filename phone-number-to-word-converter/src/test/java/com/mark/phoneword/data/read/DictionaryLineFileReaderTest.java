@@ -1,12 +1,10 @@
 package com.mark.phoneword.data.read;
 
 import com.mark.phoneword.TestingUtils;
-import com.mark.phoneword.dictionary.*;
 import org.junit.Test;
 
 import java.io.File;
 import java.util.*;
-import java.util.Dictionary;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -15,6 +15,7 @@ public class InputArgumentReader {
     private final static String DICTIONARY_FILE_ARG = "-d";
     private final static String PHONE_NUMBERS_FILE_ARG = "-p";
     private final static List<String> ALL_ARGUMENTS_USAGE_INFO;
+
     private final List<String> givenArgumentValues;
     private final String dictionaryFileLocation;
     private final String phoneNumbersFileLocation;
