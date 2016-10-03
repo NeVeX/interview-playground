@@ -14,7 +14,7 @@ abstract class ResourceReader<T> {
 
     protected abstract T process(BufferedReader bufferedReader) throws IOException;
 
-    protected T readResource(String resource) {
+    public T readResource(String resource) {
         if (!StringUtils.isBlank(resource)) {
             try (InputStream inputStream = this.getClass().getResourceAsStream(resource);
                  BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
