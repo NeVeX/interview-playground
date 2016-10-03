@@ -1,6 +1,9 @@
 package com.mark.flowershop.data.read;
 
+import com.mark.flowershop.product.ProductRepository;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +15,8 @@ import java.io.InputStreamReader;
  */
 abstract class ResourceReader<T> {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(ResourceReader.class);
+
     protected abstract T process(BufferedReader bufferedReader) throws IOException;
 
     public T readResource(String resource) {
@@ -20,8 +25,7 @@ abstract class ResourceReader<T> {
                  BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
                 return process(bufferedReader);
             } catch (IOException e) {
-                /// TODO: Log..
-                e.printStackTrace();
+                LOGGER.error("Could not load the resource [{}]", resource, e);
             }
         }
         return null;

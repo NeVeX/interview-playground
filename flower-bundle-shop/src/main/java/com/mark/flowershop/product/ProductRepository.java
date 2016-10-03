@@ -3,6 +3,8 @@ package com.mark.flowershop.product;
 import com.mark.flowershop.bundle.BundleOptions;
 import com.mark.flowershop.data.read.FlowerBundleReader;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,13 +14,12 @@ import java.util.Map;
  * Created by Mark Cunningham on 10/2/2016.
  */
 public final class ProductRepository {
-
-    private final static String FLOWER_BUNDLE_RESOURCE = "/products/flowers/flower_bundles.json";
+    private final static Logger LOGGER = LoggerFactory.getLogger(ProductRepository.class);
     private final static Map<String, Product> PRODUCT_MAP = new HashMap<>();
     private final static Map<String, BundleOptions> PRODUCT_BUNDLE_MAP = new HashMap<>();
 
     static {
-        List<FlowerBundle> flowerBundles = new FlowerBundleReader().readResource(FLOWER_BUNDLE_RESOURCE);
+        List<FlowerBundle> flowerBundles = FlowerBundleReader.getDefault();
         if ( flowerBundles != null && !flowerBundles.isEmpty()) {
             flowerBundles.stream()
                 .forEach(flowerBundle -> {
@@ -28,6 +29,12 @@ public final class ProductRepository {
                     PRODUCT_MAP.put(productCode, flowerBundle.getFlower());
                     PRODUCT_BUNDLE_MAP.put(productCode, flowerBundle.getBundleOptions());
                 });
+            LOGGER.info("Loaded [{}] products into the application", PRODUCT_MAP.size());
+            LOGGER.info("Loaded [{}] flower bundles into the application", PRODUCT_BUNDLE_MAP.size());
+        } else {
+            // This is bad, if we can't load the flower bundles, then we are in a bad shape, so throw a runtime exception
+            LOGGER.error("Could not load the flower bundles - the application will not start");
+            throw new IllegalStateException("No flower bundles were loaded by the application");
         }
     }
 

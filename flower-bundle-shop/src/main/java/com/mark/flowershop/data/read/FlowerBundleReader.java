@@ -7,6 +7,8 @@ import com.mark.flowershop.bundle.Bundle;
 import com.mark.flowershop.bundle.BundleOptions;
 import com.mark.flowershop.product.Flower;
 import com.mark.flowershop.product.FlowerBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
  */
 public final class FlowerBundleReader extends ResourceReader<List<FlowerBundle>> {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(FlowerBundleReader.class);
+
+    private final static String FLOWER_BUNDLE_RESOURCE = "/products/flowers/flower_bundles.json";
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Override
@@ -30,8 +35,7 @@ public final class FlowerBundleReader extends ResourceReader<List<FlowerBundle>>
             try {
                 return convertJson(flowerBundleJsons);
             } catch (Exception e) {
-                // TODO: log
-                e.printStackTrace();
+                LOGGER.error("Could not parse the JSON flower bundles", e);
             }
         }
         return new ArrayList<>();
@@ -50,6 +54,9 @@ public final class FlowerBundleReader extends ResourceReader<List<FlowerBundle>>
             }).collect(Collectors.toList());
     }
 
+    public static List<FlowerBundle> getDefault() {
+        return new FlowerBundleReader().readResource(FLOWER_BUNDLE_RESOURCE);
+    }
 
     private static class FlowerBundleJson {
         @JsonProperty("product_code")

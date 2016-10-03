@@ -12,6 +12,11 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4' // StringUtils support (among others)
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.3' // JSON de/serializations
 
+    // Adding logging support
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21' // SL4J API
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21' // SL4J-Log4j adapter
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2' // Log4j
+
     // Bring in some testing libraries
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.5.2'
