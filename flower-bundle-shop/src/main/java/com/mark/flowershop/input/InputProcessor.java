@@ -1,6 +1,5 @@
 package com.mark.flowershop.input;
 
-import com.mark.flowershop.FlowerBundleShopApplication;
 import com.mark.flowershop.product.ProductRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -29,7 +28,7 @@ public class InputProcessor {
 
         while ( true ) {
 
-            List<InputOrder> inputOrders = new ArrayList<>();
+            List<InputOrderResult> inputOrderResults = new ArrayList<>();
 
             while ( true ) {
 
@@ -45,17 +44,17 @@ public class InputProcessor {
                     return 0;
                 }
 
-                InputOrder inputOrder = isInputOrderValid(newOrder);
-                if ( inputOrder.isValid) {
-                    inputOrders.add(inputOrder);
+                InputOrderResult inputOrderResult = isInputOrderValid(newOrder);
+                if ( inputOrderResult.isValid) {
+                    inputOrderResults.add(inputOrderResult);
                 } else {
-                    LOGGER.debug("Determined input [{}] was not valid for processing because: {}", newOrder, inputOrder.invalidReason);
-                    printErrorMessage(inputOrder.invalidReason);
+                    LOGGER.debug("Determined input [{}] was not valid for processing because: {}", newOrder, inputOrderResult.invalidReason);
+                    printErrorMessage(inputOrderResult.invalidReason);
                 }
             }
             // If we get here, then we need to process all the orders and get results
-            if ( !inputOrders.isEmpty() ) {
-                processNewOrders(inputOrders);
+            if ( !inputOrderResults.isEmpty() ) {
+                processNewOrders(inputOrderResults);
             }
         }
     }
@@ -64,8 +63,8 @@ public class InputProcessor {
         System.out.print("Enter an order: ");
     }
 
-    private void processNewOrders(List<InputOrder> inputOrders) {
-        for( InputOrder order : inputOrders) {
+    private void processNewOrders(List<InputOrderResult> inputOrderResults) {
+        for( InputOrderResult order : inputOrderResults) {
 
         }
     }
@@ -74,27 +73,27 @@ public class InputProcessor {
         System.err.println("**Error: "+error);
     }
 
-    private InputOrder isInputOrderValid(String input) {
+    private InputOrderResult isInputOrderValid(String input) {
         if ( !StringUtils.isBlank(input)) {
             String[] inputSplit = StringUtils.split(input, " ");
             if ( inputSplit.length == 2) {
 
                 String orderSizeString = inputSplit[0];
                 boolean isNumberValid = StringUtils.isNotBlank(orderSizeString) && NumberUtils.isNumber(orderSizeString);
-                if ( !isNumberValid ) { return new InputOrder("Order size ["+orderSizeString+"] is not a number"); }
+                if ( !isNumberValid ) { return new InputOrderResult("Order size ["+orderSizeString+"] is not a number"); }
 
                 String productCode = inputSplit[1];
                 boolean isProductCodeValid = StringUtils.isNotBlank(productCode);
-                if ( !isProductCodeValid) { return new InputOrder("No product code received"); }
+                if ( !isProductCodeValid) { return new InputOrderResult("No product code received"); }
 
                 boolean doesProductExist = ProductRepository.doesBundleExistForProduct(productCode);
-                if ( !doesProductExist) { return new InputOrder("No bundle exists for product ["+productCode+"]"); }
+                if ( !doesProductExist) { return new InputOrderResult("No bundle exists for product ["+productCode+"]"); }
 
-                return new InputOrder(NumberUtils.toInt(orderSizeString), productCode);
+                return new InputOrderResult(NumberUtils.toInt(orderSizeString), productCode);
             }
-            return new InputOrder("Input order is not in expected format - e.g. 10 T58");
+            return new InputOrderResult("Input order is not in expected format - e.g. 10 T58");
         }
-        return new InputOrder("Input order is empty");
+        return new InputOrderResult("Input order is empty");
     }
 
     private void printWelcomeMessage() {
@@ -102,19 +101,19 @@ public class InputProcessor {
         System.out.println("Welcome to the Flower Bundle Shop Application");
     }
 
-    private static class InputOrder {
+    private static class InputOrderResult {
         private boolean isValid;
         private String invalidReason;
         private int orderSize;
         private String productCode;
 
-        public InputOrder(int orderSize, String productCode) {
+        public InputOrderResult(int orderSize, String productCode) {
             this.isValid = true;
             this.orderSize = orderSize;
             this.productCode = productCode;
         }
 
-        public InputOrder(String invalidReason) {
+        public InputOrderResult(String invalidReason) {
             this.isValid = false;
             this.invalidReason = invalidReason;
         }
