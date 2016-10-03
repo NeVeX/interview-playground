@@ -1,6 +1,5 @@
 package com.mark.flowershop.input;
 
-import com.mark.flowershop.bundle.Bundle;
 import com.mark.flowershop.bundle.BundleAmount;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,12 +24,12 @@ public class OrderProcessorTest {
     public void assertOrderProcessingOfValidInputOrder() {
         int orderSize = 5;
         String product = "R12";
-        InputOrder inputOrder = new InputOrder(orderSize, product);
+        InputOrderBundle inputOrderBundle = new InputOrderBundle(orderSize, product);
 
-        InputOrderResult result = defaultOrderProcessor.processOrder(inputOrder);
+        InputOrderBundleResult result = defaultOrderProcessor.processOrder(inputOrderBundle);
         assertThat(result).isNotNull();
-        assertThat(result.getOrderSize()).isEqualTo(orderSize);
-        assertThat(result.getProductCode()).isEqualTo(product);
+        assertThat(result.getInputOrderBundle().getOrderSize()).isEqualTo(orderSize);
+        assertThat(result.getInputOrderBundle().getProductCode()).isEqualTo(product);
         assertThat(result.isValidOrder()).isTrue();
         assertThat(result.getResult().getPrice()).isEqualTo(new BigDecimal("6.99"));
 
@@ -40,5 +39,26 @@ public class OrderProcessorTest {
         BundleAmount singleAmount = bundleAmounts.get(0);
         assertThat(singleAmount.getAmount()).isEqualTo(1); // Only one bundle amount expected
         assertThat(singleAmount.getBundle().getPrice()).isEqualTo(new BigDecimal("6.99"));
+    }
+
+    @Test
+    public void assertInvalidOrderReturnsWithInvalidStatus() {
+        int orderSize = 10;
+        String code = "this does not exist";
+        InputOrderBundle inputOrderBundle = new InputOrderBundle(orderSize, code);
+
+        InputOrderBundleResult result = defaultOrderProcessor.processOrder(inputOrderBundle);
+        assertThat(result.isValidOrder()).isFalse(); // this order should not be valid
+    }
+
+    @Test
+    public void assertNoBundleExistsStatusForBundleThatCannotBeFulfilled() {
+        int orderSize = 133;
+        String code = "R12";
+        InputOrderBundle inputOrderBundle = new InputOrderBundle(orderSize, code);
+
+        InputOrderBundleResult result = defaultOrderProcessor.processOrder(inputOrderBundle);
+        assertThat(result.isValidOrder()).isTrue(); // this order should still be valid
+        assertThat(result.doesBundleExistForOrder()).isFalse(); // but no bundle will exist
     }
 }

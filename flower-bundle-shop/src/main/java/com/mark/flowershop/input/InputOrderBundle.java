@@ -5,12 +5,12 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Created by Mark Cunningham on 10/2/2016.
  */
-public class InputOrder {
+public class InputOrderBundle {
 
     private final int orderSize;
     private final String productCode;
 
-    public InputOrder(int orderSize, String productCode) {
+    public InputOrderBundle(int orderSize, String productCode) {
         if ( orderSize < 1) { throw new IllegalArgumentException("Provided orderSize ["+orderSize+"] is not valid"); }
         if (StringUtils.isBlank(productCode)) { throw new IllegalArgumentException("Provided productCode is blank"); }
         this.orderSize = orderSize;

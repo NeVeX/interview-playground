@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by Mark Cunningham on 10/2/2016.
@@ -25,6 +26,13 @@ public final class ProductRepository {
             return Holder.PRODUCT_MAP.containsKey(code.toLowerCase());
         }
         return false;
+    }
+
+    public static Optional<BundleOptions> getBundleForProductCode(String code) {
+        if ( StringUtils.isNotBlank(code)) {
+            return Optional.ofNullable(Holder.PRODUCT_BUNDLE_MAP.get(code.toLowerCase()));
+        }
+        return Optional.empty();
     }
 
     public static boolean doesBundleExistForProduct(String code) {
