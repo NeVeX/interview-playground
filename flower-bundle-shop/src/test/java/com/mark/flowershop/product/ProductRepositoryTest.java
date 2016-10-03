@@ -21,6 +21,9 @@ public class ProductRepositoryTest {
         productCode = "R12";
         assertProductAndProductBundleExists(productCode);
 
+        productCode = "MARK"; // Make sure that other codes are not there
+        assertThat(ProductRepository.doesProductExist(productCode)).isFalse();
+        assertThat(ProductRepository.doesBundleExistForProduct(productCode)).isFalse();
     }
 
     private void assertProductAndProductBundleExists(String productCode) {

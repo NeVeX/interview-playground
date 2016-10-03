@@ -22,12 +22,11 @@ public final class ProductRepository {
         if ( flowerBundles != null && !flowerBundles.isEmpty()) {
             flowerBundles.stream()
                 .forEach(flowerBundle -> {
-                    String productCode = flowerBundle.getFlower().getCode();
-                    if ( !StringUtils.isBlank(productCode)) {
-                        productCode = productCode.toLowerCase(); // make everything lower case for the hash function
-                        PRODUCT_MAP.put(productCode, flowerBundle.getFlower());
-                        PRODUCT_BUNDLE_MAP.put(productCode, flowerBundle.getBundleOptions());
-                    }
+                    // Make the product code lower case for the hash function
+                    String productCode = flowerBundle.getFlower().getCode().toLowerCase();
+                    productCode = productCode.toLowerCase();
+                    PRODUCT_MAP.put(productCode, flowerBundle.getFlower());
+                    PRODUCT_BUNDLE_MAP.put(productCode, flowerBundle.getBundleOptions());
                 });
         }
     }
