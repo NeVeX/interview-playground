@@ -141,6 +141,21 @@ public class BundleCalculatorTest {
     }
 
     @Test
+    public void assertPricesAreNotRoundedInResult() {
+        int orderSize = 18;
+        // The below prices are all in lower denominations than cents, so make sure the calculations round to the cent
+        BundleOptions bundleOptions = BundleOptions.builder()
+                .addBundleEntry(3, new BigDecimal("12.456"))
+                .addBundleEntry(5, new BigDecimal("0.6745"))
+                .addBundleEntry(10, new BigDecimal("20.333"))
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
+
+        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("33.4635")); // no rounding to occur
+    }
+
+    @Test
     public void assertLargestAndSmallestBundleIsSelectedForAppropriateOrder() {
         int orderSize = 15;
         // Given 12, we want to make sure that 14 and 1 is selected, not the 3 fives
@@ -184,7 +199,7 @@ public class BundleCalculatorTest {
     }
 
     @Test
-    public void assertGivenRosesExampleRequirementsWork() {
+    public void assertGivenRosesExampleRequirementWorks() {
         int orderSize = 10; // 10 R12
         BundleOptions roseBundles = BundleOptions.builder()
                 .addBundleEntry(5, new BigDecimal("6.99"))  // 5 @ $6.99
@@ -203,7 +218,7 @@ public class BundleCalculatorTest {
     }
 
     @Test
-    public void assertGivenLiliesExampleRequirementsWork() {
+    public void assertGivenLiliesExampleRequirementWorks() {
         int orderSize = 15; // 15 L09
         BundleOptions roseBundles = BundleOptions.builder()
                 .addBundleEntry(3, new BigDecimal("9.95"))  // 3 @ $9.95
@@ -224,7 +239,7 @@ public class BundleCalculatorTest {
     }
 
     @Test
-    public void assertGivenTulipsExampleRequirementsWork() {
+    public void assertGivenTulipsExampleRequirementWorks() {
         int orderSize = 13; // 13 T58
         BundleOptions roseBundles = BundleOptions.builder()
                 .addBundleEntry(3, new BigDecimal("5.95"))  // 3 @ $5.95
@@ -247,7 +262,6 @@ public class BundleCalculatorTest {
     private void assertBundlesAreEqual(BundleCalculatedResult expectedResult, BundleCalculatedResult calculatedResult) {
         assertThat(calculatedResult).isNotNull();
         assertThat(calculatedResult.getPrice()).isEqualTo(expectedResult.getPrice());
-
 
         List<BundleAmount> calcBundles = expectedResult.getBundleAmounts();
         List<BundleAmount> expectedBundles = calculatedResult.getBundleAmounts();

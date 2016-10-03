@@ -2,6 +2,7 @@ package com.mark.flowershop.input;
 
 import com.mark.flowershop.bundle.BundleCalculatedResult;
 import com.mark.flowershop.product.ProductRepository;
+import com.mark.flowershop.util.CurrencyUtils;
 import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -86,7 +87,7 @@ public class InputProcessor {
         if ( !results.isEmpty()) {
             printInfoMessage("Below are all the order bundle results:"+System.lineSeparator());
             // For each bundle result, print it to the screen
-            results.stream().forEach(
+            results.forEach(
                 result -> {
                     StringBuilder orderInfo = new StringBuilder();
                     orderInfo.append(result.getInputOrderBundle().getOrderSize());
@@ -100,17 +101,17 @@ public class InputProcessor {
                         orderInfo.append("  ** No bundle exists for this order **");
                     } else {
                         BundleCalculatedResult calculatedResult = result.getResult();
-                        orderInfo.append(" - $").append(calculatedResult.getPrice());
+                        orderInfo.append(" - ").append(CurrencyUtils.convertToDefaultCurrency(calculatedResult.getPrice()));
                         orderInfo.append(System.lineSeparator());
-                        calculatedResult.getBundleAmounts().stream()
+                        calculatedResult.getBundleAmounts()
                             .forEach( bundleAmount ->
                                 orderInfo
                                 .append("  ")
                                 .append(bundleAmount.getAmount())
                                 .append(" x ")
                                 .append(bundleAmount.getBundle().getSize())
-                                .append(" @ $")
-                                .append(bundleAmount.getBundle().getPrice())
+                                .append(" @ ")
+                                .append(CurrencyUtils.convertToDefaultCurrency(bundleAmount.getBundle().getPrice()))
                                 .append(" ea")
                             );
                     }

@@ -1,10 +1,7 @@
 package com.mark.flowershop.bundle;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by Mark Cunningham on 10/2/2016.
