@@ -3,7 +3,6 @@ package com.mark.flowershop.input;
 import com.mark.flowershop.bundle.BundleCalculatedResult;
 import com.mark.flowershop.product.ProductRepository;
 import com.mark.flowershop.util.CurrencyUtils;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -61,6 +60,9 @@ public class InputProcessor {
             if ( !inputOrderParsedResults.isEmpty() ) {
                 printInfoMessage("Processing your input orders");
                 processNewOrders(inputOrderParsedResults);
+            } else {
+                printInfoMessage("No orders were input - please enter orders and then enter ["+ORDER_FINISH+"] when finished");
+                printInfoMessage("");
             }
         }
     }
