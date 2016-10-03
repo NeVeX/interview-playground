@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * Created by Mark Cunningham on 10/2/2016.
+ * <br>Class the represents a particular flower's bundle options
  */
 public class FlowerBundle {
 
@@ -18,11 +19,17 @@ public class FlowerBundle {
         this.bundleOptions = bundleOptions;
     }
 
-    public Flower getFlower() {
+    /**
+     * Get the flower for this bundle
+     */
+    Flower getFlower() {
         return flower;
     }
 
-    public BundleOptions getBundleOptions() {
+    /**
+     * Get the available bundle options
+     */
+    BundleOptions getBundleOptions() {
         return bundleOptions;
     }
 }

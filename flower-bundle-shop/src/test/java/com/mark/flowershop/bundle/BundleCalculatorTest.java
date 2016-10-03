@@ -152,7 +152,7 @@ public class BundleCalculatorTest {
 
         Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
 
-        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("33.4635")); // no rounding to occur
+        assertThat(calcOptional.get().getTotalPrice()).isEqualTo(new BigDecimal("33.4635")); // no rounding to occur
     }
 
     @Test
@@ -214,7 +214,7 @@ public class BundleCalculatorTest {
         BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
-        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("12.99"));
+        assertThat(calcOptional.get().getTotalPrice()).isEqualTo(new BigDecimal("12.99"));
     }
 
     @Test
@@ -235,7 +235,7 @@ public class BundleCalculatorTest {
         BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
-        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("41.90"));
+        assertThat(calcOptional.get().getTotalPrice()).isEqualTo(new BigDecimal("41.90"));
     }
 
     @Test
@@ -256,12 +256,12 @@ public class BundleCalculatorTest {
         BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
-        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("25.85"));
+        assertThat(calcOptional.get().getTotalPrice()).isEqualTo(new BigDecimal("25.85"));
     }
 
     private void assertBundlesAreEqual(BundleCalculatedResult expectedResult, BundleCalculatedResult calculatedResult) {
         assertThat(calculatedResult).isNotNull();
-        assertThat(calculatedResult.getPrice()).isEqualTo(expectedResult.getPrice());
+        assertThat(calculatedResult.getTotalPrice()).isEqualTo(expectedResult.getTotalPrice());
 
         List<BundleAmount> calcBundles = expectedResult.getBundleAmounts();
         List<BundleAmount> expectedBundles = calculatedResult.getBundleAmounts();

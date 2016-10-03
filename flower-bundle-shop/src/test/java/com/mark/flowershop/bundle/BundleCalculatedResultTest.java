@@ -27,7 +27,7 @@ public class BundleCalculatedResultTest {
 
         BundleCalculatedResult calculatedResult = new BundleCalculatedResult(allBundles);
 
-        assertThat(calculatedResult.getPrice()).isEqualTo(new BigDecimal("56.50"));
+        assertThat(calculatedResult.getTotalPrice()).isEqualTo(new BigDecimal("56.50"));
 
     }
 

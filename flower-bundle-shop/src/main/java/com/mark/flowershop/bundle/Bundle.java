@@ -5,6 +5,7 @@ import java.util.Objects;
 
 /**
  * Created by Mark Cunningham on 10/2/2016.
+ * <br>This class represents a Bundle option for a {@link com.mark.flowershop.product.Product}
  */
 public final class Bundle {
 
@@ -20,10 +21,16 @@ public final class Bundle {
         this.price = price;
     }
 
+    /**
+     * @return - The size of this bundle
+     */
     public int getSize() {
         return size;
     }
 
+    /**
+     * @return - The price of the bundle - in raw precision
+     */
     public BigDecimal getPrice() {
         return price;
     }
