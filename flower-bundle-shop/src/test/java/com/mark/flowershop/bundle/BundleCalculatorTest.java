@@ -122,7 +122,7 @@ public class BundleCalculatorTest {
     @Test
     public void assertOrderIsBrokenIntoBundlesAtTheMaximumSizeWhenLowerBundlesExist() {
         int orderSize = 13;
-        // Given 13, there are multiple ways to build this bundle, but the largest should always be choosen
+        // Given 13, there are multiple ways to build this bundle, but the largest should always be chosen
         BundleOptions bundleOptions = BundleOptions.builder()
                 .addBundleEntry(3, BigDecimal.ONE)
                 .addBundleEntry(5, BigDecimal.ONE)
@@ -138,6 +138,110 @@ public class BundleCalculatorTest {
         BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+    }
+
+    @Test
+    public void assertLargestAndSmallestBundleIsSelectedForAppropriateOrder() {
+        int orderSize = 15;
+        // Given 12, we want to make sure that 14 and 1 is selected, not the 3 fives
+        BundleOptions bundleOptions = BundleOptions.builder()
+                .addBundleEntry(1, BigDecimal.ONE)
+                .addBundleEntry(5, BigDecimal.ONE)
+                .addBundleEntry(14, BigDecimal.TEN)
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
+        assertThat(calcOptional).isPresent(); // Expect a result
+
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(1, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(1, new Bundle(14, BigDecimal.TEN)));
+
+        BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
+
+        assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+    }
+
+    @Test
+    public void assertLargeOrderIsBrokenUpInSuitableBundles() {
+        int orderSize = 1020;
+        // Many ways to break this order up, but the largest should be selected always
+        BundleOptions bundleOptions = BundleOptions.builder()
+                .addBundleEntry(10, BigDecimal.ONE)
+                .addBundleEntry(50, BigDecimal.ONE)
+                .addBundleEntry(100, BigDecimal.TEN)
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
+        assertThat(calcOptional).isPresent(); // Expect a result
+
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(2, new Bundle(10, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(10, new Bundle(100, BigDecimal.TEN)));
+        BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
+
+        assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+    }
+
+    @Test
+    public void assertGivenRosesExampleRequirementsWork() {
+        int orderSize = 10; // 10 R12
+        BundleOptions roseBundles = BundleOptions.builder()
+                .addBundleEntry(5, new BigDecimal("6.99"))  // 5 @ $6.99
+                .addBundleEntry(10, new BigDecimal("12.99")) // 10 @ $12.99
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, roseBundles);
+        assertThat(calcOptional).isPresent();
+
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(10, new BigDecimal("12.99")))); // 1 x 10 $12.99
+        BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
+
+        assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("12.99"));
+    }
+
+    @Test
+    public void assertGivenLiliesExampleRequirementsWork() {
+        int orderSize = 15; // 15 L09
+        BundleOptions roseBundles = BundleOptions.builder()
+                .addBundleEntry(3, new BigDecimal("9.95"))  // 3 @ $9.95
+                .addBundleEntry(6, new BigDecimal("16.95")) // 6 @ $16.95
+                .addBundleEntry(9, new BigDecimal("24.95")) // 9 @ $24.95
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, roseBundles);
+        assertThat(calcOptional).isPresent();
+
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(9, new BigDecimal("24.95")))); //  1 x 9 $24.95
+        expectedBundles.add(new BundleAmount(1, new Bundle(6, new BigDecimal("16.95")))); //  1 x 6 $16.95
+        BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
+
+        assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("41.90"));
+    }
+
+    @Test
+    public void assertGivenTulipsExampleRequirementsWork() {
+        int orderSize = 13; // 13 T58
+        BundleOptions roseBundles = BundleOptions.builder()
+                .addBundleEntry(3, new BigDecimal("5.95"))  // 3 @ $5.95
+                .addBundleEntry(5, new BigDecimal("9.95")) // 5 @ $9.95
+                .addBundleEntry(9, new BigDecimal("16.99")) // 9 @ $16.99
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, roseBundles);
+        assertThat(calcOptional).isPresent();
+
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(2, new Bundle(5, new BigDecimal("9.95")))); // 2 x 5 $9.95
+        expectedBundles.add(new BundleAmount(1, new Bundle(3, new BigDecimal("5.95")))); // 1 x 3 $5.95
+        BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
+
+        assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+        assertThat(calcOptional.get().getPrice()).isEqualTo(new BigDecimal("25.85"));
     }
 
     private void assertBundlesAreEqual(BundleCalculatedResult expectedResult, BundleCalculatedResult calculatedResult) {

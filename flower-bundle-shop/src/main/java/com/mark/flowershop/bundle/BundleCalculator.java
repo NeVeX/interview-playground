@@ -19,7 +19,7 @@ public class BundleCalculator {
             Bundle exactBundle = bundleOptions.getBundleForSize(orderSize).get();
             calculatedBundles.add(new BundleAmount(1, exactBundle));
         } else {
-            calculatedBundles = findBundles(orderSize, bundleOptions);
+            calculatedBundles = calculateSuitableBundles(orderSize, bundleOptions);
         }
 
         if ( calculatedBundles.isEmpty()) {
@@ -30,13 +30,13 @@ public class BundleCalculator {
         return Optional.of(result);
     }
 
-    private List<BundleAmount> findBundles(int orderSize, BundleOptions bundleOptions) {
+    private List<BundleAmount> calculateSuitableBundles(int orderSize, BundleOptions bundleOptions) {
 
         List<Bundle> decreasingBundleSizeList = bundleOptions.getBundlesInDecreasingSize();
-        
+
         for ( int index = 0; index < decreasingBundleSizeList.size(); index++) {
 
-            List<BundleAmount> currentBundles = calculateBundleFromIndex(orderSize, index, decreasingBundleSizeList);
+            List<BundleAmount> currentBundles = calculateSuitableBundleFromIndex(orderSize, index, decreasingBundleSizeList);
             if ( currentBundles != null && !currentBundles.isEmpty()) {
                 // Looks like we got our bundles that statisfy the order, so we can exit this
                 return currentBundles;
@@ -47,7 +47,7 @@ public class BundleCalculator {
         return new ArrayList<>(); // Nothing was found
     }
 
-    private List<BundleAmount> calculateBundleFromIndex(int orderSize, int startIndex, List<Bundle> decreasingBundleSizeList) {
+    private List<BundleAmount> calculateSuitableBundleFromIndex(int orderSize, int startIndex, List<Bundle> decreasingBundleSizeList) {
         int bundleSizeWanted = orderSize;
         List<BundleAmount> currentBundles = new ArrayList<>();
         for ( int index = startIndex; index < decreasingBundleSizeList.size(); index++) {
