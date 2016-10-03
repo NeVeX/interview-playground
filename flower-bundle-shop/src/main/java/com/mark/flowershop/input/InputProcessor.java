@@ -28,7 +28,6 @@ public class InputProcessor {
         printWelcomeMessage();
 
         Scanner inputScanner = new Scanner(System.in);
-//        inputScanner.useDelimiter(",");
 
         while ( true ) {
 
@@ -67,7 +66,7 @@ public class InputProcessor {
         System.out.print("Enter an order: ");
     }
 
-    private void processNewOrders(List<InputOrderParsedResult> inputOrderParsedResults) {
+    void processNewOrders(List<InputOrderParsedResult> inputOrderParsedResults) {
         List<InputOrderBundle> inputOrderBundles = new ArrayList<>();
         inputOrderBundles.addAll(
             inputOrderParsedResults.stream()
@@ -79,7 +78,7 @@ public class InputProcessor {
         }
     }
 
-    private void processNewOrderBundles(List<InputOrderBundle> inputOrderBundles) {
+    void processNewOrderBundles(List<InputOrderBundle> inputOrderBundles) {
         List<InputOrderBundleResult> results = orderProcessor.processOrders(inputOrderBundles);
         if ( !results.isEmpty()) {
             // For each bundle result, print it to the screen
@@ -88,7 +87,6 @@ public class InputProcessor {
                     StringBuilder orderInfo = new StringBuilder();
                     orderInfo.append(result.getInputOrderBundle().getOrderSize());
                     orderInfo.append(" ").append(result.getInputOrderBundle().getProductCode());
-
 
                     if ( !result.isValidOrder()) {
                         orderInfo.append(System.lineSeparator());
@@ -126,10 +124,17 @@ public class InputProcessor {
     }
 
     private void printErrorMessage(String error) {
-        System.err.println("**Error: "+error);
+        System.err.println("  ** Error: "+error);
     }
 
-    private InputOrderParsedResult isInputOrderValid(String input) {
+    private void printWelcomeMessage() {
+        System.out.print("");
+        System.out.println("Welcome to the Flower Bundle Shop Application");
+        System.out.print("");
+        System.out.print("Below you will be able to input orders in the form: 'X ABC' - where 'X' is the order amount and 'ABC' is the product code");
+    }
+
+    InputOrderParsedResult isInputOrderValid(String input) {
         if ( !StringUtils.isBlank(input)) {
             String[] inputSplit = StringUtils.split(input, " ");
             if ( inputSplit.length == 2) {
@@ -152,24 +157,19 @@ public class InputProcessor {
         return new InputOrderParsedResult("Input order is empty");
     }
 
-    private void printWelcomeMessage() {
-        System.out.print("");
-        System.out.println("Welcome to the Flower Bundle Shop Application");
-    }
+    static class InputOrderParsedResult {
+        boolean isValid;
+        String invalidReason;
+        int orderSize;
+        String productCode;
 
-    private static class InputOrderParsedResult {
-        private boolean isValid;
-        private String invalidReason;
-        private int orderSize;
-        private String productCode;
-
-        public InputOrderParsedResult(int orderSize, String productCode) {
+        InputOrderParsedResult(int orderSize, String productCode) {
             this.isValid = true;
             this.orderSize = orderSize;
             this.productCode = productCode;
         }
 
-        public InputOrderParsedResult(String invalidReason) {
+        InputOrderParsedResult(String invalidReason) {
             this.isValid = false;
             this.invalidReason = invalidReason;
         }
