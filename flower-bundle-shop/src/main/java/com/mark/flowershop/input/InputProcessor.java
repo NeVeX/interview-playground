@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Created by Mark Cunningham on 10/2/2016.
  * <br>This class provides methods to parse input and handle orders from users.
  */
-public class InputProcessor {
+public final class InputProcessor {
     private final static Logger LOGGER = LoggerFactory.getLogger(InputProcessor.class);
     private final static String ORDER_FINISH = "done";
     private final static String QUIT = "quit";

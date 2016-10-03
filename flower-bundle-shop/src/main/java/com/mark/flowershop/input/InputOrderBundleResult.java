@@ -6,7 +6,7 @@ import com.mark.flowershop.bundle.BundleCalculatedResult;
  * Created by Mark Cunningham on 10/2/2016.
  * <br>The result of a valid {@link InputOrderBundle} being processed by the {@link OrderBundleProcessor}
  */
-class InputOrderBundleResult {
+final class InputOrderBundleResult {
 
     private final InputOrderBundle inputOrderBundle;
     private final BundleCalculatedResult result;

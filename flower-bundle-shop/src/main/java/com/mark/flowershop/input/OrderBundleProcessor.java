@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Created by Mark Cunningham on 10/2/2016.
  * <br>This class will accept {@link InputOrderBundle} and process them to produce {@link InputOrderBundleResult}'s
  */
-class OrderBundleProcessor {
+final class OrderBundleProcessor {
 
     private final BundleCalculator bundleCalculator = new BundleCalculator();
 

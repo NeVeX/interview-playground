@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
  * Created by Mark Cunningham on 10/2/2016.
  * <br>Class the represents a new user input order to process
  */
-class InputOrderBundle {
+final class InputOrderBundle {
 
     private final int orderSize;
     private final String productCode;
