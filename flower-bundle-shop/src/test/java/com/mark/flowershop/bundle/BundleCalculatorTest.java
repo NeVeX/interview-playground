@@ -29,21 +29,33 @@ public class BundleCalculatorTest {
         Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(bundleRequested, bundleOptions);
         assertThat(calcOptional).isPresent(); // should get a calculated result
 
-        Map<Integer, Bundle> expectedBundles = new HashMap<>();
-        expectedBundles.put(1, new Bundle(10, BigDecimal.TEN));
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(10, BigDecimal.TEN)));
         BundleCalculatedResult expectedResult = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedResult, calcOptional.get());
     }
 
     @Test
-    public void assertBundleSizeThatsTooLowReturnsNoResults() {
+    public void assertBundleSizeThatIsTooLowReturnsNoResults() {
         int orderSize = 2;
         // The lowest size is 5 below, hence the above should not get a bundle
         BundleOptions bundleOptions = BundleOptions.builder().addBundleEntry(5, BigDecimal.TEN).build();
 
         Optional<BundleCalculatedResult> calculatedOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
         assertThat(calculatedOptional).isNotPresent(); // Should not get any bundles
+    }
+
+    @Test
+    public void assertNoBundleReturnedForOrderSizeThatCannotBeBrokenIntoABundle() {
+        int orderSize = 20;
+        BundleOptions bundleOptions = BundleOptions.builder()
+                .addBundleEntry(3, BigDecimal.ONE)
+                .addBundleEntry(6, BigDecimal.TEN)
+                .addBundleEntry(9, BigDecimal.TEN)
+                .build();
+        Optional<BundleCalculatedResult> calculatedResult = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
+        assertThat(calculatedResult).isNotPresent(); // We shouldn't get any calculated results
     }
 
     @Test
@@ -57,9 +69,9 @@ public class BundleCalculatorTest {
         Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
         assertThat(calcOptional).isPresent(); // Expect a result
 
-        Map<Integer, Bundle> expectedBundles = new HashMap<>();
-        expectedBundles.put(1, new Bundle(5, BigDecimal.ONE));
-        expectedBundles.put(1, new Bundle(10, BigDecimal.TEN));
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(5, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(1, new Bundle(10, BigDecimal.TEN)));
         BundleCalculatedResult expectedResult = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedResult, calcOptional.get());
@@ -77,10 +89,10 @@ public class BundleCalculatorTest {
         Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
         assertThat(calcOptional).isPresent(); // Expect a result
 
-        Map<Integer, Bundle> expectedBundles = new HashMap<>();
-        expectedBundles.put(1, new Bundle(2, BigDecimal.ONE));
-        expectedBundles.put(1, new Bundle(5, BigDecimal.ONE));
-        expectedBundles.put(1, new Bundle(10, BigDecimal.TEN));
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(2, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(1, new Bundle(5, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(1, new Bundle(10, BigDecimal.TEN)));
         BundleCalculatedResult expectedResult = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedResult, calcOptional.get());
@@ -99,9 +111,30 @@ public class BundleCalculatorTest {
         Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
         assertThat(calcOptional).isPresent(); // Expect a result
 
-        Map<Integer, Bundle> expectedBundles = new HashMap<>();
-        expectedBundles.put(1, new Bundle(3, BigDecimal.ONE));
-        expectedBundles.put(2, new Bundle(5, BigDecimal.ONE)); // We expect 2 of these
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(3, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(2, new Bundle(5, BigDecimal.ONE))); // We expect 2 of these
+        BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
+
+        assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
+    }
+
+    @Test
+    public void assertOrderIsBrokenIntoBundlesAtTheMaximumSizeWhenLowerBundlesExist() {
+        int orderSize = 13;
+        // Given 13, there are multiple ways to build this bundle, but the largest should always be choosen
+        BundleOptions bundleOptions = BundleOptions.builder()
+                .addBundleEntry(3, BigDecimal.ONE)
+                .addBundleEntry(5, BigDecimal.ONE)
+                .addBundleEntry(10, BigDecimal.TEN)
+                .build();
+
+        Optional<BundleCalculatedResult> calcOptional = defaultBundleCalculator.calculateBundle(orderSize, bundleOptions);
+        assertThat(calcOptional).isPresent(); // Expect a result
+
+        List<BundleAmount> expectedBundles = new ArrayList<>();
+        expectedBundles.add(new BundleAmount(1, new Bundle(3, BigDecimal.ONE)));
+        expectedBundles.add(new BundleAmount(1, new Bundle(10, BigDecimal.TEN))); // We expect 1 of each
         BundleCalculatedResult expectedBundleOptions = new BundleCalculatedResult(expectedBundles);
 
         assertBundlesAreEqual(expectedBundleOptions, calcOptional.get());
@@ -112,10 +145,10 @@ public class BundleCalculatorTest {
         assertThat(calculatedResult.getPrice()).isEqualTo(expectedResult.getPrice());
 
 
-        Map<Integer, Bundle> calcBundles = expectedResult.getBundles();
-        Map<Integer, Bundle> expectedBundles = calculatedResult.getBundles();
+        List<BundleAmount> calcBundles = expectedResult.getBundleAmounts();
+        List<BundleAmount> expectedBundles = calculatedResult.getBundleAmounts();
 
-        assertThat(expectedBundles).containsAllEntriesOf(calcBundles); // Make sure only the exact expected bundles are calculated
+        assertThat(expectedBundles).containsAll(calcBundles); // Make sure only the exact expected bundles are calculated
     }
 
 

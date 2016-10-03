@@ -2,6 +2,7 @@ package com.mark.flowershop.bundle;
 
 import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -10,24 +11,24 @@ import java.util.Optional;
  */
 public class BundleCalculatedResult {
 
-    private final Map<Integer, Bundle> bundleMap;
+    private final List<BundleAmount> bundleAmounts;
 
-    public BundleCalculatedResult(Map<Integer, Bundle> bundleMap) {
-        if ( bundleMap == null || bundleMap.isEmpty()) {
-            throw new IllegalArgumentException("Provided bundle map cannot be null or empty");
+    public BundleCalculatedResult(List<BundleAmount> bundleAmounts) {
+        if ( bundleAmounts == null || bundleAmounts.isEmpty()) {
+            throw new IllegalArgumentException("Provided bundle amounts cannot be null or empty");
         }
-        this.bundleMap = Collections.unmodifiableMap(bundleMap);
+        this.bundleAmounts = Collections.unmodifiableList(bundleAmounts);
     }
 
-    public Map<Integer, Bundle> getBundles() {
-        return bundleMap;
+    public List<BundleAmount> getBundleAmounts() {
+        return bundleAmounts;
     }
 
     public BigDecimal getPrice() {
-        return this.bundleMap.entrySet().stream()
+        return this.bundleAmounts.stream()
             .map(bundleEntry ->
                 // Calculate the price by multiply the price by the count of the bundle
-                bundleEntry.getValue().getPrice().multiply(BigDecimal.valueOf(bundleEntry.getKey()))
+                bundleEntry.getBundle().getPrice().multiply(BigDecimal.valueOf(bundleEntry.getAmount()))
             )
             .reduce(BigDecimal::add)
             .get();

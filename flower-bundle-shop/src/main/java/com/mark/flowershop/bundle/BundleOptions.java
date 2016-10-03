@@ -1,10 +1,8 @@
 package com.mark.flowershop.bundle;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.IntSummaryStatistics;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Mark Cunningham on 10/2/2016.
@@ -27,16 +25,18 @@ public final class BundleOptions {
         return bundles.parallelStream().map(Bundle::getPrice).reduce(BigDecimal::add).get();
     }
 
-    public int getMinimumBundleSize() {
-        return minimumBundleSize;
-    }
-
-    public int getMaximumBundleSize() {
-        return maximumBundleSize;
-    }
-
     public Set<Bundle> getBundles() {
         return bundles;
+    }
+
+    public List<Bundle> getBundlesInDecreasingSize() {
+        return this.bundles.stream()
+                .sorted( (bundle1, bundle12) -> (bundle1.getSize() - bundle12.getSize())* -1)
+                .collect(Collectors.toList());
+    }
+
+    public boolean isSizeLessThanMinimumBundleSize(int size) {
+        return size < minimumBundleSize;
     }
 
     public Optional<Bundle> getBundleForSize(int bundleSize) {
