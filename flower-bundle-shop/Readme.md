@@ -9,7 +9,7 @@ This application aims to solve the requirements/problem which can be found in th
 This application is built using Java. It is a command line application that accepts various flower bundle orders, which are then used
 to calculate the most appropriate bundle order that fulfils the request.
 
-For example - Given that a bundle called R12 has 10 roses in the bundle and sells for $10;
+For example - Given that a Rose (Flower Product) called R12 that offers a bundle of 10 Roses for $10;
 then an order of
 ```sh
 20 R12
