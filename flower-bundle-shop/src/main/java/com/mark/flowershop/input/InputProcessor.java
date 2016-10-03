@@ -26,16 +26,17 @@ public class InputProcessor {
     public int processFromStdIn() {
 
         printWelcomeMessage();
-
         Scanner inputScanner = new Scanner(System.in);
 
         while ( true ) {
 
+            int orderNumber = 1;
             List<InputOrderParsedResult> inputOrderParsedResults = new ArrayList<>();
+
 
             while ( true ) {
 
-                printInputOrder();
+                printInputOrder(orderNumber++);
 
                 // keep scanning in orders
                 String newOrder = inputScanner.nextLine();
@@ -57,13 +58,15 @@ public class InputProcessor {
             }
             // If we get here, then we need to process all the orders and get results
             if ( !inputOrderParsedResults.isEmpty() ) {
+                printInfoMessage("Processing your input orders");
                 processNewOrders(inputOrderParsedResults);
             }
         }
     }
 
-    private void printInputOrder() {
-        System.out.print("Enter an order: ");
+    private void printInputOrder(int orderNumber) {
+        System.out.print("["+orderNumber+"] Enter an order: ");
+        System.out.flush();
     }
 
     void processNewOrders(List<InputOrderParsedResult> inputOrderParsedResults) {
@@ -81,6 +84,7 @@ public class InputProcessor {
     void processNewOrderBundles(List<InputOrderBundle> inputOrderBundles) {
         List<InputOrderBundleResult> results = orderProcessor.processOrders(inputOrderBundles);
         if ( !results.isEmpty()) {
+            printInfoMessage("Below are all the order bundle results:"+System.lineSeparator());
             // For each bundle result, print it to the screen
             results.stream().forEach(
                 result -> {
@@ -90,10 +94,10 @@ public class InputProcessor {
 
                     if ( !result.isValidOrder()) {
                         orderInfo.append(System.lineSeparator());
-                        orderInfo.append("  ** Order was not valid **");
+                        orderInfo.append("  ** This order was not valid **");
                     } else if ( !result.doesBundleExistForOrder()) {
                         orderInfo.append(System.lineSeparator());
-                        orderInfo.append("  ** No bundle exists for order **");
+                        orderInfo.append("  ** No bundle exists for this order **");
                     } else {
                         BundleCalculatedResult calculatedResult = result.getResult();
                         orderInfo.append(" - $").append(calculatedResult.getPrice());
@@ -108,9 +112,9 @@ public class InputProcessor {
                                 .append(" @ $")
                                 .append(bundleAmount.getBundle().getPrice())
                                 .append(" ea")
-                                .append(System.lineSeparator())
                             );
                     }
+                    orderInfo.append(System.lineSeparator());
                     printInfoMessage(orderInfo.toString());
                 }
             );
@@ -121,17 +125,25 @@ public class InputProcessor {
 
     private void printInfoMessage(String message) {
         System.out.println(message);
+        System.out.flush();
     }
 
     private void printErrorMessage(String error) {
         System.err.println("  ** Error: "+error);
+        System.err.flush();
     }
 
     private void printWelcomeMessage() {
-        System.out.print("");
-        System.out.println("Welcome to the Flower Bundle Shop Application");
-        System.out.print("");
-        System.out.print("Below you will be able to input orders in the form: 'X ABC' - where 'X' is the order amount and 'ABC' is the product code");
+        System.out.println("");
+        System.out.println("Welcome to the Flower Bundle Shop Application!");
+        System.out.println("");
+        System.out.println("Below you will be able to input orders in the form: 'X ABC' - where 'X' is the order amount and 'ABC' is the product code.");
+        System.out.println("You can input multiple orders by using the enter key when each order line is completed.");
+        System.out.println("Once you are done with a particular order, enter 'done' to calculate all the order bundles.");
+        System.out.println("");
+        System.out.println("To exit the application, enter 'quit'.");
+        System.out.println();
+        System.out.flush();
     }
 
     InputOrderParsedResult isInputOrderValid(String input) {
