@@ -23,6 +23,10 @@ public final class BundleOptions {
         this.maximumBundleSize = entryStatistics.getMax();
     }
 
+    public BigDecimal getPrice() {
+        return bundles.parallelStream().map(Bundle::getPrice).reduce(BigDecimal::add).get();
+    }
+
     public int getMinimumBundleSize() {
         return minimumBundleSize;
     }
@@ -31,10 +35,14 @@ public final class BundleOptions {
         return maximumBundleSize;
     }
 
+    public Set<Bundle> getBundles() {
+        return bundles;
+    }
+
     public Optional<Bundle> getBundleForSize(int bundleSize) {
         return bundles.parallelStream().filter(bundle -> bundle.getSize() == bundleSize).findFirst();
     }
-    
+
     public boolean hasExactBundleSize(int bundleSize) {
         return getBundleForSize(bundleSize).isPresent();
     }
@@ -68,6 +76,4 @@ public final class BundleOptions {
             return newBundleOptions;
         }
     }
-
-
 }
