@@ -1,0 +1,52 @@
+[
+  {
+    "product_code": "R12",
+    "flower_name": "Rose",
+    "bundles" : [
+      {
+        "size": 5,
+        "price": 6.99
+      },
+      {
+        "size": 10,
+        "price": 12.99
+      }
+    ]
+  },
+  {
+    "product_code": "L09",
+    "flower_name": "Lily",
+    "bundles" : [
+      {
+        "size": 3,
+        "price": 9.95
+      },
+      {
+        "size": 6,
+        "price": 16.95
+      },
+      {
+        "size": 9,
+        "price": 24.95
+      }
+    ]
+  },
+  {
+    "product_code": "T58",
+    "flower_name": "Tulip",
+    "bundles" : [
+      {
+        "size": 3,
+        "price": 5.95
+      },
+      {
+        "size": 5,
+        "price": 9.95
+      },
+      {
+        "size": 9,
+        "price": 16.99
+      }
+    ]
+  }
+]
