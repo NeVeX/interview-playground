@@ -24,3 +24,5 @@ Note; there were lots of assumptions:
 * Input is always valid (ships don't fit, ships coordinates are bad, board size is negative, upper case characters)
 * Correctness is vital
 * Performance is not vital
+
+When this code was submitted, the score calculated was 100%. It took me about 2.5 hours to complete this. 
