@@ -10,4 +10,8 @@ public class ApiException extends Exception {
     ApiException(String message, Exception exception) {
         super(message, exception);
     }
+
+    ApiException(Exception exception) {
+        super(exception);
+    }
 }

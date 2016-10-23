@@ -1,9 +1,12 @@
 package com.mark.redbubble.api.model;
 
+import com.mark.redbubble.api.ConversionException;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+import org.simpleframework.xml.core.Persister;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -21,5 +24,13 @@ public class CameraWorksApiResponse {
 
     public void setWorks(List<Work> works) {
         this.works = works;
+    }
+
+    public static CameraWorksApiResponse convertFromStream(InputStream inputStream) throws ConversionException {
+        try {
+            return new Persister().read(CameraWorksApiResponse.class, inputStream);
+        } catch (Exception exception ) {
+            throw new ConversionException("Could not convert input stream to "+CameraWorksApiResponse.class.getName(), exception);
+        }
     }
 }
