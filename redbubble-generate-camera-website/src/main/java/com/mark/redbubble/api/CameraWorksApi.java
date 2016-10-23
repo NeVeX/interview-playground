@@ -43,7 +43,7 @@ public class CameraWorksApi {
             } catch (Exception exception) {
                 throw new ApiException("Could not parse the API Camera response", exception);
             }
-            cameras.toString(); 
+            cameras.toString();
         }
     }
 

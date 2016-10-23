@@ -12,7 +12,7 @@ import java.util.List;
 @Root(strict = false) // We are not going to de/serialize everything
 public class CameraWorksApiResponse {
 
-    @ElementList(inline = true) // The root response is directly the start of the list
+    @ElementList(inline = true, required = false) // The root response is directly the start of the list
     private List<Work> works;
 
     public List<Work> getWorks() {
