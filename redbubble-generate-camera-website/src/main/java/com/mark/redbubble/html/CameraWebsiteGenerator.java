@@ -1,6 +1,7 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
+import com.mark.redbubble.output.FileWriterException;
 import com.mark.redbubble.output.HtmlFileWriter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -22,6 +23,7 @@ public class CameraWebsiteGenerator {
     private final HtmlFileWriter htmlFileWriter;
     private final TemplateEngine templateEngine;
     private final IndexPageGenerator indexPageGenerator;
+    private final CameraMakePageGenerator cameraMakePageGenerator;
 
     public CameraWebsiteGenerator(Set<CameraInformation> allCameras, HtmlFileWriter htmlFileWriter) {
         if ( allCameras == null || allCameras.isEmpty()) { throw new IllegalArgumentException("Provided allCameras is not valid"); }
@@ -31,11 +33,13 @@ public class CameraWebsiteGenerator {
         this.htmlFileWriter = htmlFileWriter;
         this.templateEngine = createTemplateEngine();
         this.indexPageGenerator = new IndexPageGenerator(allCameras, this.templateEngine);
+        this.cameraMakePageGenerator = new CameraMakePageGenerator(allCameras, this.templateEngine);
     }
 
-    public void generatePages() {
-        String indexPageContents = indexPageGenerator.createIndexPage();
-        writeContents("index", indexPageContents);
+    public void generatePages() throws FileWriterException {
+
+        indexPageGenerator.createIndexPage(htmlFileWriter);
+        cameraMakePageGenerator.createCameraMakePages(htmlFileWriter);
     }
 
     private TemplateEngine createTemplateEngine() {
@@ -46,20 +50,5 @@ public class CameraWebsiteGenerator {
         templateEngine.setTemplateResolver(resolver);
         return templateEngine;
     }
-
-    private Map<String, Set<CameraInformation>> createCameraMakeMap() {
-        return allCameras
-                .stream()
-                .collect(groupingBy(CameraInformation::getCameraMake, Collectors.toSet()));
-    }
-
-    private void writeContents(String fileName, String content) {
-        try {
-            htmlFileWriter.writeHtml("mark-createIndexPage"+ UUID.randomUUID().toString(), content);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
 
 }

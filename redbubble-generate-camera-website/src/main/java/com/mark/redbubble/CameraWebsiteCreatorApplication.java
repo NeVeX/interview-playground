@@ -1,9 +1,11 @@
 package com.mark.redbubble;
 
 import com.mark.redbubble.api.CameraWorksApiClient;
+import com.mark.redbubble.html.CameraWebsiteGenerator;
 import com.mark.redbubble.input.ApplicationInputArguments;
 import com.mark.redbubble.input.ApplicationInputReader;
 import com.mark.redbubble.model.CameraInformation;
+import com.mark.redbubble.output.HtmlFileWriter;
 
 import java.util.Set;
 
@@ -19,6 +21,9 @@ public class CameraWebsiteCreatorApplication {
         ApplicationInputArguments inputArguments = inputReader.processInput(args);
 
         Set<CameraInformation> cameras = new CameraWorksApiClient(inputArguments.getCameraWorksApiUrl()).getCameras();
+
+        HtmlFileWriter htmlFileWriter = new HtmlFileWriter(inputArguments.getHtmlOutputDirectory());
+        new CameraWebsiteGenerator(cameras, htmlFileWriter).generatePages();
 
 
     }

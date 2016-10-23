@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Camera Makes Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style>
+            .floated_img
+            {
+                float: left;
+            }
+        </style>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="application/javascript">
+            $(document).ready(function() {
+
+                function goToCameraModelPage() {
+                    // Need the abbreviation
+                    var cameraModelSelected = $('#camera_model_selection').val();
+
+                    console.log("Camera model selected: "+cameraModelSelected)
+
+                    if ( !cameraModelSelected) { // empty or null
+                        return;
+                    }
+
+                    var allCameraModels = $('#camera_model_list');
+                    var cameraModelSelectionEntry = $(allCameraModels).find('option[value="' + cameraModelSelected + '"]');
+                    var cameraModelHtmlPage = cameraModelSelectionEntry.attr('data-value');
+                    if ( cameraModelHtmlPage ) {
+
+                        location.href = cameraModelHtmlPage;
+                    }
+                }
+
+                $('#camera_model_selection').keydown(function(event){
+                    var keyCode = (event.keyCode ? event.keyCode : event.which);
+                    if (keyCode == 13) { // Enter key
+                        goToCameraModelPage();
+                    }
+                });
+                $('#camera_model_selection').bind('input', goToCameraModelPage);
+                $('#camera_model_list').bind('input', goToCameraModelPage);
+            })
+        </script>
+    </head>
+
+    <body>
+
+        <h3>This is the Camera Make Page!</h3>
+
+        <div style="margin-top: 30px">
+
+            <a href="index.html">Index Page</a>
+
+            <input style="width: 250px; " type="text" placeholder="Enter (or select) a model" list="camera_model_list" id="camera_model_selection"/>
+
+            <datalist id="camera_model_list">
+                <option th:each="camera_model : ${all_camera_models}" th:data-value="${camera_model.value}" th:value="${camera_model.key}"/>
+            </datalist>
+
+        </div>
+
+        <div style="margin-top: 30px">
+            <div class="floated_img" th:each="highlight_picture : ${highlight_pictures}">
+                <img th:src="${highlight_picture}">
+            </div>
+        </div>
+
+    </body>
+
+</html>

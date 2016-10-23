@@ -5,12 +5,15 @@
     <head>
         <title>Camera Index Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
         <style>
             .floated_img
             {
                 float: left;
+                /*width: 100px;*/
+                /*height: 100px;*/
+
             }
+
         </style>
 
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
@@ -32,7 +35,6 @@
                     var cameraMakeHtmlPage = cameraMakeSelectionEntry.attr('data-value');
                     if ( cameraMakeHtmlPage ) {
 
-                        console.log("need to move to: "+cameraMakeHtmlPage)
                         location.href = cameraMakeHtmlPage;
                     }
                 }
@@ -40,7 +42,7 @@
                 $('#camera_make_selection').keydown(function(event){
                     var keyCode = (event.keyCode ? event.keyCode : event.which);
                     if (keyCode == 13) { // Enter key
-                        getEstimates();
+                        goToCameraMakePage();
                     }
                 });
                 $('#camera_make_selection').bind('input', goToCameraMakePage);
@@ -51,17 +53,21 @@
 
     <body>
 
-        <h3>This is the Index Page!</h3>
+        <div style="margin-top: 30px">
 
-        <input style="width: 250px; " type="text" placeholder="Enter (or select) a camera make" list="camera_make_list" id="camera_make_selection"/>
+            <h3>This is the Index Page!</h3>
 
-        <datalist id="camera_make_list">
-            <option th:each="camera_make : ${all_camera_makes}" th:data-value="${camera_make.value}" th:value="${camera_make.key}"/>
-        </datalist>
+            <input style="width: 250px; " type="text" placeholder="Enter (or select) a camera make" list="camera_make_list" id="camera_make_selection"/>
 
+            <datalist id="camera_make_list">
+                <option th:each="camera_make : ${all_camera_makes}" th:data-value="${camera_make.value}" th:value="${camera_make.key}"/>
+            </datalist>
+        </div>
 
-        <div class="floated_img" th:each="highlight_picture : ${highlight_pictures}">
-            <img th:src="${highlight_picture}">
+        <div style="margin-top: 30px">
+            <div class="floated_img" th:each="highlight_picture : ${highlight_pictures}">
+                <img th:src="${highlight_picture}">
+            </div>
         </div>
 
         <!---->

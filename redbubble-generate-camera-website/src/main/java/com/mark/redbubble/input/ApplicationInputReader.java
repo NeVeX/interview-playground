@@ -23,7 +23,7 @@ public class ApplicationInputReader {
          */
         API_CAMERA_WORKS_LOCATION_OPTION = Option.builder("a").hasArg().required()
                 .desc("The camera works API to use for exif data").build();
-        HTML_OUTPUT_DIRECTORY_OPTION = Option.builder("d").hasArg().required()
+        HTML_OUTPUT_DIRECTORY_OPTION = Option.builder("o").hasArg().required()
                 .desc("The full directory location to output all generated HTML files").build();
 
         // Add all the input options to the full options

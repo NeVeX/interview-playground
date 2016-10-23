@@ -2,6 +2,7 @@ package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.model.PictureUrl;
+import com.mark.redbubble.output.FileWriterException;
 import com.mark.redbubble.output.HtmlFileWriter;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 public class CameraWebsiteGeneratorTest {
 
     @Test
-    public void assertIndexHtmlCreation() {
+    public void assertIndexHtmlCreation() throws FileWriterException {
         CameraInformation cameraInformation = CameraInformation.builder(1234)
                 .withCameraMake("my_make")
                 .withCameraModel("my_model")
