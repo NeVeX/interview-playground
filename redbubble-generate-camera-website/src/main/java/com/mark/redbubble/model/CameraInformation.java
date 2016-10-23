@@ -1,6 +1,5 @@
 package com.mark.redbubble.model;
 
-import okhttp3.Request;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;

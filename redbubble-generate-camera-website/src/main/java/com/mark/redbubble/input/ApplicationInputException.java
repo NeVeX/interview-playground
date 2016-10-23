@@ -1,7 +1,5 @@
 package com.mark.redbubble.input;
 
-import org.apache.commons.cli.ParseException;
-
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */

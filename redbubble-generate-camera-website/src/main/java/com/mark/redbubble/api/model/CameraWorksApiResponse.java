@@ -1,7 +1,6 @@
 package com.mark.redbubble.api.model;
 
 import com.mark.redbubble.api.ConversionException;
-import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 import org.simpleframework.xml.core.Persister;

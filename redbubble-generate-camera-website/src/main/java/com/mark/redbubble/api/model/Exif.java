@@ -1,10 +1,7 @@
 package com.mark.redbubble.api.model;
 
 import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
-
-import java.util.List;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.

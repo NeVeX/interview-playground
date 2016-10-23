@@ -3,9 +3,6 @@ package com.mark.redbubble.input;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.

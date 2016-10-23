@@ -1,9 +1,10 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
+import com.mark.redbubble.output.HtmlFileWriter;
 import org.junit.Test;
 
-import java.util.Collections;
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +20,9 @@ public class CameraWebsiteGeneratorTest {
         Set<CameraInformation> cameras = new HashSet<>();
         cameras.add(cameraInformation);
 
-        new CameraWebsiteGenerator(cameras).testing();
+        HtmlFileWriter htmlFileWriter = new HtmlFileWriter(new File("c:\\Temp\\"));
+
+        new CameraWebsiteGenerator(cameras, htmlFileWriter).testing();
 
 
 

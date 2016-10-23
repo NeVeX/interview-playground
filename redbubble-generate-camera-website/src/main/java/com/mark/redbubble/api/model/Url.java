@@ -1,8 +1,8 @@
 package com.mark.redbubble.api.model;
 
-import org.simpleframework.xml.*;
-
-import java.util.List;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Root;
+import org.simpleframework.xml.Text;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.

@@ -1,7 +1,5 @@
 package com.mark.redbubble.api;
 
-import java.io.IOException;
-
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */
