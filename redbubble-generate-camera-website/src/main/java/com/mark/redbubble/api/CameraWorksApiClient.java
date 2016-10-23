@@ -80,14 +80,14 @@ public class CameraWorksApiClient {
                 throw new ApiException(conversionException);
             }
         }
-        throw new ApiException("Receieved invalid resonse from API");
+        throw new ApiException("Received invalid response from API");
     }
 
     private Response invokeCamerasFromTheApi() throws ApiException {
         try {
             return httpClient.newCall(baseRequestBuilder.build()).execute();
         } catch (Exception exception) {
-            throw new ApiException("Exception occured while trying to get all the cameras", exception);
+            throw new ApiException("Exception occurred while trying to get all the cameras", exception);
         }
     }
 

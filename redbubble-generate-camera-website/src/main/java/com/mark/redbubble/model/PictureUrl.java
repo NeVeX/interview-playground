@@ -3,6 +3,7 @@ package com.mark.redbubble.model;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -24,7 +25,6 @@ public class PictureUrl {
             }
             return Unknown;
         }
-
     }
 
     private final String url;
@@ -41,5 +41,18 @@ public class PictureUrl {
 
     public PictureUrlSize getPictureUrlSize() {
         return pictureUrlSize;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PictureUrl that = (PictureUrl) o;
+        return Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(url);
     }
 }
