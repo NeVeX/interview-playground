@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Mark Cunningham on 10/22/2016.
  */
 @Root(strict = false) // We are not going to de/serialize everything
-class Work {
+public class Work {
 
     @Element(required = false)
     private Long id;

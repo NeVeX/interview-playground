@@ -1,6 +1,11 @@
 package com.mark.redbubble.api;
 
+import com.mark.redbubble.model.CameraInformation;
 import org.junit.Test;
+
+import java.util.Set;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
@@ -12,7 +17,9 @@ public class CameraWorksApiClientTest {
     @Test
     public void assertTheGivenExampleApiWorks() throws Exception {
         CameraWorksApiClient cameraWorksApiClient = new CameraWorksApiClient(EXAMPLE_API_URL);
-        cameraWorksApiClient.getCameras();
+        Set<CameraInformation> cameras = cameraWorksApiClient.getCameras();
+        assertThat(cameras).isNotNull();
+        assertThat(cameras).isNotEmpty(); // Don't explicitly check the size, since the example API may change
     }
 
     @Test(expected = IllegalArgumentException.class)

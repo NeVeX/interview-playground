@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Mark Cunningham on 10/22/2016.
  */
 @Root(strict = false)
-class Url {
+public class Url {
 
     @Text(required = false)
     private String url;
