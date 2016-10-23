@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <title>Redbubble Coding Test</title>
+    <meta content='text/html; charset=US-ASCII' http-equiv='content-type'>
+    <meta content='redbubble, code, test, coding, take home, homework' name='keywords'>
+    <meta content='Redbubble take home coding test' name='description'>
+    <meta content='initial-scale=1.0, width=device-width,maximum-scale=1.0, user-scalable=no' name='viewport'>
+    <link href='//assets0.redbubble.net/favicon.png' rel='shortcut icon' type='image/png'>
+    <link href='/css/styles.css' rel='stylesheet'>
+  </head>
+  <body>
+    <div id='header'>
+      <h1>
+        Redbubble Coding Test
+      </h1>
+    </div>
+    <div class='colmask fullpage'>
+      <div class='col1'>
+        <h2>Brief</h2>
+        <p>
+          The Redbubble system has many digital images, often taken with a camera.
+          We have exported EXIF data from a selection of these images. This data is
+          available via an API.
+        </p>
+        <h2>Instructions</h2>
+        <p>
+          Your task is to create a set of static HTML files to allow a user to browse
+          the images contained in the API.
+        </p>
+        <p>
+          The API is available at:
+          <a href='/api/v1/works.xml'>/api/v1/works.xml</a>.
+        </p>
+        <p>
+          Create a batch processor that takes data from the API, and produce a single HTML page
+          (based on
+          <a href='/templates/output-template.html'>this output template</a>),
+          for each camera make, camera model and also an index page.
+        </p>
+        <p>The index page must contain:</p>
+        <ul>
+          <li>Thumbnail images for the first 10 work;</li>
+          <li>Navigation that allows the user to browse to all camera makes.</li>
+        </ul>
+        <p>Each camera make HTML page must contain:</p>
+        <ul>
+          <li>Thumbnail images of the first 10 works for that camera make;</li>
+          <li>
+            Navigation that allows the user to browse to the index page and to all
+            camera models of that make.
+          </li>
+        </ul>
+        <p>Each camera model HTML page must contain:</p>
+        <ul>
+          <li>Thumbnail images of all works for that camera make and model;</li>
+          <li>
+            Navigation that allows the user to browse to the index page and
+            the camera make.
+          </li>
+        </ul>
+        <p>
+          The batch processor should take the API URL and the output
+          directory as parameters.
+        </p>
+        <p>
+          The data returned from the API contains a small sample set of works.
+        </p>
+        <h2>Guidance</h2>
+        <p>
+          At Redbubble, our first significant hiring hurdle is a coding test. Often
+          the experience and achievements of the candidate don't match at all with
+          the quality of code they send through to us. This page attempts to give you
+          some guidance on what to think about beyond the actual instructions. Please
+          read this <strong>very carefully</strong>, it is important.
+        </p>
+        <h3>tl;dr</h3>
+        <p>
+          Consider the person who has to read/run your coding test and do everything
+          you can to make their job easier. Represent your very best professional
+          practices with the code you submit.
+        </p>
+        <p>
+          The people reading your code test will be working through hundreds of them.
+          As we are language agnostic, they'll be seeing solutions written in a
+          wide variety of languages and demonstrating the entire breadth of the
+          software quality spectrum. The few who submit readable,
+          simple, extendable, reliable and performant applications make it through to
+          the interview stage. Filtering down to these few
+          is an incredibly time-consuming and often very frustrating process. As you
+          write your coding test remember to treat the end users of that test (the
+          hirers) as the very important and time-poor people that they are.
+        </p>
+        <h3>Read the Instructions, Meet the Requirements</h3>
+        <p>
+          This may seem obvious, but even the better quality tests we've received
+          often leave out a requirement or two. If they say submit your code via a
+          github repo then do it. If they say write an application that takes two
+          parameters, a username and a shoe size, then do that. If they say output
+          JSON files do that. If you have questions about the requirements don't
+          be afraid to ask. When we receive a test that doesn't meet the straightforward
+          test requirements we lose faith in that candidate's ability to build code to
+          satisfy our requirements.
+        </p>
+        <h3>Include a README</h3>
+        <p>
+          Just because you know how to run your app doesn't mean the person looking
+          at your test does. They can spend 20 minutes of their precious time reading
+          your source code and reverse engineering it to work out where your main
+          class is and the command to run it. Or you can just tell them. By not spelling
+          it out you are moving your application closer to the reject pile. If you're
+          doing the test in a language they're not currently working in then be
+          more explicit with your instructions. For example, if you write in Ruby,
+          tell them which version of Ruby to install along with some instructions on
+          how to install it. Likewise with C compilers, Java package managers, .NET
+          versioning and so on can all turn into a big time-sink of Googling, reading
+          man pages and frustration. So be considerate, explicit and accurate in your
+          README. Better yet, use the tools that are appropriate for your platform
+          (<code>sbt</code>, <code>maven</code>, <code>bundler</code>,
+          <code>cocoapods</code>, etc.) that make this simple(r).
+        </p>
+        <p>
+          It's also a good idea to include some other stuff about what you've built in your
+          README. Things like why you made certain decisions, how you architected your code,
+          why you chose a certain language or framework for your solution, any issues or
+          shortcomings with your code, etc. We generally read this first, and this gives
+          us a good impression of what you were thinking, and helps us gauge your code.
+        </p>
+        <h3>Write Production-Quality Code</h3>
+        <p>
+          Write code that is as similar to production-level code as possible, given
+          the constraints on your time. If the coding test is the first stage in the
+          application process, all the hirer knows about you is what you tell them in
+          your code. One giant class named
+          <code>Test</code>
+          with three epic methods named
+          <code>process_1</code>,
+          <code>process_2</code>
+          and
+          <code>process_3</code>
+          and no tests tells us everything we need to know; you aren't getting anywhere
+          near our precious production code. Likewise, leave out the TODOs. We don't
+          like them in our code base and they don't do you any favours in a test.
+          <code>// TODO: Implement error handling</code>
+          is not a selling point for your coding skills. These may seem like extreme
+          examples, but too many of the coding tests we receive look like something
+          hacked together by a second year Comp Sci student, and not the
+          production-quality code we're looking for.
+        </p>
+        <h3>Write Tests!</h3>
+        <p>
+          We like TDD, one of the things we look for in a candidate is the ability to
+          write good tests. What makes a good test?
+        </p>
+        <ul>
+          <li>
+            Make sure your test makes it easy to identify where the problem in your
+            code is. A simple way to do this is to make only one assertion per test block.
+          </li>
+          <li>
+            Unit test where necessary, e.g. complex methods, code we might find obscure
+            or crucial functions. Just to be sure you know what we mean by unit testing:
+            "a unit [is] the smallest testable part of an application"<a href='http://en.wikipedia.org/wiki/Unit_testing'>Wikipedia</a>.</a></li>
+          <li>
+            Integration tests for our coding exercise are optional, but whether to
+            include them or not will depend on the type of test you are doing. If
+            you're not sure, put them in anyway. So far we haven't rejected anyone
+            for putting in too many tests.
+          </li>
+          <li>
+            Test everything. TDD, BDD, unit, integration - there are different schools
+            of thought on how to best approach testing and most of them have merit.
+            At the end of the day the important thing is that any breaking changes to
+            your code break your tests and clearly identify where the problem is.
+          </li>
+        </ul>
+        <h3>Design an App</h3>
+        <p>
+          Even the simplest of applications can be split into a data model class, a
+          display/runner class and some logic between the two. Design your solution
+          to be robust, extensible and simple and then we'll know you can do the same
+          thing for us. Yes, those principles involve trade-offs, and how you make
+          those trade-offs will tell us a lot about what you think is important. Of
+          course your audience will differ, but the best thing you can do is try to
+          strike a balance between them. If you pick one and optimise for that at the
+          expense of the others you're making assumptions about what we're looking
+          for that may end up with your code in the reject pile.
+        </p>
+        <h3>Include Some Error Handling</h3>
+        <p>
+          We run your code from the command line, it exits immediately with no error
+          messages or any other kind of output. If we can, we'll spend the time inserting
+          random debugging statements into your code in the hope of finding the error.
+          More than likely we won't have that kind of time to spare, so we put you straight
+          in the reject pile. Help us out by adding some error handling, preferably with
+          stack traces (it's okay, we're coders, we can read stack traces) and you'll
+          greatly increase your chances of making it onto the "interview" pile.
+        </p>
+        <h3>Pay Attention</h3>
+        <p>A key quality of a good developer is attention to detail. Here's a list of detail</p>
+        that some developers thought were not important, but we reckon they are:
+        <ul>
+          <li>don't hardcode pathnames to your computer;</li>
+          <li>make sure the app compiles before you send it in;</li>
+          <li>make sure the app runs before you send it in;</li>
+          <li>
+            tidy up your spelling everywhere - comments, project names, email, variable names,
+            class names and all of the other places;
+          </li>
+          <li>use a recent version of your chosen language, not an old one;</li>
+          <li>
+            don't abbreviate variable names. We have no idea what
+            <code>c << a if g</code>
+            means and neither will you in six months;
+          </li>
+          <li>
+            finish the coding test before you submit it, a partial solution is not enough.
+            If you feel it is taking too long, get in touch and we can negotiate a better
+            submission date.
+          </li>
+        </ul>
+        <p>
+          Going for a job is a nerve-wracking process; no one likes to be judged. Writing
+          code does have a strong creative element so what appeals to one person isn't
+          necessarily going to appeal to another. However, it's our hope that by following
+          these guidelines you can maximise your chances of getting through to the next
+          stage in the hiring process. Have fun and good luck!
+        </p>
+        <p>
+          <strong>Disclaimer:</strong>
+          Of course not all this advice will apply to all coding tests or reviewers so use
+          with a dollop of your own common sense.
+        </p>
+        <p>
+          This guidance was originally taken from
+          <a href='http://engineering.lonelyplanet.com/2014/07/28/How-To-Pass-A-Coding-Test.html'>Lonely Planet</a>.
+        </p>
+      </div>
+    </div>
+    <div id='footer'>
+      <p>
+        Copyright &copy; 2016 Redbubble Ltd
+      </p>
+    </div>
+  </body>
+</html>

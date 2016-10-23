@@ -1,0 +1,32 @@
+apply plugin: 'java'
+
+// Need to set the java properties after the plugin is loaded above
+sourceCompatibility = javaSourceCompatibility
+targetCompatibility = javaTargetCompatibility
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.5.2'
+}
+
+// Setting the test task to show running tests and the status of each once completed.
+// Also showing exceptions on failures.
+test {
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: ${descriptor}")
+    }
+
+    afterTest { descriptor, result ->
+        logger.lifecycle("Executed test ${descriptor} with result: ${result.resultType}")
+    }
+
+    testLogging {
+        showStackTraces = true
+        exceptionFormat = "full"
+    }
+}
