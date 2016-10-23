@@ -69,12 +69,12 @@ public class CameraInformation {
             this.cameraId = cameraId;
         }
 
-        public Builder setCameraMake(String cameraMake) {
+        public Builder withCameraMake(String cameraMake) {
             this.cameraMake = cameraMake;
             return this;
         }
 
-        public Builder setCameraModel(String cameraModel) {
+        public Builder withCameraModel(String cameraModel) {
             this.cameraModel = cameraModel;
             return this;
         }

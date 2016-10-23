@@ -2,6 +2,7 @@ package com.mark.redbubble.input;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.List;
 public class ApplicationInputArguments {
 
     private final String cameraWorksApiUrl;
-    private final String htmlOutputDirectory;
+    private final File htmlOutputDirectory;
 
-    public ApplicationInputArguments(String cameraWorksApiUrl, String htmlOutputDirectory) {
+    public ApplicationInputArguments(String cameraWorksApiUrl, File htmlOutputDirectory) {
         if ( StringUtils.isBlank(cameraWorksApiUrl)) { throw new IllegalArgumentException("Provided cameraWorksApiUrl is blank"); }
-        if ( StringUtils.isBlank(htmlOutputDirectory)) { throw new IllegalArgumentException("Provided htmlOutputDirectory is blank"); }
+        if ( htmlOutputDirectory == null) { throw new IllegalArgumentException("Provided htmlOutputDirectory is null"); }
         this.cameraWorksApiUrl = cameraWorksApiUrl;
         this.htmlOutputDirectory = htmlOutputDirectory;
     }
@@ -25,7 +26,7 @@ public class ApplicationInputArguments {
         return cameraWorksApiUrl;
     }
 
-    public String getHtmlOutputDirectory() {
+    public File getHtmlOutputDirectory() {
         return htmlOutputDirectory;
     }
 }

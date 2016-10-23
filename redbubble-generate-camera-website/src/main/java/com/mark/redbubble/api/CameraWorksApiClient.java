@@ -9,7 +9,6 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -62,8 +61,8 @@ public class CameraWorksApiClient {
                     .map(url -> new PictureUrl(url.getUrl(), PictureUrl.PictureUrlSize.toEnum(url.getType())))
                     .collect(toSet());
             return CameraInformation.builder(work.getId())
-                                    .setCameraMake(work.getExif().getMake())
-                                    .setCameraModel(work.getExif().getModel())
+                                    .withCameraMake(work.getExif().getMake())
+                                    .withCameraModel(work.getExif().getModel())
                                     .addPictureUrls(pictureUrls)
                                     .build();
         } catch (Exception e ) {

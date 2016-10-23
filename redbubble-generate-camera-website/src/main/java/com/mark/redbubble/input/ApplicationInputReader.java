@@ -3,11 +3,9 @@ package com.mark.redbubble.input;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
@@ -20,7 +18,7 @@ public class ApplicationInputReader {
     private static final Options ALL_INPUT_OPTIONS = new Options();
 
     static {
-        /**
+        /*
          * Define the input arguments that we expect and their properties.
          */
         API_CAMERA_WORKS_LOCATION_OPTION = Option.builder("a").hasArg().required()
@@ -34,25 +32,13 @@ public class ApplicationInputReader {
     }
 
     public ApplicationInputArguments processInput(String[] args) throws ApplicationInputException {
-        List<String> invalidInputs = new ArrayList<>();
-        CommandLine clp;
         try {
             // Use the CLI parser to help us parse the input
-            clp = new DefaultParser().parse(ALL_INPUT_OPTIONS, args);
-            String cameraWorksApi = null;
-            String htmlOutputDirectory = null;
+            CommandLine commandLine = new DefaultParser().parse(ALL_INPUT_OPTIONS, args);
+            String cameraWorksApi = getValidCameraWorksApi(commandLine);
+            File htmlOutputDirectory = getValidOutputDirectory(commandLine);
 
-            if (clp.hasOption(API_CAMERA_WORKS_LOCATION_OPTION.getOpt())) {
-                cameraWorksApi = clp.getOptionValue(API_CAMERA_WORKS_LOCATION_OPTION.getOpt());
-            }
-            if (clp.hasOption(HTML_OUTPUT_DIRECTORY_OPTION.getOpt())) {
-                htmlOutputDirectory = clp.getOptionValue(HTML_OUTPUT_DIRECTORY_OPTION.getOpt());
-            }
-
-            // Let's make all input is valid
-            if (StringUtils.isNotBlank(cameraWorksApi) && StringUtils.isNotBlank(htmlOutputDirectory)) {
-                return new ApplicationInputArguments(cameraWorksApi, htmlOutputDirectory); // all good
-            }
+            return new ApplicationInputArguments(cameraWorksApi, htmlOutputDirectory);
 
         } catch (MissingOptionException e) {
             throw new ApplicationInputException("Missing required arguments: "+e.getMissingOptions());
@@ -61,7 +47,33 @@ public class ApplicationInputReader {
         } catch (ParseException pe) {
             throw new ApplicationInputException("Could not parse input arguments", pe);
         }
-        throw new ApplicationInputException("No valid input arguments received");
+    }
+
+    private String getValidCameraWorksApi(CommandLine clp) throws ApplicationInputException {
+        String cameraApi = null;
+        if (clp.hasOption(API_CAMERA_WORKS_LOCATION_OPTION.getOpt())) {
+             cameraApi = clp.getOptionValue(API_CAMERA_WORKS_LOCATION_OPTION.getOpt());
+        }
+        if ( StringUtils.isNotBlank(cameraApi)) {
+            return cameraApi;
+        }
+        throw new ApplicationInputException("Invalid Camera works API ["+cameraApi+"] given");
+
+    }
+
+    private File getValidOutputDirectory(CommandLine commandLine) throws ApplicationInputException {
+        String outputDirectoryString = null;
+        if (commandLine.hasOption(HTML_OUTPUT_DIRECTORY_OPTION.getOpt())) {
+            outputDirectoryString = commandLine.getOptionValue(HTML_OUTPUT_DIRECTORY_OPTION.getOpt());
+        }
+        File outputDirectory = null;
+        if ( StringUtils.isNotBlank(outputDirectoryString)) {
+            outputDirectory = new File(outputDirectoryString);
+        }
+        if ( outputDirectory != null && outputDirectory.isDirectory()) {
+            return outputDirectory;
+        }
+        throw new ApplicationInputException("Invalid output directory ["+outputDirectoryString+"] given");
     }
 
     public void printUsageInformation(OutputStream printStream) {

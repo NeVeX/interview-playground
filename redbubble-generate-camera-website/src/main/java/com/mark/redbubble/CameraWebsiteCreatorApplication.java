@@ -14,7 +14,9 @@ public class CameraWebsiteCreatorApplication {
 
     void run(String[] args) throws Exception {
         // Parse the input
-        ApplicationInputArguments inputArguments = new ApplicationInputReader().processInput(args);
+        ApplicationInputReader inputReader = new ApplicationInputReader();
+        inputReader.printUsageInformation(System.out);
+        ApplicationInputArguments inputArguments = inputReader.processInput(args);
 
         Set<CameraInformation> cameras = new CameraWorksApiClient(inputArguments.getCameraWorksApiUrl()).getCameras();
 
