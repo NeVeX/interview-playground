@@ -2,10 +2,7 @@ package com.mark.redbubble.model;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
@@ -38,6 +35,14 @@ public class CameraInformation {
 
     public Set<PictureUrl> getPictureUrls() {
         return pictureUrls;
+    }
+
+    /**
+     * For the set of picture urls that we have, find the most appropriate one for thumbnails
+     * @return - the thumbnail picture if found
+     */
+    public Optional<PictureUrl> getThumbnailPicture() {
+        return pictureUrls.stream().sorted(PictureUrl.comparatorForOrderSize()).findFirst();
     }
 
     @Override

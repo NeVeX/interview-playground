@@ -5,12 +5,74 @@
     <head>
         <title>Camera Index Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <style>
+            .floated_img
+            {
+                float: left;
+            }
+        </style>
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="application/javascript">
+            $(document).ready(function() {
+
+                function goToCameraMakePage() {
+                    // Need the abbreviation
+                    var cameraMakeSelected = $('#camera_make_selection').val();
+
+                    console.log("Camera make selected: "+cameraMakeSelected)
+
+                    if ( !cameraMakeSelected) { // empty or null
+                        return;
+                    }
+
+                    var allCameraMakes = $('#camera_make_list');
+                    var cameraMakeSelectionEntry = $(allCameraMakes).find('option[value="' + cameraMakeSelected + '"]');
+                    var cameraMakeHtmlPage = cameraMakeSelectionEntry.attr('data-value');
+                    if ( cameraMakeHtmlPage ) {
+
+                        console.log("need to move to: "+cameraMakeHtmlPage)
+                        location.href = cameraMakeHtmlPage;
+                    }
+                }
+
+                $('#camera_make_selection').keydown(function(event){
+                    var keyCode = (event.keyCode ? event.keyCode : event.which);
+                    if (keyCode == 13) { // Enter key
+                        getEstimates();
+                    }
+                });
+                $('#camera_make_selection').bind('input', goToCameraMakePage);
+                $('#camera_make_list').bind('input', goToCameraMakePage);
+            })
+        </script>
     </head>
 
     <body>
 
-        <h3 th:text="${title}">This is the title!</h3>
+        <h3>This is the Index Page!</h3>
 
+        <input style="width: 250px; " type="text" placeholder="Enter (or select) a camera make" list="camera_make_list" id="camera_make_selection"/>
+
+        <datalist id="camera_make_list">
+            <option th:each="camera_make : ${all_camera_makes}" th:data-value="${camera_make.value}" th:value="${camera_make.key}"/>
+        </datalist>
+
+
+        <div class="floated_img" th:each="highlight_picture : ${highlight_pictures}">
+            <img th:src="${highlight_picture}">
+        </div>
+
+        <!---->
+        <!--<div class="floated_img">-->
+            <!--<img src="img.jpg" alt="Some image">-->
+            <!--<p>Description of above image</p>-->
+        <!--</div>-->
+        <!--<div class="floated_img">-->
+            <!--<img src="img2.jpg" alt="Another image">-->
+            <!--<p>Description of above image</p>-->
+        <!--</div>-->
 
 
     </body>

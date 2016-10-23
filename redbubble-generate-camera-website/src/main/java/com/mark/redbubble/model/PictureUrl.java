@@ -3,6 +3,7 @@ package com.mark.redbubble.model;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -12,7 +13,13 @@ import java.util.Optional;
 public class PictureUrl {
 
     public enum PictureUrlSize {
-        Small, Medium, Large, Unknown;
+        Small(1), Medium(2), Large(3), Unknown(4);
+
+        int sizeOrder;
+
+        PictureUrlSize(int sizeOrder) {
+            this.sizeOrder = sizeOrder;
+        }
 
         public static PictureUrlSize toEnum(String enumAsString) {
             if (StringUtils.isNotBlank(enumAsString)) {
@@ -33,6 +40,10 @@ public class PictureUrl {
     public PictureUrl(String url, PictureUrlSize urlSize) {
         this.url = url;
         this.pictureUrlSize = urlSize;
+    }
+
+    public static Comparator<PictureUrl> comparatorForOrderSize() {
+        return (o1, o2) -> Integer.compare(o1.pictureUrlSize.sizeOrder, o2.pictureUrlSize.sizeOrder);
     }
 
     public String getUrl() {
