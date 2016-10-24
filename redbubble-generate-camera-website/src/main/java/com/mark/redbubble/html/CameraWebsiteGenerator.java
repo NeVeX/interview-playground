@@ -8,34 +8,31 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.util.Set;
 
-import static java.util.stream.Collectors.groupingBy;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */
-public class CameraWebsiteGenerator {
+public class CameraWebsiteGenerator implements Generator {
 
-    private final Set<CameraInformation> allCameras;
-    private final FileWriter fileWriter;
-    private final TemplateEngine templateEngine;
     private final IndexPageGenerator indexPageGenerator;
     private final CameraMakePageGenerator cameraMakePageGenerator;
+    private final StaticResourcesGenerator staticResourcesGenerator = new StaticResourcesGenerator();
 
-    public CameraWebsiteGenerator(Set<CameraInformation> allCameras, FileWriter fileWriter) {
+    public CameraWebsiteGenerator(Set<CameraInformation> allCameras) {
         if ( allCameras == null || allCameras.isEmpty()) { throw new IllegalArgumentException("Provided allCameras is not valid"); }
-        if ( fileWriter == null) { throw new IllegalArgumentException("Provided fileWriter is null"); }
 
-        this.allCameras = allCameras;
-        this.fileWriter = fileWriter;
-        this.templateEngine = createTemplateEngine();
-        this.indexPageGenerator = new IndexPageGenerator(allCameras, this.templateEngine);
-        this.cameraMakePageGenerator = new CameraMakePageGenerator(allCameras, this.templateEngine);
+        TemplateEngine templateEngine = createTemplateEngine();
+        this.indexPageGenerator = new IndexPageGenerator(allCameras, templateEngine);
+        this.cameraMakePageGenerator = new CameraMakePageGenerator(allCameras, templateEngine);
     }
 
-    public void generatePages() throws FileWriterException {
+    @Override
+    public void generate(FileWriter fileWriter) throws FileWriterException {
 
-        indexPageGenerator.createIndexPage(fileWriter);
-        cameraMakePageGenerator.createCameraMakePages(fileWriter);
+        indexPageGenerator.generate(fileWriter);
+        cameraMakePageGenerator.generate(fileWriter);
+        staticResourcesGenerator.generate(fileWriter);
+
     }
 
     private TemplateEngine createTemplateEngine() {

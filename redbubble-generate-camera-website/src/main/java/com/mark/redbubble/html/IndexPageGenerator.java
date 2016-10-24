@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */
-class IndexPageGenerator {
+class IndexPageGenerator implements Generator {
 
     private final Set<String> pictureHighlights;
     private final Map<String, String> cameraMakes;
@@ -24,12 +24,13 @@ class IndexPageGenerator {
         this.templateEngine = templateEngine;
     }
 
-    void createIndexPage(FileWriter fileWriter) throws FileWriterException {
+    @Override
+    public void generate(FileWriter fileWriter) throws FileWriterException {
         Context context = new Context();
         context.setVariable("all_camera_makes", cameraMakes);
         context.setVariable("highlight_pictures", pictureHighlights);
         String contents = templateEngine.process("templates/index", context);
-        fileWriter.writeContentsToFile("index", ".html", contents);
+        fileWriter.writeContentsToFile("index.html", contents);
     }
 
 

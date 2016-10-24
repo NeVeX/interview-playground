@@ -3,6 +3,7 @@ package com.mark.redbubble.input;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
+import java.nio.file.Path;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
@@ -10,9 +11,9 @@ import java.io.File;
 public class ApplicationInputArguments {
 
     private final String cameraWorksApiUrl;
-    private final File htmlOutputDirectory;
+    private final Path htmlOutputDirectory;
 
-    public ApplicationInputArguments(String cameraWorksApiUrl, File htmlOutputDirectory) {
+    ApplicationInputArguments(String cameraWorksApiUrl, Path htmlOutputDirectory) {
         if ( StringUtils.isBlank(cameraWorksApiUrl)) { throw new IllegalArgumentException("Provided cameraWorksApiUrl is blank"); }
         if ( htmlOutputDirectory == null) { throw new IllegalArgumentException("Provided htmlOutputDirectory is null"); }
         this.cameraWorksApiUrl = cameraWorksApiUrl;
@@ -23,7 +24,7 @@ public class ApplicationInputArguments {
         return cameraWorksApiUrl;
     }
 
-    public File getHtmlOutputDirectory() {
+    public Path getHtmlOutputDirectory() {
         return htmlOutputDirectory;
     }
 }

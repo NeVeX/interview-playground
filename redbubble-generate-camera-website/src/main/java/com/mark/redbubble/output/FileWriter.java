@@ -1,52 +1,65 @@
 package com.mark.redbubble.output;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */
 public class FileWriter {
 
-    private final File outputDirectory;
+    private final Path outputParentDirectory;
 
-    public FileWriter(File outputDirectory) {
-        if (outputDirectory == null) { throw new IllegalArgumentException("Provided outputDirectory is null"); }
-        if (!outputDirectory.isDirectory()) { throw new IllegalArgumentException("Provided outputDirectory is not a directory"); }
-        this.outputDirectory = outputDirectory;
+    public FileWriter(Path outputParentDirectory) {
+        if (outputParentDirectory == null) { throw new IllegalArgumentException("Provided outputParentDirectory is null"); }
+        if (!Files.isDirectory(outputParentDirectory)) { throw new IllegalArgumentException("Provided outputParentDirectory is not a directory"); }
+        this.outputParentDirectory = outputParentDirectory;
     }
 
-    public void writeContentsToFile(String inputFileName, String filePostFix, String contents) throws FileWriterException {
-        String fileName = inputFileName + filePostFix;
-        File newFile = new File(outputDirectory, fileName);
-        if ( newFile.exists() ) {
-            throw new FileWriterException("File ["+newFile.getAbsolutePath()+"] already exists - will not overwrite");
+    public void writeContentsToFile(String childDirectory, String inputFileName, String contents) throws FileWriterException {
+        Path childDirPath = Paths.get(outputParentDirectory.toString(), childDirectory);
+        if ( !Files.exists(childDirPath)) {
+            childDirPath = createDirectory(childDirPath);
+        }
+        writeContentsToFile(childDirPath, inputFileName, contents);
+    }
+
+    public void writeContentsToFile(String inputFileName, String contents) throws FileWriterException {
+        writeContentsToFile(outputParentDirectory, inputFileName, contents);
+    }
+
+    private void writeContentsToFile(Path parentPath, String fullFileName, String contents) throws FileWriterException {
+
+        Path newFile = Paths.get(parentPath.toString(), fullFileName);
+        if ( Files.exists(newFile) ) {
+            throw new FileWriterException("File ["+newFile.toAbsolutePath()+"] already exists - will not overwrite");
         }
         try {
-            Files.createFile(newFile.toPath());
+            Files.createFile(newFile);
         } catch (Exception exception) {
-            throw new FileWriterException("Could not create the file ["+newFile.getAbsolutePath()+"] to save the html to", exception);
+            throw new FileWriterException("Could not create the file ["+newFile.toAbsolutePath()+"] to save the html to", exception);
         }
 
-        if ( !newFile.exists() || !newFile.canWrite()) {
-            throw new FileWriterException("Cannot access or write to the file ["+newFile.getAbsolutePath()+"]");
+        if ( !Files.exists(newFile) || !Files.isWritable(newFile)) {
+            throw new FileWriterException("Cannot access or write to the file ["+newFile.toAbsolutePath()+"]");
         }
 
-        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(newFile.toPath())) {
+        try (BufferedWriter bufferedWriter = Files.newBufferedWriter(newFile)) {
             bufferedWriter.write(contents);
         } catch (Exception exception) {
-            throw new FileWriterException("Could not write contents to the file ["+newFile.getAbsolutePath()+"]", exception);
+            throw new FileWriterException("Could not write contents to the file ["+newFile.toAbsolutePath()+"]", exception);
         }
     }
 
-    public void createDirectory(String directoryName) throws FileWriterException {
-        File newDirectory = new File(outputDirectory, directoryName);
+    private Path createDirectory(Path directoryToCreate) throws FileWriterException {
         try {
-            Files.createDirectory(newDirectory.toPath());
+            return Files.createDirectory(directoryToCreate);
         } catch (Exception exception ) {
-            throw new FileWriterException("Could not create directory ["+newDirectory.getAbsolutePath()+"]", exception);
+            throw new FileWriterException("Could not create directory ["+directoryToCreate.toAbsolutePath()+"]", exception);
         }
     }
+
 
 }

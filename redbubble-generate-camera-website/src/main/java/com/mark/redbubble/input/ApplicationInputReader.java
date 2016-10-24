@@ -6,6 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
@@ -36,7 +39,7 @@ public class ApplicationInputReader {
             // Use the CLI parser to help us parse the input
             CommandLine commandLine = new DefaultParser().parse(ALL_INPUT_OPTIONS, args);
             String cameraWorksApi = getValidCameraWorksApi(commandLine);
-            File htmlOutputDirectory = getValidOutputDirectory(commandLine);
+            Path htmlOutputDirectory = getValidOutputDirectory(commandLine);
 
             return new ApplicationInputArguments(cameraWorksApi, htmlOutputDirectory);
 
@@ -61,16 +64,16 @@ public class ApplicationInputReader {
 
     }
 
-    private File getValidOutputDirectory(CommandLine commandLine) throws ApplicationInputException {
+    private Path getValidOutputDirectory(CommandLine commandLine) throws ApplicationInputException {
         String outputDirectoryString = null;
         if (commandLine.hasOption(HTML_OUTPUT_DIRECTORY_OPTION.getOpt())) {
             outputDirectoryString = commandLine.getOptionValue(HTML_OUTPUT_DIRECTORY_OPTION.getOpt());
         }
-        File outputDirectory = null;
+        Path outputDirectory = null;
         if ( StringUtils.isNotBlank(outputDirectoryString)) {
-            outputDirectory = new File(outputDirectoryString);
+            outputDirectory = Paths.get(outputDirectoryString);
         }
-        if ( outputDirectory != null && outputDirectory.isDirectory()) {
+        if ( outputDirectory != null && Files.isDirectory(outputDirectory)) {
             return outputDirectory;
         }
         throw new ApplicationInputException("Invalid output directory ["+outputDirectoryString+"] given");

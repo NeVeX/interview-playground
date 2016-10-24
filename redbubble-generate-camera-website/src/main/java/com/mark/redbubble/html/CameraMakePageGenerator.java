@@ -16,7 +16,7 @@ import static java.util.stream.Collectors.groupingBy;
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */
-class CameraMakePageGenerator {
+class CameraMakePageGenerator implements Generator {
 
     private final Map<String, Set<CameraInformation>> cameraMakesToModels;
     private final TemplateEngine templateEngine;
@@ -32,7 +32,8 @@ class CameraMakePageGenerator {
                 .collect(groupingBy(CameraInformation::getCameraMake, Collectors.toSet()));
     }
 
-    void createCameraMakePages(FileWriter fileWriter) throws FileWriterException {
+    @Override
+    public void generate(FileWriter fileWriter) throws FileWriterException {
         // TODO: parallelize this
         // Not using streams below so as to avoid wrapping the checked exception into a unchecked exception
         for ( Map.Entry<String, Set<CameraInformation>> makeEntry : cameraMakesToModels.entrySet()) {
@@ -52,7 +53,8 @@ class CameraMakePageGenerator {
         context.setVariable("all_camera_models", allModelsToHtmlNames);
         context.setVariable("highlight_pictures", ModelUtils.getAtMostTenRandomThumbnails(allModels));
         String contents = templateEngine.process("templates/camera_make", context);
-        fileWriter.writeContentsToFile(ModelUtils.createSafeHtmlFileName(cameraModel), ".html", contents);
+        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraModel);
+        fileWriter.writeContentsToFile(safeHtmlFileName, contents);
 
     }
 

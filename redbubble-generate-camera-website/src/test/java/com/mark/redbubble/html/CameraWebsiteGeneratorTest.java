@@ -7,6 +7,7 @@ import com.mark.redbubble.output.FileWriterException;
 import org.junit.Test;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,9 +31,9 @@ public class CameraWebsiteGeneratorTest {
         Set<CameraInformation> cameras = new HashSet<>();
         cameras.add(cameraInformation);
 
-        FileWriter fileWriter = new FileWriter(new File("c:\\Temp\\"));
+        FileWriter fileWriter = new FileWriter(Paths.get("c:\\Temp\\"));
 
-        new CameraWebsiteGenerator(cameras, fileWriter).generatePages();
+        new CameraWebsiteGenerator(cameras).generatePages(fileWriter);
 
 
 
