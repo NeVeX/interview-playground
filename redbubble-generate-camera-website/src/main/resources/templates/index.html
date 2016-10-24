@@ -28,56 +28,10 @@
 
 
         <div class="flex-container">
-
-            <figure class="flex-item"><img src="http://gowallpapers.me/wp-content/uploads/ktz/Elisha-Cuthbert-326okjjl60qrblxodxdr7k.jpg" /></figure>
-            <figure class="flex-item"><img src="http://gowallpapers.me/wp-content/uploads/ktz/Elisha-Cuthbert-326okjjl60qrblxodxdr7k.jpg" /></figure>
-            <figure class="flex-item"><img src="http://gowallpapers.me/wp-content/uploads/ktz/Elisha-Cuthbert-326okjjl60qrblxodxdr7k.jpg" /></figure>
-            <figure class="flex-item"><img src="http://gowallpapers.me/wp-content/uploads/ktz/Elisha-Cuthbert-326okjjl60qrblxodxdr7k.jpg" /></figure>
-            <figure class="flex-item"><img src="http://gowallpapers.me/wp-content/uploads/ktz/Elisha-Cuthbert-326okjjl60qrblxodxdr7k.jpg" /></figure>
-
-
+            <figure class="flex-item" th:each="highlight_picture : ${highlight_pictures}">
+                <img th:src="${highlight_picture}" />
+            </figure>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div >
-            <a th:each="highlight_picture : ${highlight_pictures}">
-                <figure>
-                    <img th:src="${highlight_picture}" />
-                </figure>
-            </a>
-        </div>
-
-
 
 
     </body>

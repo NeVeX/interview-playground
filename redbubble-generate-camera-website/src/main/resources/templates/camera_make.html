@@ -12,9 +12,9 @@
 
     <body>
 
-        <h3 th:text="|This is the ${camera_make_name} camera page|">This is the camera make page!</h3>
-
         <div>
+
+            <h3 th:text="|This is the ${camera_make_name} camera page|">This is the camera make page!</h3>
 
             <a href="index.html">Home</a>
 
@@ -29,13 +29,13 @@
 
         </div>
 
-        <div>
-            <a th:each="highlight_picture : ${highlight_pictures}">
-                <figure>
-                    <img th:src="${highlight_picture}">
-                </figure>
-            </a>
+        <div class="flex-container">
+            <figure class="flex-item" th:each="highlight_picture : ${highlight_pictures}">
+                <img th:src="${highlight_picture}" />
+            </figure>
         </div>
+
+
     </body>
 
 </html>

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  */
 public class ModelUtils {
 
-    private final static String NON_ALPHA_NUMERIC_REGEX = "[^a-zA-Z0-9 ]+";
+    private final static String NON_ALLOWABLE_CHARACTERS = "[^a-zA-Z0-9-_\\. ]";
 
     // Note, this may not get 10 pictures - it depends on the input
     public static Set<String> getAtMostTenRandomThumbnails(Set<CameraInformation> allCameras) {
@@ -37,16 +37,16 @@ public class ModelUtils {
                 .stream()
                 .map(nameMapperFunction)
                 .distinct()
-                .collect(Collectors.toMap(ModelUtils::createStringTitle, ModelUtils::createSafeHtmlFileName));
+                .collect(Collectors.toMap(ModelUtils::createNiceTitle, ModelUtils::createSafeHtmlFileName));
     }
 
-    public static String createStringTitle(String inputName) {
-        String safeString = inputName.replaceAll(NON_ALPHA_NUMERIC_REGEX, "");
+    public static String createNiceTitle(String inputName) {
+        String safeString = inputName.replaceAll(NON_ALLOWABLE_CHARACTERS, "");
         return StringUtils.capitalize(StringUtils.lowerCase(safeString));
     }
 
     public static String createSafeHtmlFileName(String rawHtmlName) {
-        String safeString = rawHtmlName.replaceAll(NON_ALPHA_NUMERIC_REGEX, "");
+        String safeString = rawHtmlName.replaceAll(NON_ALLOWABLE_CHARACTERS, "");
         return safeString.replaceAll(" ", "_").toLowerCase() + ".html"; // special replace for spaces, and add .html
     }
 

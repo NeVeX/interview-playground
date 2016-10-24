@@ -58,7 +58,6 @@ class CameraModelPageGenerator implements Generator {
 
         context.setVariable("highlight_pictures", ModelUtils.getRandomThumbnails(allModels, HIGHLIGHT_PICTURE_AMOUNT_MAX));
         String contents = templateEngine.process("templates/camera_model", context);
-
         String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraModelName);
         fileWriter.writeContentsToFile(safeHtmlFileName, contents);
 

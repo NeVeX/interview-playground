@@ -15,9 +15,8 @@ import java.util.Set;
  */
 public class CameraWebsiteGenerator implements Generator {
 
-
+    public final static String CAMERA_HTML_DIRECTORY = "cameras";
     private final List<Generator> allGenerators = new ArrayList<>();
-
 
     public CameraWebsiteGenerator(Set<CameraInformation> allCameras) {
         if ( allCameras == null || allCameras.isEmpty()) { throw new IllegalArgumentException("Provided allCameras is not valid"); }
@@ -36,11 +35,9 @@ public class CameraWebsiteGenerator implements Generator {
 
     @Override
     public void generate(FileWriter fileWriter) throws FileWriterException {
-
         for ( Generator generator : allGenerators) {
             generator.generate(fileWriter);
         }
-
     }
 
     private TemplateEngine createTemplateEngine() {
