@@ -26,7 +26,7 @@ public class CameraWebsiteCreatorApplication {
         Set<CameraInformation> cameras = new CameraWorksApiClient(inputArguments.getCameraWorksApiUrl()).getCameras();
 
         FileWriter fileWriter = new FileWriter(inputArguments.getHtmlOutputDirectory());
-        new CameraWebsiteGenerator(cameras).generatePages(fileWriter);
+        new CameraWebsiteGenerator(cameras).generate(fileWriter);
     }
 
     public static void main(String[] args) throws Exception {

@@ -33,7 +33,7 @@ public class CameraWebsiteGeneratorTest {
 
         FileWriter fileWriter = new FileWriter(Paths.get("c:\\Temp\\"));
 
-        new CameraWebsiteGenerator(cameras).generatePages(fileWriter);
+        new CameraWebsiteGenerator(cameras).generate(fileWriter);
 
 
 

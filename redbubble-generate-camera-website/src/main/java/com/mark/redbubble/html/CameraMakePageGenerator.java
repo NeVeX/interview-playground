@@ -44,16 +44,17 @@ class CameraMakePageGenerator implements Generator {
 
     private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraMakeEntry, FileWriter fileWriter) throws FileWriterException {
 
-        String cameraModel = cameraMakeEntry.getKey();
+        String cameraMake = cameraMakeEntry.getKey();
         Set<CameraInformation> allModels = cameraMakeEntry.getValue();
 
         Map<String, String> allModelsToHtmlNames = ModelUtils.getNameToHtmlFileNameMap(allModels, CameraInformation::getCameraModel);
 
         Context context = new Context();
+        context.setVariable("camera_make_name", cameraMake);
         context.setVariable("all_camera_models", allModelsToHtmlNames);
         context.setVariable("highlight_pictures", ModelUtils.getAtMostTenRandomThumbnails(allModels));
         String contents = templateEngine.process("templates/camera_make", context);
-        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraModel);
+        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraMake);
         fileWriter.writeContentsToFile(safeHtmlFileName, contents);
 
     }

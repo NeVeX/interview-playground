@@ -12,8 +12,8 @@ import java.nio.file.Paths;
 public class StaticResourceGeneratorTest {
 
     @Test
-    public void assertStaticResourcesAreExported() throws GeneratorException, FileWriterException {
-        new StaticResourcesGenerator().createResources(new FileWriter(Paths.get("C:\\Temp\\")));
+    public void assertStaticResourcesAreExported() throws FileWriterException {
+        new StaticResourcesGenerator().generate(new FileWriter(Paths.get("C:\\Temp\\")));
     }
 
 }

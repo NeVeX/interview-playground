@@ -29,10 +29,10 @@ class StaticResourcesGenerator implements Generator {
         try {
             allScripts = getAllFilesInResourceDirectory(SCRIPTS_LOCATION, SCRIPTS_DIRECTORY_NAME);
             allStyles = getAllFilesInResourceDirectory(STYLES_LOCATION, STYLES_DIRECTORY_NAME);
-        } catch (GeneratorException generatorException) {
+        } catch (IOException ioException) {
             // Wrap the checked exception into a un-checked exception while in the constructor
             // This method should never fail, hence it's ok to make it a runtime exception
-            throw new IllegalStateException("Could not load all static resources", generatorException);
+            throw new IllegalStateException("Could not load all static resources", ioException);
         }
     }
 
@@ -63,17 +63,15 @@ class StaticResourcesGenerator implements Generator {
         }
     }
 
-    private Set<StaticResourceInformation> getAllFilesInResourceDirectory(String directory, String outputDirectory) throws GeneratorException {
-        try(InputStream inputStream = this.getClass().getResourceAsStream(directory);
-            BufferedReader bufferedReader = new BufferedReader( new InputStreamReader( inputStream ) ) ) {
+    private Set<StaticResourceInformation> getAllFilesInResourceDirectory(String directory, String outputDirectory) throws IOException {
+        try (InputStream inputStream = this.getClass().getResourceAsStream(directory);
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
 
             return bufferedReader
                     .lines()
                     .map(entry -> new StaticResourceInformation(entry, directory, outputDirectory))
                     .collect(Collectors.toSet());
 
-        } catch (Exception exception )  {
-            throw new GeneratorException("Could not get all files in resource directory ["+directory+"]", exception);
         }
     }
 

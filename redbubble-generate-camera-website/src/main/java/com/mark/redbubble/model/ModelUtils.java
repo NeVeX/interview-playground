@@ -17,6 +17,10 @@ public class ModelUtils {
 
     // Note, this may not get 10 pictures - it depends on the input
     public static Set<String> getAtMostTenRandomThumbnails(Set<CameraInformation> allCameras) {
+        return getRandomThumbnails(allCameras, 10);
+    }
+
+    public static Set<String> getRandomThumbnails(Set<CameraInformation> allCameras, int limit) {
         return allCameras
                 .stream()
                 .unordered()
@@ -24,7 +28,7 @@ public class ModelUtils {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .map(PictureUrl::getUrl)
-                .limit(10)
+                .limit(limit)
                 .collect(Collectors.toSet());
     }
 

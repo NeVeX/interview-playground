@@ -12,20 +12,12 @@
 
     <body>
 
-        <h3 th:text="|This is the ${camera_make_name} camera page|">This is the camera make page!</h3>
+        <h3 th:text="|This is the (${camera_make_name}) ${camera_model_name} camera page|">This is the camera make page!</h3>
 
         <div>
 
             <a href="index.html">Home</a>
-
-            <input type="text" placeholder="Enter (or select) a model" list="selection_data_list" id="input_selection"/>
-
-            <datalist id="selection_data_list">
-                <option th:each="camera_model : ${all_camera_models}"
-                            th:data-value="${camera_model.value}"
-                            th:value="${camera_model.key}">
-                </option>
-            </datalist>
+            <a th:href="${camera_make_html}" th:text="|Back to ${camera_make_name} page|">Back to the camera make page</a>
 
         </div>
 
@@ -35,7 +27,9 @@
                     <img th:src="${highlight_picture}">
                 </figure>
             </a>
+
         </div>
+
     </body>
 
 </html>
