@@ -2,8 +2,8 @@ package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.model.ModelUtils;
+import com.mark.redbubble.output.FileWriter;
 import com.mark.redbubble.output.FileWriterException;
-import com.mark.redbubble.output.HtmlFileWriter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -32,8 +32,8 @@ class CameraMakePageGenerator {
                 .collect(groupingBy(CameraInformation::getCameraMake, Collectors.toSet()));
     }
 
-    void createCameraMakePages(HtmlFileWriter fileWriter) throws FileWriterException {
-
+    void createCameraMakePages(FileWriter fileWriter) throws FileWriterException {
+        // TODO: parallelize this
         // Not using streams below so as to avoid wrapping the checked exception into a unchecked exception
         for ( Map.Entry<String, Set<CameraInformation>> makeEntry : cameraMakesToModels.entrySet()) {
             createCameraMakePage(makeEntry, fileWriter);
@@ -41,7 +41,7 @@ class CameraMakePageGenerator {
 
     }
 
-    private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraMakeEntry, HtmlFileWriter fileWriter) throws FileWriterException {
+    private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraMakeEntry, FileWriter fileWriter) throws FileWriterException {
 
         String cameraModel = cameraMakeEntry.getKey();
         Set<CameraInformation> allModels = cameraMakeEntry.getValue();
@@ -52,7 +52,7 @@ class CameraMakePageGenerator {
         context.setVariable("all_camera_models", allModelsToHtmlNames);
         context.setVariable("highlight_pictures", ModelUtils.getAtMostTenRandomThumbnails(allModels));
         String contents = templateEngine.process("templates/camera_make", context);
-        fileWriter.writeHtml(ModelUtils.createSafeHtmlFileName(cameraModel), contents);
+        fileWriter.writeContentsToFile(ModelUtils.createSafeHtmlFileName(cameraModel), ".html", contents);
 
     }
 

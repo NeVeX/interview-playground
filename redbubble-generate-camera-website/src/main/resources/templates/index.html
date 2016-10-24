@@ -5,81 +5,34 @@
     <head>
         <title>Camera Index Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <style>
-            .floated_img
-            {
-                float: left;
-                /*width: 100px;*/
-                /*height: 100px;*/
-
-            }
-
-        </style>
-
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script type="application/javascript">
-            $(document).ready(function() {
-
-                function goToCameraMakePage() {
-                    // Need the abbreviation
-                    var cameraMakeSelected = $('#camera_make_selection').val();
-
-                    console.log("Camera make selected: "+cameraMakeSelected)
-
-                    if ( !cameraMakeSelected) { // empty or null
-                        return;
-                    }
-
-                    var allCameraMakes = $('#camera_make_list');
-                    var cameraMakeSelectionEntry = $(allCameraMakes).find('option[value="' + cameraMakeSelected + '"]');
-                    var cameraMakeHtmlPage = cameraMakeSelectionEntry.attr('data-value');
-                    if ( cameraMakeHtmlPage ) {
-
-                        location.href = cameraMakeHtmlPage;
-                    }
-                }
-
-                $('#camera_make_selection').keydown(function(event){
-                    var keyCode = (event.keyCode ? event.keyCode : event.which);
-                    if (keyCode == 13) { // Enter key
-                        goToCameraMakePage();
-                    }
-                });
-                $('#camera_make_selection').bind('input', goToCameraMakePage);
-                $('#camera_make_list').bind('input', goToCameraMakePage);
-            })
-        </script>
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <script src="scripts/jquery-3.1.1.min.js"></script>
+        <script src="scripts/selection_control.js"></script>
     </head>
 
     <body>
 
-        <div style="margin-top: 30px">
+        <div>
 
             <h3>This is the Index Page!</h3>
 
-            <input style="width: 250px; " type="text" placeholder="Enter (or select) a camera make" list="camera_make_list" id="camera_make_selection"/>
+            <input type="text" placeholder="Enter (or select) a camera make" list="selection_data_list" id="input_selection"/>
 
-            <datalist id="camera_make_list">
-                <option th:each="camera_make : ${all_camera_makes}" th:data-value="${camera_make.value}" th:value="${camera_make.key}"/>
+            <datalist id="selection_data_list">
+                <option th:each="camera_make : ${all_camera_makes}"
+                            th:data-value="${camera_make.value}"
+                            th:value="${camera_make.key}">
+                </option>
             </datalist>
         </div>
 
-        <div style="margin-top: 30px">
-            <div class="floated_img" th:each="highlight_picture : ${highlight_pictures}">
-                <img th:src="${highlight_picture}">
-            </div>
+        <div>
+            <a th:each="highlight_picture : ${highlight_pictures}">
+                <figure>
+                    <img th:src="${highlight_picture}" >
+                </figure>
+            </a>
         </div>
-
-        <!---->
-        <!--<div class="floated_img">-->
-            <!--<img src="img.jpg" alt="Some image">-->
-            <!--<p>Description of above image</p>-->
-        <!--</div>-->
-        <!--<div class="floated_img">-->
-            <!--<img src="img2.jpg" alt="Another image">-->
-            <!--<p>Description of above image</p>-->
-        <!--</div>-->
-
 
     </body>
 

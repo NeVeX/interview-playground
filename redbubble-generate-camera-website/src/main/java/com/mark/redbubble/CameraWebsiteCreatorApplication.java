@@ -5,7 +5,7 @@ import com.mark.redbubble.html.CameraWebsiteGenerator;
 import com.mark.redbubble.input.ApplicationInputArguments;
 import com.mark.redbubble.input.ApplicationInputReader;
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.output.HtmlFileWriter;
+import com.mark.redbubble.output.FileWriter;
 
 import java.util.Set;
 
@@ -15,6 +15,9 @@ import java.util.Set;
 public class CameraWebsiteCreatorApplication {
 
     void run(String[] args) throws Exception {
+
+        this.getClass().getResource("/scripts");
+
         // Parse the input
         ApplicationInputReader inputReader = new ApplicationInputReader();
         inputReader.printUsageInformation(System.out);
@@ -22,10 +25,8 @@ public class CameraWebsiteCreatorApplication {
 
         Set<CameraInformation> cameras = new CameraWorksApiClient(inputArguments.getCameraWorksApiUrl()).getCameras();
 
-        HtmlFileWriter htmlFileWriter = new HtmlFileWriter(inputArguments.getHtmlOutputDirectory());
-        new CameraWebsiteGenerator(cameras, htmlFileWriter).generatePages();
-
-
+        FileWriter fileWriter = new FileWriter(inputArguments.getHtmlOutputDirectory());
+        new CameraWebsiteGenerator(cameras, fileWriter).generatePages();
     }
 
     public static void main(String[] args) throws Exception {

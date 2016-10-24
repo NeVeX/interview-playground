@@ -2,8 +2,8 @@ package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.model.ModelUtils;
+import com.mark.redbubble.output.FileWriter;
 import com.mark.redbubble.output.FileWriterException;
-import com.mark.redbubble.output.HtmlFileWriter;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -24,12 +24,12 @@ class IndexPageGenerator {
         this.templateEngine = templateEngine;
     }
 
-    void createIndexPage(HtmlFileWriter fileWriter) throws FileWriterException {
+    void createIndexPage(FileWriter fileWriter) throws FileWriterException {
         Context context = new Context();
         context.setVariable("all_camera_makes", cameraMakes);
         context.setVariable("highlight_pictures", pictureHighlights);
         String contents = templateEngine.process("templates/index", context);
-        fileWriter.writeHtml("index", contents);
+        fileWriter.writeContentsToFile("index", ".html", contents);
     }
 
 

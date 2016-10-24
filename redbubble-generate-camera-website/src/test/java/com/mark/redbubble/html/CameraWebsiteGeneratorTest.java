@@ -2,8 +2,8 @@ package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.model.PictureUrl;
+import com.mark.redbubble.output.FileWriter;
 import com.mark.redbubble.output.FileWriterException;
-import com.mark.redbubble.output.HtmlFileWriter;
 import org.junit.Test;
 
 import java.io.File;
@@ -30,9 +30,9 @@ public class CameraWebsiteGeneratorTest {
         Set<CameraInformation> cameras = new HashSet<>();
         cameras.add(cameraInformation);
 
-        HtmlFileWriter htmlFileWriter = new HtmlFileWriter(new File("c:\\Temp\\"));
+        FileWriter fileWriter = new FileWriter(new File("c:\\Temp\\"));
 
-        new CameraWebsiteGenerator(cameras, htmlFileWriter).generatePages();
+        new CameraWebsiteGenerator(cameras, fileWriter).generatePages();
 
 
 
