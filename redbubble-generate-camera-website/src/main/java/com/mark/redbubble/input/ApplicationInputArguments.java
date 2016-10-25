@@ -2,7 +2,6 @@ package com.mark.redbubble.input;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.nio.file.Path;
 
 /**

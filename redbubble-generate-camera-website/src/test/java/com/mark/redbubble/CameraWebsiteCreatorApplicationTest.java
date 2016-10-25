@@ -3,7 +3,6 @@ package com.mark.redbubble;
 import org.junit.Test;
 
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.UUID;
 
 /**

@@ -3,7 +3,6 @@ package com.mark.redbubble.input;
 import org.apache.commons.cli.*;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;

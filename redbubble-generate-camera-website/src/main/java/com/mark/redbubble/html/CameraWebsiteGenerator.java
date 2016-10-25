@@ -1,8 +1,8 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.output.OutputWriterException;
 import com.mark.redbubble.output.OutputWriter;
+import com.mark.redbubble.output.OutputWriterException;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 

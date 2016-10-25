@@ -7,7 +7,8 @@ import com.mark.redbubble.output.OutputWriterException;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
