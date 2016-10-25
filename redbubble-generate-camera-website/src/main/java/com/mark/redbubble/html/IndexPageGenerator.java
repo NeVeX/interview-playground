@@ -26,13 +26,14 @@ class IndexPageGenerator implements Generator {
 
     @Override
     public void generate(FileWriter fileWriter) throws FileWriterException {
+        fileWriter.writeContentsToFile("index.html", createContent());
+    }
+
+    String createContent() {
         Context context = new Context();
         context.setVariable("all_camera_makes", cameraMakes);
         context.setVariable("highlight_pictures", pictureHighlights);
-        String contents = templateEngine.process("templates/index", context);
-        fileWriter.writeContentsToFile("index.html", contents);
+        return templateEngine.process("templates/index", context);
     }
-
-
 
 }

@@ -41,7 +41,6 @@ class CameraModelPageGenerator implements Generator {
         for ( Map.Entry<String, Set<CameraInformation>> makeEntry : cameraModels.entrySet()) {
             createCameraMakePage(makeEntry, fileWriter);
         }
-
     }
 
     private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraModels, FileWriter fileWriter) throws FileWriterException {

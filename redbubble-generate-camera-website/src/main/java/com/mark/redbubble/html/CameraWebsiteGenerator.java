@@ -15,7 +15,6 @@ import java.util.Set;
  */
 public class CameraWebsiteGenerator implements Generator {
 
-    public final static String CAMERA_HTML_DIRECTORY = "cameras";
     private final List<Generator> allGenerators = new ArrayList<>();
 
     public CameraWebsiteGenerator(Set<CameraInformation> allCameras) {
@@ -40,7 +39,7 @@ public class CameraWebsiteGenerator implements Generator {
         }
     }
 
-    private TemplateEngine createTemplateEngine() {
+    TemplateEngine createTemplateEngine() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setTemplateMode("HTML5");
         resolver.setSuffix(".html");
