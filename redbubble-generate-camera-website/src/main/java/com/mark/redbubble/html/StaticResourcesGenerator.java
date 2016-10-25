@@ -19,7 +19,7 @@ class StaticResourcesGenerator implements Generator {
     private final Set<StaticResourceInformation> allScripts;
     private final Set<StaticResourceInformation> allStyles;
 
-    private static final String TEMPLATES_LOCATION = "templates";
+    private static final String TEMPLATES_LOCATION = "/templates";
     private static final String SCRIPTS_DIRECTORY_NAME = "scripts";
     private static final String STYLES_DIRECTORY_NAME = "styles";
 
@@ -86,14 +86,14 @@ class StaticResourcesGenerator implements Generator {
     /**
      * Helper method to get all the resource files for a given directory
      * @param directory - the directory resource to search
-     * @param outputDirectory - the out put directory that this resource should go to later
+     * @param outputDirectory - the output directory that this resource should go to later
      * @return - the set of resources loaded
      * @throws IOException
      */
     private Set<StaticResourceInformation> getAllFilesInResourceDirectory(String directory, String outputDirectory) throws IOException {
         try (InputStream inputStream = this.getClass().getResourceAsStream(directory);
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            // Each line inf the buffered reader is a file name
+            // Each line of the buffered reader is a file name
             return bufferedReader
                     .lines()
                     .map(entry -> new StaticResourceInformation(entry, directory, outputDirectory))
