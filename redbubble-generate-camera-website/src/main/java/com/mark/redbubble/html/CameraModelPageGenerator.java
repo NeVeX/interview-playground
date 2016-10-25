@@ -4,7 +4,6 @@ import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.model.ModelUtils;
 import com.mark.redbubble.output.FileWriter;
 import com.mark.redbubble.output.FileWriterException;
-import com.sun.org.apache.bcel.internal.generic.ALOAD;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 

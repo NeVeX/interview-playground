@@ -3,7 +3,7 @@ package com.mark.redbubble.input;
 /**
  * Created by Mark Cunningham on 10/22/2016.
  */
-class ApplicationInputException extends Exception {
+public class ApplicationInputException extends Exception {
 
     ApplicationInputException(String message) {
         super(message);
