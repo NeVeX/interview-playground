@@ -1,7 +1,7 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.output.FileWriter;
+import com.mark.redbubble.output.OutputWriter;
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;
 
@@ -25,7 +25,7 @@ public class CameraModelPageGeneratorTest {
         Path tempDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
         File tempDirectoryAsFile = tempDirectory.toFile();
 
-        FileWriter fileWriter = new FileWriter(tempDirectory);
+        OutputWriter outputWriter = new OutputWriter(tempDirectory);
 
         Set<CameraInformation> allCameras = GeneratorTestUtils.createTestCameras();
 
@@ -33,7 +33,7 @@ public class CameraModelPageGeneratorTest {
 
         CameraModelPageGenerator cameraModelPageGenerator = new CameraModelPageGenerator(allCameras, templateEngine);
         // Generate the index page
-        cameraModelPageGenerator.generate(fileWriter);
+        cameraModelPageGenerator.generate(outputWriter);
 
         assertThat(tempDirectoryAsFile.listFiles().length).isEqualTo(2); // 2 models expected only
         assertThat(tempDirectoryAsFile.list()).contains("model_one.html");

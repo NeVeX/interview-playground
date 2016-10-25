@@ -1,15 +1,13 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.model.PictureUrl;
-import com.mark.redbubble.output.FileWriter;
+import com.mark.redbubble.output.OutputWriter;
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,7 +25,7 @@ public class CameraMakePageGeneratorTest {
         Path tempDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
         File tempDirectoryAsFile = tempDirectory.toFile();
 
-        FileWriter fileWriter = new FileWriter(tempDirectory);
+        OutputWriter outputWriter = new OutputWriter(tempDirectory);
 
         Set<CameraInformation> allCameras = GeneratorTestUtils.createTestCameras();
 
@@ -35,7 +33,7 @@ public class CameraMakePageGeneratorTest {
 
         CameraMakePageGenerator cameraMakePageGenerator = new CameraMakePageGenerator(allCameras, templateEngine);
         // Generate the index page
-        cameraMakePageGenerator.generate(fileWriter);
+        cameraMakePageGenerator.generate(outputWriter);
 
         assertThat(tempDirectoryAsFile.listFiles().length).isEqualTo(2); // 2 makes expected only
         assertThat(tempDirectoryAsFile.list()).contains("make_one.html");

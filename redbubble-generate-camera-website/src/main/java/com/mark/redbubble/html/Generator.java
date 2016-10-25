@@ -1,7 +1,7 @@
 package com.mark.redbubble.html;
 
-import com.mark.redbubble.output.FileWriter;
-import com.mark.redbubble.output.FileWriterException;
+import com.mark.redbubble.output.OutputWriter;
+import com.mark.redbubble.output.OutputWriterException;
 
 /**
  * Created by Mark Cunningham on 10/23/2016.
@@ -10,10 +10,10 @@ import com.mark.redbubble.output.FileWriterException;
 interface Generator {
 
     /**
-     * Starts the generation of the underlying class. All output is directed to the given {@link FileWriter}
-     * @param fileWriter - the valid file writer to use
-     * @throws FileWriterException - if anything went wrong while writing to the resource
+     * Starts the generation of the underlying class. All output is directed to the given {@link OutputWriter}
+     * @param outputWriter - the valid file writer to use
+     * @throws OutputWriterException - if anything went wrong while writing to the resource
      */
-    void generate(FileWriter fileWriter) throws FileWriterException;
+    void generate(OutputWriter outputWriter) throws OutputWriterException;
 
 }

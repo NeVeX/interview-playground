@@ -2,15 +2,12 @@ package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.model.PictureUrl;
-import com.mark.redbubble.output.FileWriter;
-import com.mark.redbubble.output.FileWriterException;
+import com.mark.redbubble.output.OutputWriter;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -41,11 +38,11 @@ public class CameraWebsiteGeneratorTest {
         Path tempDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
         File tempDirectoryAsFile = tempDirectory.toFile();
         assertThat(tempDirectoryAsFile.listFiles().length).isEqualTo(0); // No files
-        FileWriter fileWriter = new FileWriter(tempDirectory);
+        OutputWriter outputWriter = new OutputWriter(tempDirectory);
 
         CameraWebsiteGenerator cameraWebsiteGenerator = new CameraWebsiteGenerator(cameras);
 
-        cameraWebsiteGenerator.generate(fileWriter);
+        cameraWebsiteGenerator.generate(outputWriter);
         // We expect 3 files and the 2 folders
         assertThat(tempDirectoryAsFile.listFiles().length).isEqualTo(5);
 

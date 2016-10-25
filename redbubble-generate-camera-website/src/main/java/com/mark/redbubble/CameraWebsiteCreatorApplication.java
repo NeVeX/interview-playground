@@ -7,8 +7,8 @@ import com.mark.redbubble.input.ApplicationInputArguments;
 import com.mark.redbubble.input.ApplicationInputException;
 import com.mark.redbubble.input.ApplicationInputReader;
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.output.FileWriter;
-import com.mark.redbubble.output.FileWriterException;
+import com.mark.redbubble.output.OutputWriter;
+import com.mark.redbubble.output.OutputWriterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,10 +38,23 @@ public class CameraWebsiteCreatorApplication {
     void run(String[] args) throws Exception {
         // Get the valid arguments from the input
         ApplicationInputArguments inputArguments = getInputArguments(args);
+        writeValidArgumentsToScreen(inputArguments);
         // Get the input API url to get all the cameras at that endpoint
         Set<CameraInformation> cameras = getAllCameras(inputArguments.getCameraWorksApiUrl());
+        writeInfoMessageToScreen("Received ["+cameras.size()+"] cameras from the API");
         // With all the cameras - use the generator to create the website
         generateWebsiteForCameras(cameras, inputArguments.getHtmlOutputDirectory());
+        writeInfoMessageToScreen("");
+        writeInfoMessageToScreen("Success! Generated all html web pages to: "+inputArguments.getHtmlOutputDirectory());
+        writeInfoMessageToScreen("");
+    }
+
+    private void writeValidArgumentsToScreen(ApplicationInputArguments inputArguments) {
+        writeInfoMessageToScreen("");
+        writeInfoMessageToScreen("Valid Arguments received from input:");
+        writeInfoMessageToScreen(" -- Api Camera Url: "+inputArguments.getCameraWorksApiUrl());
+        writeInfoMessageToScreen(" -- Output Directory: "+inputArguments.getHtmlOutputDirectory());
+        writeInfoMessageToScreen("");
     }
 
     /**
@@ -74,15 +87,19 @@ public class CameraWebsiteCreatorApplication {
      * all the web pages for each camera
      * @param cameras - the set of cameras to use for website generation
      * @param outputDirectory - the directory to save all output to
-     * @throws FileWriterException - if files cannot be written
+     * @throws OutputWriterException - if files cannot be written
      */
-    private void generateWebsiteForCameras(Set<CameraInformation> cameras, Path outputDirectory) throws FileWriterException {
+    private void generateWebsiteForCameras(Set<CameraInformation> cameras, Path outputDirectory) throws OutputWriterException {
         // Create the File writer that is set to the output directory given
-        FileWriter fileWriter = new FileWriter(outputDirectory);
+        OutputWriter outputWriter = new OutputWriter(outputDirectory);
         // Create the website generator to use - give it the cameras we'll work on
         CameraWebsiteGenerator cameraWebsiteGenerator = new CameraWebsiteGenerator(cameras);
         // Now for the magic, generate all the web pages - using the given file writer to output
-        cameraWebsiteGenerator.generate(fileWriter);
+        cameraWebsiteGenerator.generate(outputWriter);
+    }
+
+    private void writeInfoMessageToScreen(String message) {
+        System.out.println(message);
     }
 
     /**

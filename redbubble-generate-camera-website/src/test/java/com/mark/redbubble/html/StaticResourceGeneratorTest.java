@@ -1,13 +1,11 @@
 package com.mark.redbubble.html;
 
-import com.mark.redbubble.output.FileWriter;
-import com.mark.redbubble.output.FileWriterException;
+import com.mark.redbubble.output.OutputWriter;
 import org.junit.Test;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
@@ -23,10 +21,10 @@ public class StaticResourceGeneratorTest {
         Path tempDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
         File tempDirectoryAsFile = tempDirectory.toFile();
 
-        FileWriter fileWriter = new FileWriter(tempDirectory);
+        OutputWriter outputWriter = new OutputWriter(tempDirectory);
 
         StaticResourcesGenerator staticResourcesGenerator = new StaticResourcesGenerator();
-        staticResourcesGenerator.generate(fileWriter);
+        staticResourcesGenerator.generate(outputWriter);
 
         // We expect just the resources to be exported here
         // Make sure the styles has the correct files

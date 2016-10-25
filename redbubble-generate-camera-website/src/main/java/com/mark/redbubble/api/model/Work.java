@@ -42,4 +42,13 @@ public class Work {
     public void setUrls(List<Url> urls) {
         this.urls = urls;
     }
+
+    @Override
+    public String toString() {
+        return "Work{" +
+                "id=" + id +
+                ", exif=" + exif +
+                ", urls=" + urls +
+                '}';
+    }
 }

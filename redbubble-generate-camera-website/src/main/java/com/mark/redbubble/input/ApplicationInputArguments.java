@@ -7,6 +7,7 @@ import java.nio.file.Path;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
+ * <br>Class that represents valid arguments received from input (users)
  */
 public class ApplicationInputArguments {
 
@@ -20,10 +21,16 @@ public class ApplicationInputArguments {
         this.htmlOutputDirectory = htmlOutputDirectory;
     }
 
+    /**
+     * The given location of the API to use
+     */
     public String getCameraWorksApiUrl() {
         return cameraWorksApiUrl;
     }
 
+    /**
+     * The location to output all created content
+     */
     public Path getHtmlOutputDirectory() {
         return htmlOutputDirectory;
     }

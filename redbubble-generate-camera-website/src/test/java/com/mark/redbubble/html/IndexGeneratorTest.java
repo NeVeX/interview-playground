@@ -1,15 +1,13 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.model.PictureUrl;
-import com.mark.redbubble.output.FileWriter;
+import com.mark.redbubble.output.OutputWriter;
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,7 +25,7 @@ public class IndexGeneratorTest {
         Path tempDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
         File tempDirectoryAsFile = tempDirectory.toFile();
 
-        FileWriter fileWriter = new FileWriter(tempDirectory);
+        OutputWriter outputWriter = new OutputWriter(tempDirectory);
 
         Set<CameraInformation> allCameras = GeneratorTestUtils.createTestCameras();
 
@@ -35,7 +33,7 @@ public class IndexGeneratorTest {
 
         IndexPageGenerator indexPageGenerator = new IndexPageGenerator(allCameras, templateEngine);
         // Generate the index page
-        indexPageGenerator.generate(fileWriter);
+        indexPageGenerator.generate(outputWriter);
 
         File indexFile = new File(tempDirectoryAsFile, "index.html");
         assertThat(indexFile.exists()).isTrue();

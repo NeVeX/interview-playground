@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * Created by Mark Cunningham on 10/22/2016.
+ * <br>This class will represent a single camera with information
  */
 public class CameraInformation {
 
@@ -45,7 +46,7 @@ public class CameraInformation {
         return pictureUrls.stream().sorted(PictureUrl.comparatorForOrderSize()).findFirst();
     }
 
-    @Override
+    @Override // Need to override equals and hashcode due to the use of sets and maps
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -53,16 +54,18 @@ public class CameraInformation {
         return cameraId == that.cameraId;
     }
 
-    @Override
+    @Override // Need to override equals and hashcode due to the use of sets and maps
     public int hashCode() {
         return Objects.hash(cameraId);
     }
-
 
     public static Builder builder(long cameraId) {
         return new Builder(cameraId);
     }
 
+    /**
+     * Helpful builder to create the camera model instance
+     */
     public static class Builder {
         private long cameraId;
         private String cameraMake;
