@@ -1,4 +1,11 @@
+
+// Using the shadowJar plugin to build and package the application with the dependencies required
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
 apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 // Need to set the java properties after the plugin is loaded above
 sourceCompatibility = javaSourceCompatibility
@@ -7,6 +14,18 @@ targetCompatibility = javaTargetCompatibility
 repositories {
     mavenCentral()
 }
+
+
+// Setting JAR manifest properties (main-class is required)
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.mark.redbubble.CameraWebsiteCreatorApplication',
+                'Implementation-Title': 'Mark\'s RedBubble Camera Website Generator Application',
+                'Implementation-Version': version)
+    }
+}
+
 
 dependencies {
 
@@ -41,4 +60,11 @@ test {
         showStackTraces = true
         exceptionFormat = "full"
     }
+}
+
+// Configuration for creating the full jar application
+shadowJar {
+    baseName = rootProject.name
+    classifier = 'full'
+    version = version
 }

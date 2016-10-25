@@ -4,6 +4,7 @@ import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.output.OutputWriter;
 import com.mark.redbubble.output.OutputWriterException;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.util.ArrayList;
@@ -72,7 +73,7 @@ public class CameraWebsiteGenerator implements Generator {
      */
     TemplateEngine createTemplateEngine() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-        resolver.setTemplateMode("HTML5");
+        resolver.setTemplateMode(TemplateMode.HTML);
         resolver.setSuffix(".html");
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(resolver);

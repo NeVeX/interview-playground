@@ -1,6 +1,7 @@
 package com.mark.redbubble.output;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +19,13 @@ public class OutputWriter {
      */
     public OutputWriter(Path outputParentDirectory) {
         if (outputParentDirectory == null) { throw new IllegalArgumentException("Provided outputParentDirectory is null"); }
-        if (!Files.isDirectory(outputParentDirectory)) { throw new IllegalArgumentException("Provided outputParentDirectory is not a directory"); }
+        if ( !Files.isDirectory(outputParentDirectory)) {
+            try {
+                createDirectory(outputParentDirectory);
+            } catch (OutputWriterException exception) {
+                throw new IllegalStateException(exception); // wrap the checked exception in a runtime during construction
+            }
+        }
         this.outputParentDirectory = outputParentDirectory;
     }
 

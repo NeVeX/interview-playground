@@ -115,6 +115,8 @@ public class CameraWebsiteCreatorApplication {
         } catch (Exception exception) {
             // Log the full exception and return a bad status to the JVM
             LOGGER.error("An error occurred during application execution", exception);
+            System.err.println("\n****ERROR: A problem occurred during execution - "+exception.getMessage()
+                    +"\nFor more information, look the log file in the /logs directory.\n\n");
             System.exit(ERROR_EXIT_CODE);
         }
     }

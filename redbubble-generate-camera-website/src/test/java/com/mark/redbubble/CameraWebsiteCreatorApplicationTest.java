@@ -1,5 +1,6 @@
 package com.mark.redbubble;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.nio.file.Files;
@@ -8,6 +9,7 @@ import java.util.UUID;
 /**
  * Created by Mark Cunningham on 10/23/2016.
  */
+@Ignore // This test is more an integration test, so not using it here (it's good for manual smoke testing)
 public class CameraWebsiteCreatorApplicationTest {
 
     @Test

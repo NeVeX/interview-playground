@@ -19,7 +19,7 @@ class StaticResourcesGenerator implements Generator {
     private final Set<StaticResourceInformation> allScripts;
     private final Set<StaticResourceInformation> allStyles;
 
-    private static final String TEMPLATES_LOCATION = "/templates";
+    private static final String TEMPLATES_LOCATION = "templates";
     private static final String SCRIPTS_DIRECTORY_NAME = "scripts";
     private static final String STYLES_DIRECTORY_NAME = "styles";
 

@@ -87,7 +87,7 @@ public class ApplicationInputReader {
         if ( StringUtils.isNotBlank(outputDirectoryString)) {
             outputDirectory = Paths.get(outputDirectoryString);
         }
-        if ( outputDirectory != null && Files.isDirectory(outputDirectory)) {
+        if ( outputDirectory != null ) {
             return outputDirectory;
         }
         throw new ApplicationInputException("Invalid output directory ["+outputDirectoryString+"] given");
@@ -99,12 +99,11 @@ public class ApplicationInputReader {
      */
     public void printUsageInformation(OutputStream printStream) {
         HelpFormatter formatter = new HelpFormatter();
-        String header = System.lineSeparator()+"See below on how to use this RedBubble Camera Website Generator";
-
-        try (PrintWriter printWriter = new PrintWriter(printStream)) {
-            formatter.printHelp(printWriter, 300, "java -jar redbubble-generate-camera-website-*.jar",
-                    header, ALL_INPUT_OPTIONS, 0, 0, System.lineSeparator(), true);
-        }
+        String header = System.lineSeparator() + "See below on how to use this RedBubble Camera Website Generator";
+        PrintWriter printWriter = new PrintWriter(printStream);
+        formatter.printHelp(printWriter, 300, "java -jar redbubble-generate-camera-website-*.jar",
+                header, ALL_INPUT_OPTIONS, 0, 0, System.lineSeparator(), true);
+        printWriter.flush();
     }
 
 }

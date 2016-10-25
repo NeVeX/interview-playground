@@ -94,7 +94,7 @@ public class CameraWorksApiClient {
                                     .build();
         } catch (Exception exception) {
             // Cannot parse this, so log a warning message and return null
-            LOGGER.warn("Could not convert API data [{}] into model class [{}]", work, CameraInformation.class, exception);
+            LOGGER.warn("Could not convert API data [{}] into model class [{}]", work, CameraInformation.class);
             return null;
         }
     }
