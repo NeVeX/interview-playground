@@ -84,8 +84,8 @@ class CameraModelPageGenerator implements Generator {
         CameraInformation exampleCameraInfo = allModels.stream().findAny().get();
         Context context = new Context();
         // Set variables into the context for the template engine to use
-        context.setVariable("camera_model_name", cameraModelName);
-        context.setVariable("camera_make_name", exampleCameraInfo.getCameraMake());
+        context.setVariable("camera_model_name", ModelUtils.createNiceTitle(cameraModelName));
+        context.setVariable("camera_make_name", ModelUtils.createNiceTitle(exampleCameraInfo.getCameraMake()));
         context.setVariable("camera_make_html", ModelUtils.createSafeHtmlFileName(exampleCameraInfo.getCameraMake()));
         // Add as many thumbnails to the context as this model has
         context.setVariable("highlight_pictures", ModelUtils.getRandomThumbnails(allModels, HIGHLIGHT_PICTURE_AMOUNT_MAX));

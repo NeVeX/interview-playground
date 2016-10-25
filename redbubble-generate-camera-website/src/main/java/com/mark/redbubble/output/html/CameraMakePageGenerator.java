@@ -67,7 +67,7 @@ class CameraMakePageGenerator implements Generator {
         Map<String, String> allModelsToHtmlNames = ModelUtils.getNameToHtmlFileNameMap(allModels, CameraInformation::getCameraModel);
         Context context = new Context();
         // Add context information for the template engine
-        context.setVariable("camera_make_name", cameraMake);
+        context.setVariable("camera_make_name", ModelUtils.createNiceTitle(cameraMake));
         context.setVariable("all_camera_models", allModelsToHtmlNames);
         context.setVariable("highlight_pictures", ModelUtils.getAtMostTenRandomThumbnails(allModels));
         // Use the template engine and the template html file to create the new content
