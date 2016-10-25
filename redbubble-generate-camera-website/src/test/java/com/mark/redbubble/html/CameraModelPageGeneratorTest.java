@@ -1,7 +1,6 @@
 package com.mark.redbubble.html;
 
 import com.mark.redbubble.model.CameraInformation;
-import com.mark.redbubble.model.PictureUrl;
 import com.mark.redbubble.output.FileWriter;
 import org.junit.Test;
 import org.thymeleaf.TemplateEngine;
@@ -9,7 +8,6 @@ import org.thymeleaf.TemplateEngine;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,10 +17,10 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 /**
  * Created by Mark Cunningham on 10/23/2016.
  */
-public class IndexGeneratorTest {
+public class CameraModelPageGeneratorTest {
 
     @Test
-    public void assertIndexPageIsCreated() throws Exception {
+    public void assertModelPageIsCreated() throws Exception {
 
         Path tempDirectory = Files.createTempDirectory(UUID.randomUUID().toString());
         File tempDirectoryAsFile = tempDirectory.toFile();
@@ -33,12 +31,13 @@ public class IndexGeneratorTest {
 
         TemplateEngine templateEngine = new CameraWebsiteGenerator(allCameras).createTemplateEngine();
 
-        IndexPageGenerator indexPageGenerator = new IndexPageGenerator(allCameras, templateEngine);
+        CameraModelPageGenerator cameraModelPageGenerator = new CameraModelPageGenerator(allCameras, templateEngine);
         // Generate the index page
-        indexPageGenerator.generate(fileWriter);
+        cameraModelPageGenerator.generate(fileWriter);
 
-        File indexFile = new File(tempDirectoryAsFile, "index.html");
-        assertThat(indexFile.exists()).isTrue();
+        assertThat(tempDirectoryAsFile.listFiles().length).isEqualTo(2); // 2 models expected only
+        assertThat(tempDirectoryAsFile.list()).contains("model_one.html");
+        assertThat(tempDirectoryAsFile.list()).contains("model_two.html");
 
     }
 
@@ -47,12 +46,13 @@ public class IndexGeneratorTest {
 
         Set<CameraInformation> allCameras = GeneratorTestUtils.createTestCameras();
         TemplateEngine templateEngine = new CameraWebsiteGenerator(allCameras).createTemplateEngine();
-        IndexPageGenerator indexPageGenerator = new IndexPageGenerator(allCameras, templateEngine);
+        CameraModelPageGenerator cameraModelPageGenerator = new CameraModelPageGenerator(allCameras, templateEngine);
 
         // Now just get the content that would be placed into the file
-        String content = indexPageGenerator.createContent();
-        assertThat(content).contains("make_one");
-        assertThat(content).contains("make_two");
+        String content = cameraModelPageGenerator.createContent("my-fancy-model", allCameras);
+        assertThat(content).contains("my-fancy-model");
+        assertThat(content).contains("index.html"); // the index page link
+        assertThat(content).contains("make_one.html"); // the make page link
 
         // Only two pictures will show, since it will pick the smallest thumbnail for each of the 4 given
         assertThat(content).contains("picture_two.jpg");

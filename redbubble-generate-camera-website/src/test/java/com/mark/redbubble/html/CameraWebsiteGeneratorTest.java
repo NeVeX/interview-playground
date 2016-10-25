@@ -34,6 +34,7 @@ public class CameraWebsiteGeneratorTest {
                 .addPictureUrl(new PictureUrl("http://ih1.redbubble.net/work.31820.1.flat,550x550,075,f.jpg", PictureUrl.PictureUrlSize.Medium))
                 .addPictureUrl(new PictureUrl("http://ih1.redbubble.net/work.31820.1.flat,550x550,075,f.jpg", PictureUrl.PictureUrlSize.Medium))
                 .build();
+
         Set<CameraInformation> cameras = new HashSet<>();
         cameras.add(cameraInformation);
 

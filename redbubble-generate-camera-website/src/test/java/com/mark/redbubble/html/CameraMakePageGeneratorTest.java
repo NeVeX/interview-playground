@@ -29,14 +29,13 @@ public class CameraMakePageGeneratorTest {
 
         FileWriter fileWriter = new FileWriter(tempDirectory);
 
-        Set<CameraInformation> allCameras = createTestCameras();
+        Set<CameraInformation> allCameras = GeneratorTestUtils.createTestCameras();
 
         TemplateEngine templateEngine = new CameraWebsiteGenerator(allCameras).createTemplateEngine();
 
         CameraMakePageGenerator cameraMakePageGenerator = new CameraMakePageGenerator(allCameras, templateEngine);
         // Generate the index page
         cameraMakePageGenerator.generate(fileWriter);
-
 
         assertThat(tempDirectoryAsFile.listFiles().length).isEqualTo(2); // 2 makes expected only
         assertThat(tempDirectoryAsFile.list()).contains("make_one.html");
@@ -47,40 +46,22 @@ public class CameraMakePageGeneratorTest {
     @Test
     public void assertIndexPageContainsExpectedData() throws Exception {
 
-        Set<CameraInformation> allCameras = createTestCameras();
+        Set<CameraInformation> allCameras = GeneratorTestUtils.createTestCameras();
         TemplateEngine templateEngine = new CameraWebsiteGenerator(allCameras).createTemplateEngine();
-        IndexPageGenerator indexPageGenerator = new IndexPageGenerator(allCameras, templateEngine);
+        CameraMakePageGenerator cameraMakePageGenerator = new CameraMakePageGenerator(allCameras, templateEngine);
 
         // Now just get the content that would be placed into the file
-        String content = indexPageGenerator.createContent();
-        assertThat(content).contains("make_one");
-        assertThat(content).contains("make_two");
+        String content = cameraMakePageGenerator.createContent("my-fancy-make", allCameras);
+        assertThat(content).contains("my-fancy-make");
+        assertThat(content).contains("index.html"); // the index page link
+        assertThat(content).contains("model_one");
+        assertThat(content).contains("model_one.html");
+        assertThat(content).contains("model_two");
+        assertThat(content).contains("model_two.html");
 
         // Only two pictures will show, since it will pick the smallest thumbnail for each of the 4 given
         assertThat(content).contains("picture_two.jpg");
         assertThat(content).contains("picture_three.jpg");
     }
 
-    private Set<CameraInformation> createTestCameras() {
-        Set<CameraInformation> allCameras = new HashSet<>();
-
-        CameraInformation cameraOne = CameraInformation.builder(1234)
-                .withCameraMake("make_one")
-                .withCameraModel("model_one")
-                .addPictureUrl(new PictureUrl("picture_one.jpg", PictureUrl.PictureUrlSize.Large))
-                .addPictureUrl(new PictureUrl("picture_two.jpg", PictureUrl.PictureUrlSize.Medium))
-                .build();
-
-        CameraInformation cameraTwo = CameraInformation.builder(666)
-                .withCameraMake("make_two")
-                .withCameraModel("model_two")
-                .addPictureUrl(new PictureUrl("picture_three.jpg", PictureUrl.PictureUrlSize.Small))
-                .addPictureUrl(new PictureUrl("picture_four.jpg", PictureUrl.PictureUrlSize.Medium))
-                .build();
-
-        allCameras.add(cameraOne);
-        allCameras.add(cameraTwo);
-
-        return allCameras;
-    }
 }
