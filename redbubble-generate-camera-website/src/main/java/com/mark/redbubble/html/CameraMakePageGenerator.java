@@ -34,18 +34,16 @@ class CameraMakePageGenerator implements Generator {
 
     @Override
     public void generate(FileWriter fileWriter) throws FileWriterException {
-        // TODO: parallelize this
-        // Not using streams below so as to avoid wrapping the checked exception into a unchecked exception
-        for ( Map.Entry<String, Set<CameraInformation>> makeEntry : cameraMakesToModels.entrySet()) {
-            createCameraMakePage(makeEntry, fileWriter);
+        try {
+            cameraMakesToModels.entrySet()
+                    .parallelStream() // we can do this in parallel, so lets do so
+                    .forEach(cameraEntry -> createCameraMakePage(cameraEntry, fileWriter));
+        } catch (CameraModelGeneratorRuntimeException runtimeException) {
+            throw runtimeException.fileWriterException; // Workaround the problem with Java streams and checked exceptions
         }
-
     }
 
-    private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraMakeEntry, FileWriter fileWriter) throws FileWriterException {
-
-        String cameraMake = cameraMakeEntry.getKey();
-        Set<CameraInformation> allModels = cameraMakeEntry.getValue();
+    String createContent(String cameraMake, Set<CameraInformation> allModels) {
 
         Map<String, String> allModelsToHtmlNames = ModelUtils.getNameToHtmlFileNameMap(allModels, CameraInformation::getCameraModel);
 
@@ -53,11 +51,26 @@ class CameraMakePageGenerator implements Generator {
         context.setVariable("camera_make_name", cameraMake);
         context.setVariable("all_camera_models", allModelsToHtmlNames);
         context.setVariable("highlight_pictures", ModelUtils.getAtMostTenRandomThumbnails(allModels));
-        String contents = templateEngine.process("templates/camera_make", context);
-        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraMake);
-        fileWriter.writeContentsToFile(safeHtmlFileName, contents);
+        return templateEngine.process("templates/camera_make", context);
 
     }
 
+    private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraMakeEntry, FileWriter fileWriter) throws CameraModelGeneratorRuntimeException {
+        String content = createContent(cameraMakeEntry.getKey(), cameraMakeEntry.getValue());
+        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraMakeEntry.getKey());
+        try {
+            fileWriter.writeContentsToFile(safeHtmlFileName, content);
+        } catch (FileWriterException fileWriterException) {
+            throw new CameraModelGeneratorRuntimeException(fileWriterException);
+        }
+    }
+
+    private static class CameraModelGeneratorRuntimeException extends RuntimeException {
+        private final FileWriterException fileWriterException;
+
+        CameraModelGeneratorRuntimeException(FileWriterException fileWriterException) {
+            this.fileWriterException = fileWriterException;
+        }
+    }
 
 }

@@ -20,5 +20,4 @@ public class CameraWebsiteCreatorApplicationTest {
         new CameraWebsiteCreatorApplication().run(args);
     }
 
-
 }

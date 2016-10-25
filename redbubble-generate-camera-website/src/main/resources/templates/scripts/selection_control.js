@@ -20,10 +20,11 @@ $(document).ready(function() {
 
     $('#input_selection').keydown(function(event){
         var keyCode = (event.keyCode ? event.keyCode : event.which);
-        if (keyCode == 13) { // Enter key
+        if (keyCode == 13) { // Enter key code
             goToSelectedItemWebpage();
         }
     });
     $('#input_selection').bind('input', goToSelectedItemWebpage);
     $('#selection_data_list').bind('input', goToSelectedItemWebpage);
-})
+});
+

@@ -35,17 +35,27 @@ class CameraModelPageGenerator implements Generator {
 
     @Override
     public void generate(FileWriter fileWriter) throws FileWriterException {
-        // TODO: parallelize this
-        // Not using streams below so as to avoid wrapping the checked exception into a unchecked exception
-        for ( Map.Entry<String, Set<CameraInformation>> makeEntry : cameraModels.entrySet()) {
-            createCameraMakePage(makeEntry, fileWriter);
+        try {
+            cameraModels.entrySet()
+                    .parallelStream() // we can do this in parallel, so lets do so
+                    .forEach(cameraEntry -> createCameraModelPage(cameraEntry, fileWriter));
+        } catch (CameraMakeGeneratorRuntimeException runtimeException) {
+            throw runtimeException.fileWriterException; // Workaround the problem with Java streams and checked exceptions
         }
     }
 
-    private void createCameraMakePage(Map.Entry<String, Set<CameraInformation>> cameraModels, FileWriter fileWriter) throws FileWriterException {
+    private void createCameraModelPage(Map.Entry<String, Set<CameraInformation>> cameraModels, FileWriter fileWriter) throws CameraMakeGeneratorRuntimeException {
+        String contents = createContent(cameraModels.getKey(), cameraModels.getValue());
+        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraModels.getKey());
+        try {
+            fileWriter.writeContentsToFile(safeHtmlFileName, contents);
+        } catch (FileWriterException fileWriterException) {
+            throw new CameraMakeGeneratorRuntimeException(fileWriterException);
+        }
+    }
 
-        String cameraModelName = cameraModels.getKey();
-        Set<CameraInformation> allModels = cameraModels.getValue();
+    String createContent(String cameraModelName, Set<CameraInformation> allModels) {
+
         CameraInformation exampleCameraInfo = allModels.stream().findAny().get();
 
         Context context = new Context();
@@ -55,9 +65,15 @@ class CameraModelPageGenerator implements Generator {
         context.setVariable("camera_make_html", ModelUtils.createSafeHtmlFileName(exampleCameraInfo.getCameraMake()));
 
         context.setVariable("highlight_pictures", ModelUtils.getRandomThumbnails(allModels, HIGHLIGHT_PICTURE_AMOUNT_MAX));
-        String contents = templateEngine.process("templates/camera_model", context);
-        String safeHtmlFileName = ModelUtils.createSafeHtmlFileName(cameraModelName);
-        fileWriter.writeContentsToFile(safeHtmlFileName, contents);
-
+        return templateEngine.process("templates/camera_model", context);
     }
+
+    private static class CameraMakeGeneratorRuntimeException extends RuntimeException {
+        private final FileWriterException fileWriterException;
+
+        CameraMakeGeneratorRuntimeException(FileWriterException fileWriterException) {
+            this.fileWriterException = fileWriterException;
+        }
+    }
+
 }

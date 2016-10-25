@@ -33,20 +33,27 @@ div {
 
 .flex-container {
     margin-top: 20px;
+
     display: -webkit-flex;
     display: flex;
+
     width: auto;
     height: auto;
+
     display: -webkit-flex;
     display: flex;
+
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
+
     -webkit-align-items: center;
     align-items: center;
+
     -webkit-align-content: center;
     align-content: center;
 
     text-align: center;
+
     justify-content: center;
     -webkit-justify-content: center;
 
@@ -55,8 +62,10 @@ div {
 .flex-item {
     margin: 10px;
     padding: 0;
+
     width: 150px;
     height: 150px;
+
     align-content: center;
     align-items: center;
     text-align: center;
