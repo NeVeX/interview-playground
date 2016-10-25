@@ -1,4 +1,4 @@
-package com.mark.redbubble.html;
+package com.mark.redbubble.output.html;
 
 import com.mark.redbubble.output.OutputWriter;
 import com.mark.redbubble.output.OutputWriterException;

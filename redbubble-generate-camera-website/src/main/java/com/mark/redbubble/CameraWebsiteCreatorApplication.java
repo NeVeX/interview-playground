@@ -2,13 +2,13 @@ package com.mark.redbubble;
 
 import com.mark.redbubble.api.ApiException;
 import com.mark.redbubble.api.CameraWorksApiClient;
-import com.mark.redbubble.html.CameraWebsiteGenerator;
 import com.mark.redbubble.input.ApplicationInputArguments;
 import com.mark.redbubble.input.ApplicationInputException;
 import com.mark.redbubble.input.ApplicationInputReader;
 import com.mark.redbubble.model.CameraInformation;
 import com.mark.redbubble.output.OutputWriter;
 import com.mark.redbubble.output.OutputWriterException;
+import com.mark.redbubble.output.html.CameraWebsiteGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +39,7 @@ public class CameraWebsiteCreatorApplication {
         // Get the valid arguments from the input
         ApplicationInputArguments inputArguments = getInputArguments(args);
         writeValidArgumentsToScreen(inputArguments);
+        writeInfoMessageToScreen("Attempting to get all Cameras from the API...");
         // Get the input API url to get all the cameras at that endpoint
         Set<CameraInformation> cameras = getAllCameras(inputArguments.getCameraWorksApiUrl());
         writeInfoMessageToScreen("Received ["+cameras.size()+"] cameras from the API");
@@ -52,7 +53,7 @@ public class CameraWebsiteCreatorApplication {
     private void writeValidArgumentsToScreen(ApplicationInputArguments inputArguments) {
         writeInfoMessageToScreen("");
         writeInfoMessageToScreen("Valid Arguments received from input:");
-        writeInfoMessageToScreen(" -- Api Camera Url: "+inputArguments.getCameraWorksApiUrl());
+        writeInfoMessageToScreen(" -- Api Camera Url:   "+inputArguments.getCameraWorksApiUrl());
         writeInfoMessageToScreen(" -- Output Directory: "+inputArguments.getHtmlOutputDirectory());
         writeInfoMessageToScreen("");
     }

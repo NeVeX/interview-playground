@@ -1,12 +1,12 @@
-package com.mark.redbubble.html;
+package com.mark.redbubble.output.html;
 
 import com.mark.redbubble.output.OutputWriter;
 import com.mark.redbubble.output.OutputWriterException;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,40 +16,40 @@ import java.util.stream.Collectors;
  */
 class StaticResourcesGenerator implements Generator {
 
-    private final Set<StaticResourceInformation> allScripts;
-    private final Set<StaticResourceInformation> allStyles;
+    private static final Set<StaticResourceInformation> ALL_SCRIPTS = new HashSet<>();
+    private static  Set<StaticResourceInformation> ALL_STYLES = new HashSet<>();
 
     private static final String TEMPLATES_LOCATION = "/templates";
-    private static final String SCRIPTS_DIRECTORY_NAME = "scripts";
-    private static final String STYLES_DIRECTORY_NAME = "styles";
+    private static final String SCRIPTS_OUTPUT_DIRECTORY_NAME = "scripts";
+    private static final String STYLES_OUTPUT_DIRECTORY_NAME = "styles";
 
-    private static final String SCRIPTS_LOCATION = TEMPLATES_LOCATION + "/" + SCRIPTS_DIRECTORY_NAME;
-    private static final String STYLES_LOCATION = TEMPLATES_LOCATION + "/" + STYLES_DIRECTORY_NAME;
+    private static final String SCRIPTS_RESOURCE_LOCATION = TEMPLATES_LOCATION + "/" + SCRIPTS_OUTPUT_DIRECTORY_NAME;
+    private static final String STYLES_RESOURCE_LOCATION = TEMPLATES_LOCATION + "/" + STYLES_OUTPUT_DIRECTORY_NAME;
 
-
-    StaticResourcesGenerator() {
-        try {
-            // Load all the script locations that we have in the resources
-            allScripts = getAllFilesInResourceDirectory(SCRIPTS_LOCATION, SCRIPTS_DIRECTORY_NAME);
-            // Load all the style locations that we have in the resources
-            allStyles = getAllFilesInResourceDirectory(STYLES_LOCATION, STYLES_DIRECTORY_NAME);
-        } catch (IOException ioException) {
-            // Wrap the checked exception into a un-checked exception while in the constructor
-            // This method should never fail, hence it's ok to make it a runtime exception
-            throw new IllegalStateException("Could not load all static resources", ioException);
-        }
+    static {
+        /*
+            There are better ways to be be more abstract with regards to loading the resources needed
+            1 - package these resources outside the jar and simple copy them to the destination
+            2 - read all resources in the jar and copy the contents to the destination (has complicated logic)
+            3 - list out explicitly the resources to use (the approach here - which is not great, but given the time/size, using it here)
+         */
+        // Add the scripts
+        ALL_SCRIPTS.add(new StaticResourceInformation("jquery-3.1.1.min.js", SCRIPTS_RESOURCE_LOCATION, SCRIPTS_OUTPUT_DIRECTORY_NAME));
+        ALL_SCRIPTS.add(new StaticResourceInformation("selection_control.js", SCRIPTS_RESOURCE_LOCATION, SCRIPTS_OUTPUT_DIRECTORY_NAME));
+        // Add the styles
+        ALL_STYLES.add(new StaticResourceInformation("main.css", STYLES_RESOURCE_LOCATION, STYLES_OUTPUT_DIRECTORY_NAME));
     }
 
     /**
      * Initiates a new generation of all the dependent resources for the website
      * @param outputWriter - the valid file writer to use
-     * @throws OutputWriterException
+     * @throws OutputWriterException - if something went wrong writing the resources out
      */
     @Override
     public void generate(OutputWriter outputWriter) throws OutputWriterException {
 
-        writeAllResources(allScripts, outputWriter);
-        writeAllResources(allStyles, outputWriter);
+        writeAllResources(ALL_SCRIPTS, outputWriter);
+        writeAllResources(ALL_STYLES, outputWriter);
 
     }
 
@@ -57,7 +57,7 @@ class StaticResourcesGenerator implements Generator {
      * Writes all the given resources to the given file writer
      * @param resources - the resources in the application
      * @param outputWriter - the place to write to
-     * @throws OutputWriterException
+     * @throws OutputWriterException - if something went wrong writing the resources out
      */
     private void writeAllResources(Set<StaticResourceInformation> resources, OutputWriter outputWriter) throws OutputWriterException {
         for ( StaticResourceInformation staticResourceInformation : resources) {
@@ -69,7 +69,7 @@ class StaticResourcesGenerator implements Generator {
      * Given a particular resource, this will write the resource into the given {@link OutputWriter}
      * @param resourceInfo - the resource info (name, location etc)
      * @param outputWriter - the file writer to output to
-     * @throws OutputWriterException
+     * @throws OutputWriterException - if something went wrong writing the resources out
      */
     private void writeResourceToFile(StaticResourceInformation resourceInfo, OutputWriter outputWriter) throws OutputWriterException {
         try (InputStream inputStream = this.getClass().getResourceAsStream(resourceInfo.resourceLocation);
@@ -80,25 +80,6 @@ class StaticResourcesGenerator implements Generator {
             outputWriter.writeContentsToFile(resourceInfo.outputDirectory, resourceInfo.outputFileName, contents);
         } catch (Exception exception) {
             throw new OutputWriterException("Could not write resource file ["+resourceInfo.outputFileName+"]", exception);
-        }
-    }
-
-    /**
-     * Helper method to get all the resource files for a given directory
-     * @param directory - the directory resource to search
-     * @param outputDirectory - the output directory that this resource should go to later
-     * @return - the set of resources loaded
-     * @throws IOException
-     */
-    private Set<StaticResourceInformation> getAllFilesInResourceDirectory(String directory, String outputDirectory) throws IOException {
-        try (InputStream inputStream = this.getClass().getResourceAsStream(directory);
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-            // Each line of the buffered reader is a file name
-            return bufferedReader
-                    .lines()
-                    .map(entry -> new StaticResourceInformation(entry, directory, outputDirectory))
-                    .collect(Collectors.toSet());
-
         }
     }
 
