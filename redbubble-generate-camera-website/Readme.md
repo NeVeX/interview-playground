@@ -39,7 +39,7 @@ The build system used is `Gradle 2.3`
 ### Application Release
 
 While you can checkout this repo and build the source code to create the application, there is already a pre-existing application
-artifact `redbubble-generate-camera-website-1.0.0-full.jar` created in the `releases` directory.
+artifact `redbubble-generate-camera-website-1.0.0-full.jar` created in the `/releases` directory.
 
 See the below section to know how to run the application.
 
@@ -158,5 +158,5 @@ The entry point into the website is through the `index.html` - using this will a
 
 #### Example Website
 
-In the `/release` directory of this repo, there is a `example-website-output` folder. Inside this folder is an example output
+In the `/releases` directory of this repo, there is a `example-website-output` folder. Inside this folder is an example output
 using the given requirements API.
