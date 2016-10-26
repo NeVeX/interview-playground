@@ -156,3 +156,7 @@ In that directory, you will see:
 
 The entry point into the website is through the `index.html` - using this will allow you to navigate all parts of the website
 
+#### Example Website
+
+In the `/release` directory of this repo, there is a `example-website-output` folder. Inside this folder is an example output
+using the given requirements API.

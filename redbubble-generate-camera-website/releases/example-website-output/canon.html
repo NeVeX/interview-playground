@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Camera Makes Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <script src="scripts/jquery-3.1.1.min.js"></script>
+        <script src="scripts/selection_control.js"></script>
+    </head>
+
+    <body>
+        <div>
+            <h3>This is the Canon camera page</h3>
+
+            <a href="index.html">Home</a>
+
+            <input type="text" placeholder="Enter (or select) a model" list="selection_data_list" id="input_selection"/>
+
+            <datalist id="selection_data_list">
+                <option data-value="canon_eos_400d_digital.html"
+                            value="Canon eos 400d digital">
+                </option>
+                <option data-value="canon_eos_20d.html"
+                            value="Canon eos 20d">
+                </option>
+            </datalist>
+        </div>
+        <div id="highlight_pictures_fragment"
+             class="flex-container">
+            <figure class="flex-item">
+                <img src="http://ih1.redbubble.net/work.777577.1.flat,135x135,075,f.jpg" />
+            </figure>
+            <figure class="flex-item">
+                <img src="http://ih1.redbubble.net/work.2041.1.flat,135x135,075,f.jpg" />
+            </figure>
+
+            
+        </div>
+    </body>
+</html>
