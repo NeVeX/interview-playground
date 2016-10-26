@@ -1,0 +1,70 @@
+
+// Using the shadowJar plugin to build and package the application with the dependencies required
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+// Need to set the java properties after the plugin is loaded above
+sourceCompatibility = javaSourceCompatibility
+targetCompatibility = javaTargetCompatibility
+
+repositories {
+    mavenCentral()
+}
+
+
+// Setting JAR manifest properties (main-class is required)
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.mark.redbubble.CameraWebsiteCreatorApplication',
+                'Implementation-Title': 'Mark\'s RedBubble Camera Website Generator Application',
+                'Implementation-Version': version)
+    }
+}
+
+
+dependencies {
+
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4' // StringUtils support (among others)
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.4.1' // HTTP client impl to use to talk to the API
+    compile group: 'org.simpleframework', name: 'simple-xml', version: '2.7.1' // Helps with parsing the XML from the API's
+    compile group: 'commons-cli', name: 'commons-cli', version: '1.3.1' // CLI support
+    compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.2.RELEASE' // HTML Templating support
+
+    // Adding logging support
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21' // SL4J API
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.21' // SL4J-Log4j adapter
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.6.2' // Log4j
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.5.2'
+}
+
+// Setting the test task to show running tests and the status of each once completed.
+// Also showing exceptions on failures.
+test {
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: ${descriptor}")
+    }
+
+    afterTest { descriptor, result ->
+        logger.lifecycle("Executed test ${descriptor} with result: ${result.resultType}")
+    }
+
+    testLogging {
+        showStackTraces = true
+        exceptionFormat = "full"
+    }
+}
+
+// Configuration for creating the full jar application
+shadowJar {
+    baseName = rootProject.name
+    classifier = 'full'
+    version = version
+}

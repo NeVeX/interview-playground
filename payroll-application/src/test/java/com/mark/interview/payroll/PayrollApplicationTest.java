@@ -64,7 +64,7 @@ public class PayrollApplicationTest {
             try {
                 // Create this file since it does not exist
                 expectedOutputFile.createNewFile();
-            } catch (Exception e ) {
+            } catch (Exception e ) {-10
                 fail("Could not create expected output file for testing\n"+e);
             }
         }

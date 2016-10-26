@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<works>
+    <work>
+        <id>12345</id>
+        <urls>
+            <url type="small">my_url_is_here</url>
+        </urls>
+        <exif>
+            <model>my_model</model>
+            <make>my_make</make>
+        </exif>
+    </work>
+</works>

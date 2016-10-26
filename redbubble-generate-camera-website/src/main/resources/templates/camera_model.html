@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Camera Makes Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <script src="scripts/jquery-3.1.1.min.js"></script>
+        <script src="scripts/selection_control.js"></script>
+    </head>
+
+    <body>
+        <div>
+            <h3 th:text="|This is the (${camera_make_name}) ${camera_model_name} camera page|">
+                This is the camera model page!
+            </h3>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a th:href="${camera_make_html}" th:text="|Back to ${camera_make_name} page|">
+                Back to the camera make page
+            </a>
+        </div>
+
+        <div id="highlight_pictures_fragment"
+             class="flex-container"
+             th:include="/templates/picture_fragments :: highlight_pictures_fragment">
+        </div>
+    </body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Camera Makes Page</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" href="styles/main.css">
+        <script src="scripts/jquery-3.1.1.min.js"></script>
+        <script src="scripts/selection_control.js"></script>
+    </head>
+
+    <body>
+        <div>
+            <h3 th:text="|This is the ${camera_make_name} camera page|">This is the camera make page!</h3>
+
+            <a href="index.html">Home</a>
+
+            <input type="text" placeholder="Enter (or select) a model" list="selection_data_list" id="input_selection"/>
+
+            <datalist id="selection_data_list">
+                <option th:each="camera_model : ${all_camera_models}"
+                            th:data-value="${camera_model.value}"
+                            th:value="${camera_model.key}">
+                </option>
+            </datalist>
+        </div>
+        <div id="highlight_pictures_fragment"
+             class="flex-container"
+             th:include="/templates/picture_fragments :: highlight_pictures_fragment">
+        </div>
+    </body>
+</html>
