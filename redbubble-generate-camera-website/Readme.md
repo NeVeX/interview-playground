@@ -4,14 +4,13 @@
 
 This project aims to solve the problem presented in the `Requirements.html` file.
 
-At a high level, this project represents an application that is able to invoke an API, retrieve data
-from the API that represents camera EXIF data. Using this camera data, a simple website is created
-with navigation from all the cameras -> models -> makes.
+At a high level, this project represents an application that is able to invoke an API, retrieve camera EXIF data from the API,
+use this information to create a simple web site with camera pictures and navigation from all the cameras <-> models <-> makes.
 
 ### Assumptions Made
 
 While building this application, certain assumptions were made:
-* Camera images can be injected into generated html as simple <img> with `src` attribute - i.e. pictures are not downloaded and stored locally
+* Camera images can be injected into generated html using <img> with `src` attributes using the full http url - i.e. pictures are not downloaded and referenced locally
 * The API (XML) contract will be the same for all API urls passed in
 * The output directory given will be clean (have no other files/directories in it) - if the application outputs a file/directory that already exists
 on the machine, then it will not overwrite and instead throw an error
@@ -19,6 +18,8 @@ on the machine, then it will not overwrite and instead throw an error
 * The Model page does not need to be paged - all images will fit reasonably in the one page (extension on above point)
 * For thumbnail pictures, the smallest picture size should be used
 * Invalid data from the API (missing make and model information) will be discarded - application will log a message but continue other processing
+* There will be sufficient space on the machine to save all files
+* The HTML does not need to be optimized for various devices
 
 ### Application Stack
 
@@ -33,7 +34,7 @@ The application uses `Java 8`, `HTML` and `JS`; and a combination of various lib
 * Junit - For testing
 * AssertJ - For asserting test cases within Junit
 
-The build system used is `Gradle`
+The build system used is `Gradle 2.3`
 
 ### Application Release
 
@@ -46,7 +47,7 @@ See the below section to know how to run the application.
 
 If you wish to build the application from source, then check out this repo first.
 
-**Note, you will need `Java 8` and `Gradle` installed to be able to build this application.**
+**Note, you will need `Java 8` and at least `Gradle 2.3` installed to be able to build this application.**
 
 Navigate to the location where this repo lives on your computer.
 

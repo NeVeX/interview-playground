@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
 
     <head>
@@ -11,7 +10,6 @@
     </head>
 
     <body>
-
         <div>
             <h3 th:text="|This is the ${camera_make_name} camera page|">This is the camera make page!</h3>
 
@@ -26,13 +24,9 @@
                 </option>
             </datalist>
         </div>
-
         <div id="highlight_pictures_fragment"
              class="flex-container"
              th:include="/templates/picture_fragments :: highlight_pictures_fragment">
         </div>
-
-
     </body>
-
 </html>

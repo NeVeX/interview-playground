@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
 
     <head>
@@ -23,14 +22,11 @@
             <a th:href="${camera_make_html}" th:text="|Back to ${camera_make_name} page|">
                 Back to the camera make page
             </a>
-
         </div>
 
         <div id="highlight_pictures_fragment"
              class="flex-container"
              th:include="/templates/picture_fragments :: highlight_pictures_fragment">
         </div>
-
     </body>
-
 </html>
