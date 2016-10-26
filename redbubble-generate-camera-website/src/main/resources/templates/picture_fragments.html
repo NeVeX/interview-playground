@@ -9,9 +9,15 @@
     <body>
         <div th:fragment="highlight_pictures_fragment">
             <figure class="flex-item"
+                    th:if="${not highlight_pictures.isEmpty()}"
                     th:each="highlight_picture : ${highlight_pictures}">
                 <img th:src="${highlight_picture}" />
             </figure>
+
+            <h4 th:if="${highlight_pictures.isEmpty()}">
+                No pictures to show. :-(
+            </h4>
         </div>
+
     </body>
 </html>
