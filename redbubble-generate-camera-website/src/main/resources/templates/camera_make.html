@@ -27,10 +27,9 @@
             </datalist>
         </div>
 
-        <div class="flex-container">
-            <figure class="flex-item" th:each="highlight_picture : ${highlight_pictures}">
-                <img th:src="${highlight_picture}" />
-            </figure>
+        <div id="highlight_pictures_fragment"
+             class="flex-container"
+             th:include="/templates/picture_fragments :: highlight_pictures_fragment">
         </div>
 
 

@@ -62,8 +62,8 @@ public class CameraWebsiteGenerator implements Generator {
     private void generateWithWrapperException(Generator generator, OutputWriter outputWriter) throws StreamGeneratorWrapperException {
         try {
             generator.generate(outputWriter);
-        } catch (OutputWriterException fileWriterExcpetion) {
-            throw new StreamGeneratorWrapperException(fileWriterExcpetion);
+        } catch (OutputWriterException fileWriterException) {
+            throw new StreamGeneratorWrapperException(fileWriterException);
         }
     }
 

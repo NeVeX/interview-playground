@@ -50,7 +50,7 @@ public class CameraMakePageGeneratorTest {
 
         // Now just get the content that would be placed into the file
         String content = cameraMakePageGenerator.createContent("my-fancy-make", allCameras);
-        assertThat(content).contains("my-fancy-make");
+        assertThat(content).contains("My-fancy-make");
         assertThat(content).contains("index.html"); // the index page link
         assertThat(content).contains("model_one");
         assertThat(content).contains("model_one.html");

@@ -15,7 +15,10 @@
         <div>
             <h3>Welcome to the RedBubble camera website!</h3>
 
-            <input type="text" placeholder="Enter (or select) a camera make" list="selection_data_list" id="input_selection"/>
+            <input id="input_selection"
+                   type="text"
+                   placeholder="Enter (or select) a camera make"
+                   list="selection_data_list"/>
 
             <datalist id="selection_data_list">
                 <option th:each="camera_make : ${all_camera_makes}"
@@ -23,16 +26,12 @@
                             th:value="${camera_make.key}">
                 </option>
             </datalist>
-
         </div>
 
-
-        <div class="flex-container">
-            <figure class="flex-item" th:each="highlight_picture : ${highlight_pictures}">
-                <img th:src="${highlight_picture}" />
-            </figure>
+        <div id="highlight_pictures_fragment"
+             class="flex-container"
+             th:include="/templates/picture_fragments :: highlight_pictures_fragment">
         </div>
-
 
     </body>
 
