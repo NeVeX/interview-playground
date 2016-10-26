@@ -36,7 +36,7 @@ class CameraMakePageGenerator implements Generator {
      */
     private Map<String, Set<CameraInformation>> getCameraMakesToModels(Set<CameraInformation> allCameras) {
         return allCameras
-                .stream()
+                .parallelStream()
                 .collect(groupingBy(CameraInformation::getCameraMake, Collectors.toSet()));
     }
 

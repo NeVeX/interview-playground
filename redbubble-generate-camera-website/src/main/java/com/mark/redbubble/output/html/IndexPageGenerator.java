@@ -42,7 +42,7 @@ class IndexPageGenerator implements Generator {
 
     /**
      * Creates the content of the HTML using the instance data
-     * @return
+     * @return - the content for this index page
      */
     String createContent() {
         Context context = new Context();

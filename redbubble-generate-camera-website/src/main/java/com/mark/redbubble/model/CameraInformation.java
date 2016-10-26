@@ -43,7 +43,10 @@ public class CameraInformation {
      * @return - the thumbnail picture if found
      */
     public Optional<PictureUrl> getThumbnailPicture() {
-        return pictureUrls.stream().sorted(PictureUrl.comparatorForOrderSize()).findFirst();
+        return pictureUrls
+                .parallelStream()
+                .sorted(PictureUrl.comparatorForOrderSize())
+                .findFirst();
     }
 
     @Override // Need to override equals and hashcode due to the use of sets and maps

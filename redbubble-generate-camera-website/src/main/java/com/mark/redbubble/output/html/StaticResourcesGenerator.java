@@ -28,10 +28,14 @@ class StaticResourcesGenerator implements Generator {
 
     static {
         /*
-            There are better ways to be be more abstract with regards to loading the resources needed
+            There are better ways to be be more abstract with regards to loading the resources needed.
             1 - package these resources outside the jar and simple copy them to the destination
             2 - read all resources in the jar and copy the contents to the destination (has complicated logic)
             3 - list out explicitly the resources to use (the approach here - which is not great, but given the time/size, using it here)
+
+            Given the fact that we only want to copy 3 resources, for now, we'll set the names here.
+            This would be bad in larger projects as the view dependency is coupled with this generator and can lead to problems
+            when the view changes without the generator changes
          */
         // Add the scripts
         ALL_SCRIPTS.add(new StaticResourceInformation("jquery-3.1.1.min.js", SCRIPTS_RESOURCE_LOCATION, SCRIPTS_OUTPUT_DIRECTORY_NAME));
@@ -84,7 +88,7 @@ class StaticResourcesGenerator implements Generator {
     }
 
     /**
-     * Helpful inner class with decorated information on resource information
+     * Helpful inner class with decorated information on resources (where they are, and where to relatively output them)
      */
     private static class StaticResourceInformation {
 

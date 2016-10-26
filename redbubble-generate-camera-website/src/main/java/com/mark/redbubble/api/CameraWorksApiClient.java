@@ -67,7 +67,7 @@ public class CameraWorksApiClient {
      */
     private Set<CameraInformation> convertApiModelToServiceModel(CameraWorksApiResponse cameraApiResponse) {
         return cameraApiResponse.getWorks()
-                .stream()
+                .parallelStream()
                 .map(this::convertApiModelToServiceModel)
                 .filter(camera -> camera != null) // Remove any that could not be converted from the API response
                 .collect(Collectors.toSet());
@@ -83,7 +83,7 @@ public class CameraWorksApiClient {
         try {
             // Build up the set of picture urls that are in the response
             Set<PictureUrl> pictureUrls = work.getUrls()
-                    .stream()
+                    .parallelStream()
                     .map(url -> new PictureUrl(url.getUrl(), PictureUrl.PictureUrlSize.toEnum(url.getType())))
                     .collect(toSet());
             // Now build the full camera info object using the provided builder

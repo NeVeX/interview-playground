@@ -35,7 +35,7 @@ public class ModelUtils {
      */
     public static Set<String> getRandomThumbnails(Set<CameraInformation> allCameras, int limit) {
         return allCameras
-                .stream()
+                .parallelStream()
                 .unordered() // allow any order
                 .map(CameraInformation::getThumbnailPicture) // use the thumbnail function to get the most appropriate size
                 .filter(Optional::isPresent) // remove empty thumbnails

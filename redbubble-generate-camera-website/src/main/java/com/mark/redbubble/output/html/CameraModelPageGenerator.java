@@ -37,7 +37,7 @@ class CameraModelPageGenerator implements Generator {
      */
     private Map<String, Set<CameraInformation>> getCameraModels(Set<CameraInformation> allCameras) {
         return allCameras
-                .stream()
+                .parallelStream()
                 .collect(groupingBy(CameraInformation::getCameraModel, Collectors.toSet()));
     }
 
@@ -81,7 +81,10 @@ class CameraModelPageGenerator implements Generator {
      */
     String createContent(String cameraModelName, Set<CameraInformation> allModels) {
         // We just need to find one camera model to use as information in the context
-        CameraInformation exampleCameraInfo = allModels.stream().findAny().get();
+        CameraInformation exampleCameraInfo = allModels
+                .stream()
+                .findAny()
+                .get();
         Context context = new Context();
         // Set variables into the context for the template engine to use
         context.setVariable("camera_model_name", ModelUtils.createNiceTitle(cameraModelName));
